@@ -1,0 +1,1589 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<office-authority-list xmlns:xref="http://dca.tufts.edu/aas/xref"
+  xmlns:auth="http://dca.tufts.edu/aas/auth">
+  
+  <auth:office id="ON001" name="Alderman">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Alderman: Since the guilds became identified with the corporation or ruling municipal body: A magistrate in English and Irish cities and boroughs, next in dignity to the mayor; properly, as in London, the chief officer of a ward.<br/>
+          <br>Oxford English Dictionary</br>
+          <br>1789 - 1825:  A city position in Pensacola FL, Savannah GA, New Orleans LA, Annapolis MD, Boston MA, St. Louis MO, Albany NY, Hudson NY and New York NY.</br>
+          <br>Office Scope: City</br>
+          <br>Role Scope: City</br>
+        </p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON002" name="Appraiser">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Appraiser: a person appointed and sworn to estimate the value of property.<br/>
+          <br>Oxford English Dictionary</br>
+          <br>Also known as House Praiser. See also <xref:office id="ON004">Assessor</xref:office></br>
+          <br>1808 - 1824: Ohio</br>
+          <br>Office Scope: County / Township</br>
+          <br>Role Scope: County / Township</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON003" name="Assembly">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Assembly: A gathering of persons for the purpose of deliberation and decision; a deliberative body, a legislative council.  Please also see <xref:office id="ON064">House of Representatives</xref:office>.<br/>
+            <br>Oxford English Dictionary</br>
+            <br>Assembly or General Assembly: the name given to the lower house in New Jersey and New York.</br>
+            <br>1788 - 1825: New Jersey, New York</br>
+            <br>Office Scope: State</br>
+            <br>Role Scope: County</br>
+        </p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON004" name="Assessor">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Assessor: <br/>
+          a. One who sits as assistant or adviser to a judge or magistrate; esp. a skilled assistant competent to advise on technical points of law, commercial usage, navigation, etc.<br/>
+          b. One who assesses taxes.<br/>
+          c. One who officially estimates the value of property or income for purposes of taxation.<br/>
+          <br>Oxford English Dictionary</br>
+          <br>In some states, especially Massachusetts, the tax assessment of a town would determine how many state representatives could be elected.</br>
+          <br>1801 - 1825: Delaware, Massachusetts, New York, Pennsylvania, Rhode Island</br>
+          <br>Office Scope: County / City / Hundred / District / Borough</br>
+          <br>Role Scope: County / Hundred / Ward / District / Borough</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON005" name="Assistant">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>"The upper branch of the legislature in the colonies was called the council, and consisted usually of twelve members, called assistants or members of the governor's council.  Except in Connecticut and Rhode Island, the members of the council were either appointed by the governor or by the lower house."  A History of the United States.  William Coligny Doub.  Pages 225-226.<br/>
+          "The latter body (assistants), formerly called the council, was now with the two executive officers, termed the upper house, and afterwards received the name of Senate."  History of the State of Rhode Island and Providence Plantations Vol II.  Samuel Green Arnold.  Page 555.<br/>
+          "In 1798 the new state's first code of laws changed the nomenclature of Rhode Island government in several areas.  From that point onward the upper house became known as the senate, and the lower chamber as the House of Representatives.  The title of the deputy governor became lieutenant governor."  The Rhode Island State Constitution: A Reference Guide.  Patrick T. Conley, Robert G. Flanders.  Page 212.<br/>
+          <br>Please also see <xref:office id="ON109">State Senate</xref:office> or <xref:office id="ON043">Council of Assistants</xref:office>.</br>
+          <br>1787 - 1790: Rhode Island</br>
+          <br>Office Scope: State</br>
+          <br>Role Scope: State</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON006" name="Assistant Alderman">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Assistant Alderman: Since the guilds became identified with the corporation or ruling municipal body: Assistant to the alderman position. See <xref:office id="ON001">Alderman</xref:office>.<br/>
+          <br>Oxford English Dictionary</br>
+          <br>1824:  A city position in Albany, Hudson and New York NY.</br>
+          <br>Office Scope: City</br>
+          <br>Role Scope: Ward</br>
+        </p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON007" name="Assistant Assessor">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Assistant Assessor: One who assists the Assessor. See <xref:office id="ON003">Assessor</xref:office>.<br/>
+          <br>1807 - 1822: Philadelphia, Northern Liberties and Penn, Pennsylvania</br>
+          <br>Office Scope: City / Township</br>
+          <br>Role Scope: Township / Ward</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON008" name="Assistant Burgess">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>A magistrate or member of the governing body of a town.  Used as an official title (with varying signification) in certain English boroughs before the Municipal Reform Act of 1835.  See <xref:office id="ON018">Burgess</xref:office>.<br/>
+          <br>Oxford English Dictionary</br>
+          <br>1804: Pittsburgh, PA</br>
+          <br>Office Scope: Borough</br>
+          <br>Role Scope: Borough</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON009" name="Assistant Clerk of the House of Representatives">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>The assistant officer who has charge of the records, correspondence, and accounts of the <xref:office id="ON064">House of Representatives</xref:office>. See <xref:office id="ON027">Clerk of the House of Representatives</xref:office>.<br/>
+          <br>1807 - 1824: New Hampshire, Tennessee</br>
+          <br>Office Scope: State</br>
+          <br>Role Scope: State</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON010" name="Assistant Clerk of the Senate">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Assistant Clerk of the Senate: The assistant officer who has charge of the records, correspondence, and accounts of the Senate.  See <xref:office id="ON030">Clerk of the Senate</xref:office>.<br/>
+          <br>1809 - 1811: Tennessee</br>
+          <br>Office Scope: State</br>
+          <br>Role Scope: State</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON011" name="Associate Judge">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Associate Judge:  The designation given to a judge who is not the chief or presiding justice of the court on which he or she sits.<br/>
+          <br>West's Encyclopedia of American Law</br>
+          <br>1801 - 1823: Indiana, Ohio, South Carolina</br>
+          <br>Office Scope: State / County</br>
+          <br>Role Scope: State / County</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON012" name="Attorney General">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Attorney-General: a legal officer of the state empowered to act in all cases in which the state is a party. In England, Isle of Man, many Commonwealth countries, and in the United States, (formerly also in Ireland), the title of the first ministerial law-officer of the government, also of his or her Majesty's attorney in the duchy of Lancaster.<br/>
+          <br>Oxford English Dictionary</br>
+          <br>Rhode Island was the only state in which this office was directly elected by the people.</br>
+          <br>1787-1822: Georgia, New Jersey, North Carolina, Rhode Island, South Carolina, Tennessee, Virginia</br>
+          <br>Office Scope: State</br>
+          <br>Role Scope: State / District (Georgia only)</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON013" name="Auditor">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Auditor: An official whose duty it is to receive and examine accounts of money in the hands of others, who verifies them by reference to vouchers, and has power to disallow improper charges.<br/>
+          <br>Oxford English Dictionary</br>
+          <br>1804-1824: Ohio, Pennsylvania, Virginia</br>
+          <br>Office Scope: State / County</br>
+          <br>Role Scope: State / County</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON014" name="Bank Director">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Bank Director: Head position at the Bank of the United States, the Bank of Pennsylvania, the Bank of Philadelphia and the Bank of South Carolina.<br/>
+          <br>1800-1816: Pennsylvania, South Carolina, United States</br>
+          <br>Office Scope: Federal / State / City</br>
+          <br>Role Scope: Federal / State / City</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON015" name="Board of Health">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Board of Health: In the United States, the name of boards of commissioners for controlling sanitary matters, esp. in reference to contagious and infectious diseases.<br/>
+          <br>Oxford English Dictionary</br>
+          <br>1806 - 1809: Massachusetts</br>
+          <br>Office Scope: Town</br>
+          <br>Role Scope: Ward</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON016" name="Brigade Inspector">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Brigade Inspector: A military position that was publically voted on in 19th Century Pennsylvania.<br/>
+          <br>1807 - 1821: Pennsylvania</br>
+          <br>Office Scope: State / County</br>
+          <br>Role Scope: State / County</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON017" name="Brigadier General">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Brigadier-General: A military officer in command of a brigade; the status ranks between a major-general and a colonel, but is only local or temporary, being generally held by the senior colonel of the regiments or battalions brigaded together.<br/>
+          <br>Oxford English Dictionary</br>
+          <br>1803 - 1821: Georgia, Pennsylvania, Virginia</br>
+          <br>Office Scope: State / County</br>
+          <br>Role Scope: State / County</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON018" name="Burgess">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>A magistrate or member of the governing body of a town.  Used as an official title (with varying signification) in certain English boroughs before the Municipal Reform Act of 1835.<br/>
+          <br>Oxford English Dictionary</br>
+          <br>1803 - 1810: Pennsylvania</br>
+          <br>Office Scope: Borough</br>
+          <br>Role Scope: Borough</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON019" name="Chaplain of the House of Representatives">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>The presiding religious leader over the <xref:office id="ON064">House of Representatives</xref:office>.<br/>
+          <br>1805 - 1824: Massachusetts</br>
+          <br>Office Scope: State</br>
+          <br>Role Scope: State</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON020" name="Chaplain of the Senate">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>The presiding religious leader over the <xref:office id="ON109">State Senate</xref:office>.<br/>
+          <br>1824: Massachusetts</br>
+          <br>Office Scope: State</br>
+          <br>Role Scope: State</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON021" name="Circuit Court">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Circuit Court:<br/>
+          a. Federal courts intermediate in authority between the District Courts and the Supreme Court of the United States.<br/>
+          b. various State Courts so-called for different reasons in particular States.<br/>
+          <br>Oxford English Dictionary</br>
+          <br>1809 - 1823: Georgia, Ohio</br>
+          <br>Office Scope: State</br>
+          <br>Role Scope: State</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON022" name="City Council">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>City Council: The local administrative body of a corporate city.<br/>
+          <br>Oxford English Dictionary</br>
+          <br>1801 - 1825: Baltimore, MD; Charleston, SC</br>
+          <br>Office Scope: City</br>
+          <br>Role Scope: City</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON023" name="Clerk">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Clerk: The officer who has charge of the records, correspondence, and accounts of any department, court, corporation, or society, and superintends the general conduct of its business<br/>
+          <br>Oxford English Dictionary</br>
+          <br>1787 - 1823: Georgia, Indiana, Kentucky, Maryland, Massachusetts, New Hampshire, New Jersey, New York</br>
+          <br>Office Scope: State / County</br>
+          <br>Role Scope: State / County</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON024" name="Clerk of the Assembly">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Clerk of the Assembly: The officer who has charge of the records, correspondence, and accounts of the <xref:office id="ON002">Assembly</xref:office>.<br/>
+          <br>1794 - 1824: New Jersey, New York</br>
+          <br>Office Scope: State</br>
+          <br>Role Scope: State</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON025" name="Clerk of the Court">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Clerk of the Court: The officer who has charge of the records, correspondence, and accounts of the Court.<br/>
+          <br>1819 - 1825: Alabama, Georgia, Indiana, New Jersey, Ohio, South Carolina</br>
+          <br>Office Scope: County / District (South Carolina only)</br>
+          <br>Role Scope: County / District (South Carolina only)</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON026" name="Clerk of the House of Delegates">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Clerk of the House of Delegates: The officer who has charge of the records, correspondence, and accounts of the <xref:office id="ON063">House of Delegates</xref:office>.<br/>
+          <br>1798 - 1816: Virginia</br>
+          <br>Office Scope: State</br>
+          <br>Role Scope: State</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON027" name="Clerk of the House of Representatives">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>The officer who has charge of the records, correspondence, and accounts of the <xref:office id="ON064">House of Representatives</xref:office>.<br/>
+          <br>1787 - 1825: Georgia, Kentucky, Louisiana, Maine, Massachusetts, Missouri, New Hampshire, Ohio, Pennsylvania, Rhode Island, South Carolina, Tennessee, Vermont</br>
+          <br>Office Scope: State / Territory (Missouri)</br>
+          <br>Role Scope: State / Territory (Missouri)</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON028" name="Clerk of the Inferior Court">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>The officer who has charge of the records, correspondence, and accounts of the Inferior Court.<br/>
+          <br>1809 - 1819: Alabama, Georgia, Rhode Island</br>
+          <br>Office Scope: County</br>
+          <br>Role Scope: County</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON029" name="Clerk of the Market">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Clerk of the Market: The officer who has charge of the records, correspondence, and accounts of the Market.<br/>
+          <br>1803 - 1818: New Castle, DE; Savannah, GA, Newport, RI</br>
+          <br>Office Scope: Town / Hundred / City</br>
+          <br>Role Scope: Town / Hundred / City</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON030" name="Clerk of the Senate">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Clerk of the Senate: The officer who has charge of the records, correspondence, and accounts of the <xref:office id="ON109">State Senate</xref:office>.<br/>
+          <br>1790 - 1824: Kentucky, Massachusetts, Missouri, New York, North Carolina, Pennsylvania, Tennessee</br>
+          <br>Office Scope: State</br>
+          <br>Role Scope: State</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON031" name="Clerk of the Superior Court">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Clerk of the Superior Court: The officer who has charge of the records, correspondence, and accounts of the Superior Court.<br/>
+          <br>1809 - 1811: Georgia</br>
+          <br>Office Scope: State</br>
+          <br>Role Scope: State</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON032" name="Clerk of the Supreme Court">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Clerk of the Supreme Court: The officer who has charge of the records, correspondence, and accounts of the Supreme Court.<br/>
+          <br>1802 - 1817: New Jersey</br>
+          <br>Office Scope: State</br>
+          <br>Role Scope: State</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON033" name="Collector">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Collector: The officer in charge of collecting taxes.<br/>
+          <br>1803 - 1821: Massachusetts, New York</br>
+          <br>Office Scope: Town / City</br>
+          <br>Role Scope: Town / City</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON034" name="Commissary General">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Commissary General: The head of a department of the military service charged with the victualling, etc., of the army; the chief of a commissariat service.<br/>
+          <br>Oxford English Dictionary</br>
+          <br>1821: New Hampshire</br>
+          <br>In the original 1784 Constitution of New Hampshire this office was one of three, along with Secretary and Treasurer that was elected by the General Court and not chosen by the Governor.  This manner of electing the Commissary General was abolished in a 1950 revision to the New Hampshire Constitution.</br>
+          <br>Office Scope: State</br>
+          <br>Role Scope: State</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON035" name="Commissioner">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Commissioner: A member of a permanently constituted commission or government board.<br/>
+          <br>Oxford English Dictionary</br>
+          <br>In most states, the main political unit was the County, and Commissioners were responsible of maintaining the county roads, poor house, county buildings, collection of taxes and other related business.</br>
+          <br>1787 - 1824: Delaware, Illinois, Indiana, Ohio, Pennsylvania</br>
+          <br>Office Scope: County / Town(ship) / Hundred / District</br>
+          <br>Role Scope: County / Town(ship) / Hundred / District</br>
+          <br>Scope Note: In most of Pennyslvania, this is a County position, but due to the minor civil divisions around Philadelphia, it is also a position for the township of Northern Liberties and the District of Spring Garden.</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON036" name="Common Council">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Common Council: The administrative body of a corporate town or city; a town or city council.<br/>
+          In Philadelphia the local authority consisted of the Select Council and Common Council, called together the Councils.<br/>
+          <br>Oxford English Dictionary</br>
+          <br>1799 - 1824: Annapolis, MD; Boston, MA; Philadelphia, PA; Alexandria, VA; Norfolk, VA; Richmond, VA</br>
+          <br>Office Scope: City</br>
+          <br>Role Scope: City / Ward</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON037" name="Comptroller">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Comptroller/Controller: One who keeps a counter-roll so as to check a treasurer or person in charge of accounts.<br/>
+          In Connecticut after the Constitution was established in 1818, this position was known as Controller of Public Accounts.<br/>
+          <br>Oxford English Dictionary</br>
+          <br>1809 - 1823: Connecticut, Georgia, North Carolina, South Carolina</br>
+          <br>Office Scope: State</br>
+          <br>Role Scope: State</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON038" name="Constable">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Constable: The chief officer of the court or administration.<br/>
+          <br>Oxford English Dictionary</br>
+          <br>Also known as Inspector of the Police.</br>
+          <br>1803 - 1824: Massachusetts, Missouri, New York, Ohio, Pennsylvania, Rhode Island</br>
+          <br>Office Scope: County / City / Town(ship) / Borough / District</br>
+          <br>Role Scope: County / City / Town(ship) / Borough / District</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON039" name="Constitutional Convention">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Convention: In Law, A body constituted by statute to represent the people in their primary relations, and in some sense outside of the constitution, as e.g. for the framing or amending of the constitution itself (Constitutional Convention). In this sense, applied to a body meeting under authority of Congress to frame a constitution for a new state, or convened by a state legislature, in the manner prescribed by law, to revise the constitution of the state.<br/>
+          <br>Oxford English Dictionary</br>
+          <br>Many states during this time period continued to either create (for new states) or refine their state constitutions.  This resulted in numerous elections for convention delegates.</br>
+          <br>1787 - 1824: Alabama, Connecticut, Delaware, Georgia, Illinois, Indiana, Kentucky, Louisiana, Maine, Maryland, Massachusetts, Missouri, New Jersey, New York, Ohio, Pennsylvania, Rhode Island, South Carolina, Tennessee, Vermont, Virginia</br>
+          <br>Office Scope: State / Territory</br>
+          <br>Role Scope: State / County / District / City</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON040" name="Continental Congress">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Continental Congress: The name of the ruling governmental body of the colonies during the American Revolution and afterwards during the Articles of Confederation.  Replaced by the United States Congress on March 4, 1789.<br/>
+          <br>1787 - 1788: New York, Rhode Island</br>
+          <br>Office Scope: Federal</br>
+          <br>Role Scope: State</br></p>
+      </div>
+    </auth:description>
+  </auth:office>  
+  
+  <auth:office id="ON041" name="Convention">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Convention: An assembly of delegates or representatives for some special or occasional purpose.<br/>
+          <br>Oxford English Dictionary</br>
+          <br>Several states had movements for Constitution Conventions during the years 1787 – 1825 and in most of them popular elections were held for choosing Delegates. Not all of these endeavors for convening Conventions were successful. Those that were successful however, often made substantial changes to state governments.</br>
+          <br>1801 - 1823: Massachusetts, New York, Pennsylvania</br>
+          <br>Office Scope: State / District</br>
+          <br>Role Scope: District / County / Ward</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON042" name="Convention President">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Convention President: Presiding officer of a <xref:office id="ON039">Constitutional Convention</xref:office>.<br/>
+          <br>1811 - 1820: Louisiana, Maine, Massachusetts, Missouri</br>
+          <br>Office Scope: State / Territory / District</br>
+          <br>Role Scope: State / Territory / District</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON043" name="Convention Secretary">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Convention Secretary: The Secretary of a <xref:office id="ON039">Constitutional Convention</xref:office>.<br/>
+          <br>1816 - 1820: Maine, Massachusetts, Missouri</br>
+          <br>Office Scope: State / Territory / District</br>
+          <br>Role Scope: State / Territory / District</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON044" name="Coroner">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Coroner: An officer of a county, district or municipality (formally also of the royal household), originally charged with maintaining the rights of the private property of the crown; in modern times his chief function is to hold inquests on the bodies of those supposed to have died by violence or accident.<br/>
+          <br>Oxford English Dictionary</br>
+          <br>1787 - 1824: Delaware, Georgia, Illinois, Indiana, Kentucky, Mississippi, Missouri, New Jersey, New York, Ohio, Pennyslvania</br>
+          <br>Office Scope: County / District (some combined counties within Ohio and Pennsylvania)</br>
+          <br>Role Scope: County / District (some combined counties within Ohio and Pennsylvania)</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON045" name="Council">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Council: Upper house of the state legislature in Delaware prior to the Constitution of 1792.  In New Jersey, prior to 1844, this was called the Legislative Council, the same name as used by the ruling body of the various territories before becoming states. Please also see <xref:office id="ON111">State Senate</xref:office>.<br/>
+          <br>1788 - 1824: Delaware, New Jersey</br>
+          <br>Office Scope: State</br>
+          <br>Role Scope: County</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON046" name="Council of Appointment">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Council of Appointment: A branch of the New York state government from 1777 to 1822.  It was charged with appointing all officers of the state that had not otherwise been listed in the New York Constitution of 1777 as being appointed or elected in a specific way.  This included the Secretary of State, Comptroller, Attorney General, Surveyor General, justice of the New York Supreme Court, sheriffs, judges, district attorneys, mayors and all military officers.  The Council was abolished by the New York Constitution of 1821 and ceased to exist by the end of 1822.
+          <br>"That all officers, other than those who, by this constitution, are directed to be otherwise appointed, shall be appointed in the manner following, to wit: The assembly shall, once in every year, openly nominate and appoint one of the senators from each great district, which senators shall form a council for the appointment of the said officers, of which the governor for the time being, or the lieutenant-governor, or the president of the senate, when they shall respectively administer the government, shall be president and have a casting voice, but no other vote; and with the advice and consent of the said council, shall appoint all the said officers; and that a majority of the said council be a quorum. And further, the said senators shall not be eligible to the said council for two years successively."  Constitution of New York.  April 20, 1777.  Article XXIII.</br>
+          Please also see <xref:office id="ON111">State Senate</xref:office> or <xref:office id="ON061">Governor's Council</xref:office>.<br/>
+          <br>1799 - 1822: New York</br>
+          <br>Office Scope: State</br>
+          <br>Role Scope: State</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON047" name="Council of Assistants">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>The upper body of the Connecticut General Assembly dating back to 1698.  It had twelve positions that were elected statewide.  It continued until the implementation of the Connecticut Constitution in 1818. Please also see <xref:office id="ON111">State Senate</xref:office>.<br/>
+          <br>1790 - 1818: Connecticut</br>
+          <br>Office Scope: State</br>
+          <br>Role Scope: State</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON048" name="Council of Censors">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Council of Censors: "The Council is responsible for the repeal of the laws requiring all taxpayers to support the gospel, the meeting house, and the first settled minister; for ending the practice of adopting special acts relieving individuals of their debts or granting them immunity from prosecution for a period of years; for eliminating the practice of punishing offenders of serious crimes with maiming or branding; and for taking the legislature out of the business of holding trials and hearing appeals.”  The Council was abolished in 1870.<br/> Records of the Council of Censors.<br/>
+          <br>1806 - 1813: Vermont</br>
+          <br>Office Scope: State</br>
+          <br>Role Scope: State</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON049" name="Court of Appeals Judge">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>An elected judicial position in Virginia.<br/>
+          <br>1811 - 1824: Virginia</br>
+          <br>Office Scope: State</br>
+          <br>Role Scope: State</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON050" name="Court of Common Pleas President">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Court of the Common Pleas President: The head of one of three circuits of courts as designated by the Ohio Constitution of 1802.<br/>
+          <br>1810: Ohio</br>
+          <br>Office Scope: District</br>
+          <br>Role Scope: State</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON051" name="Deputy Governor">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Deputy Governor: The second highest executive officer in Rhode Island until 1798.
+          <br>"In 1798 the new state's first code of laws changed the nomenclature of Rhode Island government in several areas.  From that point onward the upper house became known as the senate, and the lower chamber as the House of Representatives.  The title of the deputy governor became lieutenant governor."  The Rhode Island State Constitution: A Reference Guide.  Patrick T. Conley, Robert G. Flanders.  Page 212.</br>
+          Please also see <xref:office id="ON073">Lieutenant Governor</xref:office>.<br/>
+          <br>1787: Rhode Island</br>
+          <br>Office Scope: State</br>
+          <br>Role Scope: State</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON052" name="Director of the Poor">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Director of the Poor: Head position in the poor house.  Known in Massachusetts, Ohio and Rhode Island as Overseer of the Poor.<br/>
+          <br>1799 - 1824: Indiana, Massachusetts, New York, Ohio, Pennsylvania, Rhode Island</br>
+          <br>Office Scope: County / Town (Rhode Island)</br>
+          <br>Role Scope: County / Town (Rhode Island)</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON053" name="Doorkeeper">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>The <xref:office id="ON099">Sergeant at Arms</xref:office> and Doorkeeper, elected by the members, serves as the protocol and chief law enforcement officer and is the principal administrative manager for most support services in a legislature.<br/>
+          <br>1790 - 1823: Kentucky, Missouri, New York, Pennsylvania, Tennessee</br>
+          <br>Office Scope: State</br>
+          <br>Role Scope: State</br></p>
+      </div>
+    </auth:description>
+  </auth:office>  
+  
+  <auth:office id="ON054" name="Electoral Assembly for Mayor">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Electoral Assembly for Mayor: A representative body that elects the Mayor of Baltimore, Maryland.  There was no direct election of the Mayor of Baltimore until 1833.<br/>
+          <br>1802 - 1824: Baltimore, MD</br>
+          <br>Office Scope: City</br>
+          <br>Role Scope: City</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON055" name="Electoral Assembly for State Senate">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Electoral Assembly for State Senate: A representative body that elects members to the Maryland State Senate.  There was no direct election of the Maryland State Senate until 1838.<br/>
+          <br>1796 - 1821: Maryland</br>
+          <br>Office Scope: State</br>
+          <br>Role Scope: County / City</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON056" name="Electoral College">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Elector: A member of the Electoral College chosen by the several States to elect the President and Vice-President.<br/>
+          <br>Oxford English Dictionary</br></p>
+        <p>See <xref:office id="ON082">President of the United States</xref:office> for the votes cast by the Electoral College for President.<br/>
+          <br>Historical Note:  These elections were vastly different from modern day Presidential elections.  The actual Presidential candidates were rarely mentioned on tickets and voters were voting for particular electors who were pledged to a particular candidate.  There was sometimes confusion as to who the particular elector was actually pledged to.  Prior to the 12th Amendment, electors were pledged to two candidates as there was no distinction made in the Electoral College between President and Vice-President.</br>
+          <br>1789 - 1824: Alabama, Connecticut, Delaware, Georgia, Illinois, Indiana, Kentucky, Louisiana, Maine, Maryland, Massachusetts, Mississippi, Missouri, New Hampshire, New Jersey, New York, North Carolina, Ohio, Pennsylvania, Rhode Island, South Carolina, Tennessee, Vermont, Virginia</br>
+          <br>State Breakdown for Election of Members to the Electoral College:</br>
+          <br>Alabama: Legislature (1820), Popular Vote (1824)</br>
+          <br>Connecticut: Legislature (1789-1816), Popular Vote (1820, 1824)</br>
+          <br>Delaware: Popular Vote (1789), Legislature (1796-1824)</br>
+          <br>Georgia: Legislature (1789, 1792, 1800-1824), Popular Vote (1796)</br>
+          <br>Illinois: Popular Vote by District</br>
+          <br>Indiana: Legislature (1816, 1820), Popular Vote by District (1824)</br>
+          <br>Kentucky: Popular Vote by District</br>
+          <br>Louisiana: Legislature</br>
+          <br>Maine: Popular Vote by District</br>
+          <br>Maryland: Popular Vote (1789, 1792), Popular Vote by District (1796-1824)</br>
+          <br>Massachusetts: Popular Vote (1789-1796, 1804, 1824), Legislature (1800, 1808, 1816), Popular Vote by District (1812, 1820)</br>
+          <br>Mississippi: Popular Vote</br>
+          <br>Missouri: Legislature (1820), Popular Vote by District (1824)</br>
+          <br>New Hampshire: Popular Vote (1789-1796, 1804-1824), Legislature (1800)</br>
+          <br>New Jersey: Legislature (1789-1800, 1812), Popular Vote (1804, 1808, 1816-1824)</br>
+          <br>New York: Legislature</br>
+          <br>North Carolina: Legislature (1792, 1812), Popular Vote by District (1796-1808), Popular Vote (1816-1824)</br>
+          <br>Ohio: Popular Vote</br>
+          <br>Pennsylvania: Popular Vote (1789-1796, 1804-1824), Legislature (1800)</br>
+          <br>Rhode Island: Legislature (1792, 1796), Popular Vote (1800-1824)</br>
+          <br>South Carolina: Legislature</br>
+          <br>Tennessee: Popular Vote by District</br>
+          <br>Vermont: Legislature</br>
+          <br>Virginia: Popular Vote by District (1789-1796), Popular Vote (1800-1824)</br>
+          <br>Office Scope: Federal</br>
+          <br>Role Scope: State / District</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON057" name="Executive Council">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Council: A body of men chosen or designated as permanent advisers on matters of state, esp. to advise and assist a sovereign or ruler in the administration of the government. Please also see <xref:office id="ON061">Governor's Council</xref:office>.<br/>
+          <br>The Executive Council in Virginia was also known as the Privy Council or Council of State.  It was not only legislatively elected, but required a vote to remove members every three years so that new members could be voted in.</br>
+          <br>Oxford English Dictionary</br>
+          <br>1799 - 1817: Virginia</br>
+          <br>Office Scope: State</br>
+          <br>Role Scope: State</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON058" name="Fence Viewer">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Fence Viewer: an officer whose duty it is to see to the erection and maintenance of boundary and highway fences.<br/>
+          <br>Oxford English Dictionary</br>
+          <br>1803 - 1824: New York, Ohio</br>
+          <br>Office Scope: County / Town(ship)</br>
+          <br>Role Scope: County / Town(ship)</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON059" name="Fire Warden">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Fire Warden: (U.S.) The chief officer of a fire-brigade.<br/>
+          <br>Oxford English Dictionary</br>
+          1822 - 1823:  Boston, MA.
+          <br>Office Scope: City</br>
+          <br>Role Scope: Ward</br>
+        </p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON060" name="Governor">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>An official appointed to govern a province, country, town, etc. Now used as the official title of the representative of the Crown in a British colony or dependency; also of the executive head of each of the United States.<br/>
+          <br>Oxford English Dictionary</br>
+          <br>Historical Note: In many state (Georgia, Maryland, New Jersey, North Caorlina, South Carolina, Virginia) this was a position elected by the State Legislature rather than by popular vote.  In the New England states, the election of the Governor required a majority vote and if no majority was achieved then the Governor was elected by the State Legislature.</br>
+          <br>Historical Note: Prior to the 1792 revisions to its state constitution, the title of the executive head of New Hampshire was "President".</br>
+          <br>1787-1824: Alabama, Connecticut, Delaware, Georgia, Illinois, Indiana, Kentucky, Louisiana, Maine, Maryland, Massachusetts, Mississippi, Missouri, New Hampshire, New Jersey, New York, North Carolina, Ohio, Pennsylvania, Rhode Island, South Carolina, Tennessee, Vermont, Virginia</br>
+          <br>Office Scope: State</br>
+          <br>Role Scope: State</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON061" name="Governor's Council">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>In Crown colonies and dependencies of Great Britain, a body assisting the governor in an executive or legislative capacity, or in both. This survives in some of the United States, as in Massachusetts and Maine, in the advisory body called the Governor's Council.  Though called Council, the position in Vermont was the same as Governor's Council in other states and was part of the Executive Branch of the Government.<br/>
+          <br>Oxford English Dictionary</br>
+          <br>1790 - 1824: Maine, Massachusetts, Maryland, New Hampshire, Vermont</br>
+          <br>Office Scope: State</br>
+          <br>Role Scope: State / County (New Hampshire)</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON062" name="House of Commons">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>House of Commons: the lower house of the North Carolina State legislature. Derived from the lower house of the British Parliment.  It was changed to House of Representatives by the Constitution of 1868.  Please also see <xref:office id="ON064">House of Representatives</xref:office>.<br/>
+          <br>1790 - 1825: North Carolina</br>
+          <br>Office Scope: State</br>
+          <br>Role Scope: County / Town / Borough</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON063" name="House of Delegates">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>House of Delegates: the lower house of the General Assembly in Maryland and Virginia.  Please also see <xref:office id="ON064">House of Representatives</xref:office>.<br/>
+          <br>Oxford English Dictionary</br>
+          <br>1787 - 1825: Maryland, Virginia</br>
+          <br>Office Scope: State</br>
+          <br>Role Scope: County / City / Borough</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON064" name="House of Representatives">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>House of Representatives: the lower or popular house of the United States Congress or of a State legislature.  The name of the lower house in all states prior to 1825 except for Maryland and Virginia, (<xref:office id="ON063">House of Delegates</xref:office>), New Jersey and New York (<xref:office id="ON002">Assembly</xref:office>) and North Carolina (<xref:office id="ON062">House of Commons</xref:office>).<br/>
+          <br>Oxford English Dictionary</br>
+          <br>1787 - 1825: Alabama, Connecticut, Delaware, Georgia, Illinois, Indiana, Kentucky, Louisiana, Maine, Massachusetts, Mississippi, Missouri, New Hampshire, Ohio, Pennsylvania, Rhode Island, South Carolina, Tennessee, Vermont</br>
+          <br>Office Scope: State</br>
+          <br>Role Scope: County / District / Town(ship) / Parish</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON065" name="Inspector">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>One who inspects or looks carefully at or into; an overseer, a superintendent; spec. an officer appointed to examine into, and supervise or report upon, the working of some department or institution in which numerous persons are employed, or the due observance of certain laws and regulations, as inspector of elections. <br/>
+          <br>Oxford English Dictionary</br>
+          <br>1800 - 1824: Delaware, Massachusetts, Pennsylvania</br>
+          <br>Office Scope: City / Township / Borough / Hundred (Delaware)</br>
+          <br>Role Scope: Township / Borough / Ward / Hundred (Delaware)</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON066" name="Intendant">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>One who has the charge, direction, or superintendence of a department of public business, the affairs of a town or province.<br/>
+          <br>Oxford English Dictionary</br>
+          <br>1788 - 1824: Charleston, SC</br>
+          <br>Office Scope: City</br>
+          <br>Role Scope: City</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON067" name="Judge">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>A public officer appointed to administer the law; one who has authority to hear and try causes in a court of justice.<br/>
+          <br>Oxford English Dictionary</br>
+          <br>1787 - 1819: Georgia, North Carolina, Rhode Island, South Carolina, Tennessee</br>
+          <br>Office Scope: State / County</br>
+          <br>Role Scope: State / District / County</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON068" name="Justice of the Peace">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Justice of the Peace: an inferior magistrate appointed to preserve the peace in a county, town, or other district, and discharge other local magisterial functions.<br/>
+          <br>Oxford English Dictionary</br>
+          <br>1804 - 1824: Ohio</br>
+          <br>Office Scope: Township</br>
+          <br>Role Scope: Township</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON069" name="Keeper of the Pound">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Keeper of the Pound: The man in charge of impounding and keeping animals.<br/>
+          <br>1810 - 1817: Colonie, NY; Newport, RI</br>
+          <br>Office Scope:  Town</br>
+          <br>Role Scope:  Town</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON070" name="Legislative Council">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Legislative Council: The name of the ruling legislative body of several U.S. territories before they reached statehood.  Though this was the name used by the upper house of the New Jersey legislature, those results can be found in <xref:office id="ON045">Council</xref:office>.<br/>
+          <br>1788 - 1825: Arkansas, Indiana, Michigan, Missouri</br>
+          <br>Office Scope: Territory</br>
+          <br>Role Scope: Territory / District / County</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON071" name="Levy Court Commissioner">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Levy Court Commissioner: The levy court in Delaware originated during the Dutch period (1655 - 1664) as a body for tax control. Through the history of the First State, the Levy Court took many forms with varying degrees of power and authority. The Levy Court serves the same function as a county council and consists of seven elected commissioners. One commissioner is elected from each of the six Levy Court districts and one commissioner is elected at large. These commissioners represent the governing body of the county and hold weekly business and committee meetings which are open to the public.<br/>
+          <br>definition from The Natural Resources Conservation Service: http://www.de.nrcs.usda.gov/partnerships/rcd/what_is_levy_court.html</br>
+          <br>1794 - 1824: Delaware</br>
+          <br>Office Scope: County</br>
+          <br>Role Scope: County</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON072" name="Lieutenant Colonel">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Colonel: An officer in the U.S. [armed services], ranking next below a brigadier general.<br/>
+          <br>Oxford English Dictionary</br>
+          <br>1798 - 1807: Pennsylvania</br>
+          <br>Office Scope: County</br>
+          <br>Role Scope: County</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON073" name="Lieutenant Governor">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Lieutenant Governor: the deputy-governor of a state with certain independent duties and the right of succession to the governorship, in case of its becoming vacant.  In Rhode Island, prior to 1798, this position was <xref:office id="ON051">Deputy Governor</xref:office>.  In New England, the election of a Lieutenant Governor required a majority; if no candidate received a majority, the choice of a Lieutenant Governor would fall to the State Legislature.<br/>
+          <br>Oxford English Dictionary</br>
+          <br>1788 - 1824: Connecticut, Illinois, Indiana, Kentucky, Massachusetts, Mississippi, Missouri, New York, Rhode Island, South Carolina, Vermont</br>
+          <br>Office Scope: State</br>
+          <br>Role Scope: State</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON074" name="Lister">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Lister: One who makes out a list, spec. (U.S.) of taxable property; an assessor.<br/>
+          <br>Oxford English Dictionary</br>
+          <br>1824: Ohio</br>
+          <br>Office Scope: Township</br>
+          <br>Role Scope: Township</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON075" name="Magistrate">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Magistrate: A civil officer charged with the administration of the law.<br/>
+          <br>Oxford English Dictionary</br>
+          <br>1824: Ohio</br>
+          <br>Office Scope: Township</br>
+          <br>Role Scope: Township</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON076" name="Major">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Major: An officer in the army ranking below a lieutenant-colonel and above a captain.<br/>
+          <br>Oxford English Dictionary</br>
+          <br>1807: Pennsylvania</br>
+          <br>Office Scope: County</br>
+          <br>Role Scope: County</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON077" name="Major General">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Major General: An officer of general rank, ranking below a lieutenant general.<br/>
+          <br>Oxford English Dictionary</br>
+          <br>1796 - 1823: Georgia, Massachusetts, North Carolina, Ohio</br>
+          <br>Office Scope: State</br>
+          <br>Role Scope: State</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON078" name="Major of Militia">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>A position in the Pennsylvania Militia, which was organized by counties.<br/>
+          <br>1800: Northumberland County, PA</br>
+          <br>Office Scope: County</br>
+          <br>Role Scope: County</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON079" name="Mayor">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Mayor: The head or chief officer of the municipal government of a city, borough, etc., now usually elected by local councillors or citizens.<br/>
+          <br>Oxford English Dictionary</br>
+          <br>1801 - 1824: New Orleans, LA; Annapolis, MD; Boston, MA; St. Louis, MO; Philadelphia, PA</br>
+          <br>Office Scope: City</br>
+          <br>Role Scope: City</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON080" name="Moderator">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Moderator: A person chosen or appointed to preside over a meeting or assembly and conduct its business; a presiding officer or president, esp. (U.S.) one elected to oversee a town meeting.<br/>
+          <br>Oxford English Dictionary</br>
+          <br>1806 - 1824: Connecticut, Massachusetts, New Hampshire, Rhode Island</br>
+          <br>Office Scope: Town</br>
+          <br>Role Scope: Town</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON081" name="President of the Supreme Executive Council">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>President of the Supreme Executive Council:  The leader of the <xref:office id="ON114">Supreme Executive Council</xref:office>.  In Pennsylvania, prior to the 1790 Constitution, the Executive Branch consisted of the Supreme Executive Council, which was run by the President.  It was the equivalent of a <xref:office id="ON060">Governor</xref:office>.
+          <br>1789: Pennsylvania</br>
+          <br>Office Scope: State</br>
+          <br>Role Scope: State</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON082" name="President of the United States">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>President: The (usually elected) head of a republican state, typically functioning as both head of state and head of government; frequently prefixed to the surname of the holder of office.<br/>
+          <br>Oxford English Dictionary</br>
+          <br>These are the results in the Electoral College, as well as the two occasions (1800, 1824) when the House of Representatives was required to elect the position.  For the popular vote, please see the <xref:office id="ON056">Electoral College</xref:office>elections.</br>
+          <br>1789 - 1824: The United States of America</br>
+          <br>Office Scope: Federal</br>
+          <br>Role Scope: State</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON083" name="Public Printer">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Printer of documents for a government.  This was a Legislative appointment, and as politics became more competitive, this office followed suit. Most Public Printers also published newspapers, and with increasing frequency, those elected were of the same political persuasion as the current setting Legislature.  In some states which had a large foreign speaking population, with their own language newspapers, several Public Printers were elected, one in English and another for whatever other language was largely spoken.<br/>
+          <br>1796 - 1824: Kentucky, Massachusetts, North Carolina, Pennsylvania, Tennessee, Virginia</br>
+          <br>Office Scope: State</br>
+          <br>Role Scope: State</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON084" name="Receiver of Tax Returns">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Receiver of Tax Returns: A publically elected position in Georgia.<br/>
+          <br>1819: Georgia</br>
+          <br>Office Scope: County</br>
+          <br>Role Scope: County</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON085" name="Recorder">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Recorder: Formerly, a certain magistrate or judge having criminal and civil jurisdiction in a city or borough.<br/>
+          <br>Oxford English Dictionary</br>
+          <br>1812 - 1822: Indiana, Louisiana, Maryland</br>
+          <br>Office Scope: County / City</br>
+          <br>Role Scope: County / City</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON086" name="Referendum">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Referendum: The process or principle of referring an important political question (e.g. a proposed constitutional change) to be decided by a general vote of the entire electorate; a vote taken by referendum.<br/>
+          <br>Oxford English Dictionary</br>
+          <br>1792 - 1824: Massachusetts, New Hampshire, New Jersey</br>
+          <br>Office Scope: State / County</br>
+          <br>Role Scope: State / County</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON087" name="Register">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Registrar: a local official responsible for maintaining an index of births, marriages, and deaths in the area under his authority.<br/>
+          <br>Oxford English Dictionary</br>
+          <br>1793 - 1822: Georgia, New York</br>
+          <br>Office Scope: County</br>
+          <br>Role Scope: County</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON088" name="Registry of Deeds">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Registrar of Deeds: a local official responsible for maintaining an index of deeds.<br/>
+          <br>1789 - 1824: Maine, Massachusetts, New Hampshire, South Carolina</br>
+          <br>Office Scope: County / District (South Carolina)</br>
+          <br>Role Scope: County / District (South Carolina)</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON089" name="Registry of Wills">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Registrar of Wills: a local official responsible for maintaining an index of wills.<br/>
+          <br>1803: Maryland</br>
+          <br>Office Scope: County</br>
+          <br>Role Scope: County</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON090" name="Road Commission">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Road Commission: The public division in charge of maintaining the roads.  Known alternately as Overseer of Roads, Overseer of Highways, Road Master, Street Commission or Highway Commission.<br/>
+          <br>1787 - 1813: Delaware, New York, Ohio, Pennsylvania, Virginia</br>
+          <br>Office Scope: County / Town / Hundred</br>
+          <br>Role Scope: County / Town / Hundred</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON091" name="School Committee">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>School Committee: The local officials in charge of budgeting and planning for schools.<br/>
+          <br>1820 - 1823: Boston, MA</br>
+          <br>Office Scope: Town</br>
+          <br>Role Scope: Town</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON092" name="Sealer of Weights and Measures">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Sealer of Weights and Measures:  Elected official in charge of properly testing weights and measures used in the conduct of business.<br/>
+          <br>1821: Hudson, NY</br>
+          <br>Office Scope: City</br>
+          <br>Role Scope: City</br>
+        </p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON093" name="Secretary of State">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Secretary of State: In the official designations of certain ministers presiding over executive departments of state.<br/>
+          <br>Oxford English Dictionary</br>
+          <br>1787 - 1824: Connecticut, Georgia, Kentucky, Maine, Massachusetts, New Hampshire, New Jersey, North Carolina, Ohio, Rhode Island, South Carolina, Tennessee</br>
+          <br>Office Scope: State</br>
+          <br>Role Scope: State</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON094" name="Secretary of the Legislative Council">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Secretary of the Legislative Council:  Executive officer in the <xref:office id="ON045">Legislative Council</xref:office>.<br/>
+          <br>1813: New Jersey</br>
+          <br>Office Scope: State</br>
+          <br>Role Scope: State</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON095" name="Secretary of the Senate">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Secretary of the Senate:  Executive officer in the <xref:office id="ON109">State Senate</xref:office>.  Connecticut was the only state in which this office was directly elected by the people.<br/>
+          <br>1819 - 1825: Connecticut, Kentucky, Georgia</br>
+          <br>Office Scope: State</br>
+          <br>Role Scope: State</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON096" name="Select Council">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>The Select and <xref:office id="ON036">Common Council</xref:office> made up part of the Philadelphia City government. They were responsible for appointments within the City government.<br/>
+          <br>1796 - 1824: Philadelphia, PA</br>
+          <br>Office Scope: City</br>
+          <br>Role Scope: City</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON097" name="Selectman">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Selectman: One of a board of officers elected annually to manage various local concerns in a ‘town’ or ‘township’ in New England.<br/>
+          <br>Oxford English Dictionary</br>
+          <br>1795 - 1824: Massachusetts, New Hampshire</br>
+          <br>Office Scope: Town</br>
+          <br>Role Scope: Town</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON098" name="Senate President">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Senate President:  Presiding officer in the <xref:office id="ON109">State Senate</xref:office>.<br/>
+          <br>1802 - 1825: Georgia, Maine, Massachusetts, New Hampshire, New York, South Carolina</br>
+          <br>Office Scope: State</br>
+          <br>Role Scope: State</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON099" name="Sergeant at Arms">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Sergeant at Arms: An officer who is charged with the duty of enforcing the commands of the House.<br/>
+          <br>Oxford English Dictionary</br>
+          <br>1787 - 1824: Kentucky, New York, Pennsylvania</br>
+          <br>Office Scope: State</br>
+          <br>Role Scope: State</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON100" name="Sheriff">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Sheriff: executes civil and criminal process throughout the county, has charge of the jail and prisoners, attends courts and keeps the peace.<br/>
+          <br>Oxford English Dictionary</br>
+          <br>In many states, the Sheriff was also an election official and their signature can be found on copies of Original Documents, ranging from state to federal elections.  In Congressional districts having more than one county, the Sheriffs of each county would meet in a designated County Court House, compare the returns and certify the results. If the Sheriff of a county did not appear, the votes from his county would not be counted.</br>
+          <br>1787 - 1824: Alabama, Delaware, Georgia, Illinois, Indiana, Kentucky, Maryland, Mississippi, Missouri, New Jersey, New York, Ohio, Pennsylvania, South Carolina</br>
+          <br>Office Scope: County / City / District (Pennsylvania, South Carolina)</br>
+          <br>Role Scope: County / City / District (Pennsylvania, South Carolina)</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON101" name="Solicitor">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Solicitor: a law-officer, who takes the part of the state or crown in suits affecting the public interest.<br/>
+          <br>1815 - 1820: North Carolina, South Carolina</br>
+          <br>Office Scope: State</br>
+          <br>Role Scope: District</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON102" name="Solicitor General">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Solicitor General: a law-officer, who takes the part of the state or crown in suits affecting the public interest.<br/>
+          <br>1816 - 1821: Georgia, Tennessee</br>
+          <br>Office Scope: State</br>
+          <br>Role Scope: State</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON103" name="Speaker of the Assembly">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Speaker of the Assembly:  Presiding officer in the <xref:office id="ON002">Assembly</xref:office>.<br/>
+          <br>1794 - 1824: New Jersey, New York</br>
+          <br>Office Scope: State</br>
+          <br>Role Scope: State</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON104" name="Speaker of the House">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Speaker of the House:  Presiding officer in the <xref:office id="ON064">House of Representatives</xref:office>, <xref:office id="ON062">House of Commons</xref:office> or <xref:office id="ON063">House of Delegates</xref:office>.<br/>
+          <br>1787 - 1825: Delaware, Georgia, Illinois, Indiana, Kentucky, Louisiana, Maine, Maryland, Massachusetts, Missouri, New Hampshire, North Carolina, Ohio, Pennsylvania, Rhode Island, South Carolina, Tennessee, United States of America, Vermont, Virginia</br>
+          <br>Office Scope: State / Territory</br>
+          <br>Role Scope: State / Territory</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON105" name="Speaker of the House Pro Tempore">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Speaker of the House Pro Tempore:  Temporary presiding officer in the <xref:office id="ON064">House of Representatives</xref:office>.<br/>
+          <br>1808 - 1824: Kentucky, Massachusetts, New Hampshire</br>
+          <br>Office Scope: State</br>
+          <br>Role Scope: State</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON106" name="Speaker of the Senate">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Speaker of the Senate:  Presiding officer in the <xref:office id="ON109">State Senate</xref:office>.<br/>
+          <br>1790 - 1825: Delaware, Kentucky, North Carolina, Pennsylvania, Virginia</br>
+          <br>Office Scope: State</br>
+          <br>Role Scope: State</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON107" name="Speaker of the Senate Pro Tempore">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Speaker of the Senate Pro Tempore:  Temporary presiding officer in the <xref:office id="ON109">State Senate</xref:office>.<br/>
+          <br>1804 - 1820: Kentucky</br>
+          <br>Office Scope: State</br>
+          <br>Role Scope: State</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON108" name="State Government">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>State Government: An election during the enumeration in Tennessee as to whether or not the voters wanted to form a state government and apply for statehood and a similar election in 1819 by the residents of Massachusetts known as the District of Maine as to whether Maine should form its own state.<br/>
+          <br>1795 - 1819: Maine, Tennessee</br>
+          <br>Office Scope: Territory</br>
+          <br>Role Scope: Territory</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON109" name="State Senate">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>The upper house of the State Legislature.  Until 1792, the upper house in Delaware was the <xref:office id="ON045">Council</xref:office>.  Until 1819, the upper house in Connecticut was the <xref:office id="ON047">Council of Assistants</xref:office>.  By 1825, all of the states had an upper house called the State Senate except New Jersey, whose upper house was the <xref:office id="ON045">Legislative Council</xref:office> and Vermont, which had a unicameral legislature.<br/>
+          <br>1787 - 1825: Alabama, Connecticut, Delaware, Georgia, Illinois, Indiana, Kentucky, Louisiana, Maine, Maryland, Massachusetts, Mississippi, Missouri, New Hampshire, New York, North Carolina, Ohio, Pennsylvania, Rhode Island, South Carolina, Tennessee, Virginia</br>
+          <br>Office Scope: State</br>
+          <br>Role Scope: State (Connecticut) / County / District / City / Parish</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON110" name="State Supreme Court Chief Justice">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Chief Justice:  The nominal head of a state's supreme court.<br/>
+          <br>1813 - 1814: Vermont</br>
+          <br>Office Scope: State</br>
+          <br>Role Scope: State</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON111" name="State Supreme Court Judge">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>State Supreme Court Judge: A judge on the highest court in a state.<br/>
+          <br>1791 - 1824: Illinois, New Jersey, North Carolina, Ohio, South Carolina, Tennessee, Vermont</br>
+          <br>Office Scope: State</br>
+          <br>Role Scope: State</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON112" name="Superior Court Judge">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Justice of the Superior Court: Judge on the higher court in those states that have multiple level courts (usually designated as Superior and Inferior).<br/>
+          <br>1807 - 1819: North Carolina, Tennessee, Virginia</br>
+          <br>Office Scope: State</br>
+          <br>Role Scope: State</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON113" name="Supervisor">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Supervisor: In some of the United States, An elected officer, or one of a board of such officers, charged with the administration of a township.<br/>
+          <br>Oxford English Dictionary</br>
+          <br>1794 - 1820: New York, Ohio, Pennsylvania</br>
+          <br>Office Scope: County / City / Town / Borough</br>
+          <br>Role Scope: County / City / Town / Borough / Ward</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON114" name="Supreme Executive Council">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Supreme Executive Council:  In Pennsylvania, prior to the 1790 Constitution, the Executive Branch consisted of the Supreme Executive Council, which was run by the President of said council.<br/>
+          <br>1787 - 1789: Pennsylvania</br>
+          <br>Office Scope: State</br>
+          <br>Role Scope: County / City</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON115" name="Surveyor">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Surveyor: As a title of officials in various departments, offices, or works; e.g. one who superintends the construction of a building, the administration of an office or department, the collection of taxes, the keeping of a structure in good order or repair.<br/>
+          <br>Oxford English Dictionary</br>
+          <br>1793 - 1824: Georgia, South Carolina, Tennessee</br>
+          <br>Office Scope: State / County</br>
+          <br>Role Scope: State / District / County</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON116" name="Tax Collector">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Tax Collector: In early America, a publically elected official charged with collecting the taxes.<br/>
+          <br>1806 - 1825: Georgia, New York</br>
+          <br>Office Scope: County / City</br>
+          <br>Role Scope: County / City</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON117" name="Tax Receiver">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Tax Receiver: A publically elected official in charge of receiving the taxes.<br/>
+          <br>1824 - 1825: Georgia</br>
+          <br>Office Scope: County</br>
+          <br>Role Scope: County</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON118" name="Territorial Legislature">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Territorial Legislature: The ruling assembly of a territory before it is granted statehood.<br/>
+          <br>1799 - 1825: Alabama, Arkansas, Illinois, Indiana, Mississippi, Missouri, Northwest, Orleans</br>
+          <br>Office Scope: Territory</br>
+          <br>Role Scope: County / District</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON119" name="Town Clerk">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Town Clerk: The clerk or secretary to the corporation of a town, who has charge of the records, correspondence, and legal business, the conduct of municipal elections, etc.<br/>
+          <br>Oxford English Dictionary</br>
+          <br>1803 - 1824: Connecticut, Massachusetts, Ohio, Pennsylvania, Rhode Island</br>
+          <br>Office Scope: Town(ship) / Borough (Pennsylvania)</br>
+          <br>Role Scope: Town(ship) / Borough (Pennsylvania)</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON120" name="Town Council">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Town-Council: the elective deliberative and administrative body of a town.<br/>
+          <br>Oxford English Dictionary</br>
+          <br>1809 - 1818: Pennsylvania, Rhode Island</br>
+          <br>Office Scope: Town / Borough (Pennsylvania)</br>
+          <br>Role Scope: Town / Borough (Pennsylvania)</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON121" name="Town Sergeant">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>One who is charged with the arrest of offenders or the summoning of persons to appear before the court.<br/>
+          <br>Oxford English Dictionary</br>
+          <br>1809 - 1817: Newport, RI</br>
+          <br>Office Scope: Town</br>
+          <br>Role Scope: Town</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON122" name="Treasurer">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>One who has officially the charge of treasure; originally, a person entrusted with the receipt, care, and disbursement of the revenues of a king, noble, or other dignitary, of a state, city, or church; now, one who is responsible for the funds of a public body, or of any corporation, association, society, or club.<br/>
+          <br>Oxford English Dictionary</br>
+          <br>1787 - 1824: Connecticut, Georgia, Kentucky, Maine, Maryland, Massachusetts, New Hampshire, New Jersey, New York, North Carolina, Ohio, Pennyslvania, Rhode Island, South Carolina, Vermont, Virginia</br>
+          <br>Office Scope: State / County / City / Town(ship)</br>
+          <br>Role Scope: State / County / District / City / Town(ship)</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON123" name="Trustee">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Trustee: One who is held responsible for the preservation and administration of anything.<br/>
+          <br>Oxford English Dictionary</br>
+          <br>1801 - 1824: Kentucky, new York, Ohio</br>
+          <br>Office Scope: County / Town(ship)</br>
+          <br>Role Scope: County / Town(ship)</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON124" name="Trustee of the Academy">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>An office in many Pennsylvania counties.  There were local Academies which appear to have been supported by county funds and thus had trustees who were directly elected by the people.<br/>
+          <br>1810 - 1824: Pennsylvania</br>
+          <br>Office Scope: County</br>
+          <br>Role Scope: County</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON125" name="U.S. House of Representatives">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>House of Representatives: the lower or popular house of the United States Congress.<br/>
+          <br>1788 - 1826: Alabama, Connecticut, Delaware, Georgia, Illinois, Indiana, Kentucky, Louisiana, Maine, Maryland, Massachusetts, Mississippi, Missouri, New Hampshire, New Jersey, New York, North Carolina, Ohio, Pennsylvania, Rhode Island, South Carolina, Tennessee, Vermont, Virginia</br>
+          <br>Office Scope: Federal</br>
+          <br>Role Scope: District / State</br>
+          <br>Historical Note: The following states had a Role Scope of State at various times because they only had one member in the U.S. House of Representatives:</br>
+          <br>Alabama (1819, 1821)</br>
+          <br>Delaware (1789 - 1810, 1822, 1824)</br>
+          <br>Illinois (1818 - 1824)</br>
+          <br>Indiana (1816 - 1820)</br>
+          <br>Louisiana (1812 - 1820)</br>
+          <br>Mississippi (1817 - 1824)</br>
+          <br>Missouri (1820 - 1824)</br>
+          <br>Ohio (1803)</br>
+          <br>Rhode Island (1790)</br>
+          <br>Tennessee (1796 - 1801)</br>
+          <br>Historical Note: The following states had a Role Scope of State at various times because they elected their members at-large and each Representative served the entire state instead of a specific district:</br>
+          <br>Connecticut (1790 - 1824)</br>
+          <br>Delaware (1812 - 1822)</br>
+          <br>Georgia (1789 - 1824)</br>
+          <br>New Hampshire (1790 - 1824)</br>
+          <br>New Jersey (1789 - 1796, 1800 - 1810, 1814 - 1824)</br>
+          <br>Pennsylvania (1788, 1792)</br>
+          <br>Rhode Island (1792 - 1825)</br>
+          <br>Tennessee (1803)</br>
+          <br>Vermont (1812 - 1818, 1822)</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON126" name="U.S. House of Representatives (Territorial Delegate)">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Territorial Delegate: A non-voting member of the <xref:office id="ON125">U.S. House of Representatives</xref:office> from a territory.<br/>
+          <br>1794 - 1825: Alabama, Arkansas, Florida, Illinois, Indiana, Michigan, Mississippi, Missouri, Orleans, Tennessee</br>
+          <br>Office Scope: Federal</br>
+          <br>Role Scope: Territory</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON127" name="U.S. Senate">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>U.S. Senate: the upper house of the United States Congress.<br/>
+          <br>1788 - 1825: Alabama, Connecticut, Delaware, Georgia, Illinois, Indiana, Kentucky, Louisiana, Maine, Maryland, Massachusetts, Missouri, New Hampshire, New Jersey, New York, North Carolina, Ohio, Pennsylvania, Rhode Island, South Carolina, Tennessee, Vermont, Virginia</br>
+          <br>Office Scope: Federal</br>
+          <br>Role Scope: State</br>
+          <br>Historical Note: Prior to the passage of the 17th Amendment in 1913, all United States Senators were elected by state legislatures rather than by popular vote.</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON128" name="Vice President of the Council">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>The second highest executive officer in the <xref:office id="ON045">Legislative Council</xref:office>.<br/>
+          <br>1802 - 1813: New Jersey</br>
+          <br>Office Scope: State</br>
+          <br>Role Scope: State</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON129" name="Vice President of the Supreme Executive Council">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Vice President of the Supreme Executive Council:  In Pennsylvania, prior to the 1790 Constitution, the Executive Branch consisted of the <xref:office id="ON114">Supreme Executive Council</xref:office>, of which the Vice President was second in command.  It was the equivalent of a <xref:office id="ON073">Lieutenant Governor</xref:office>.<br/>
+          <br>1789: Pennsylvania</br>
+          <br>Office Scope: State</br>
+          <br>Role Scope: State</br></p>
+      </div>
+    </auth:description>
+  </auth:office>  
+  
+  <auth:office id="ON130" name="Vice President of the United States">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Vice-President of the United States: The second highest position in the United States government.  Not directly elected by popular vote.  These are the results of the votes in the <xref:office id="ON073">Electoral College</xref:office> after the passage of the 12th Amendment in 1804.  Prior to the 12th Amendment, the Vice President was whatever candidate received the second most votes for President.<br/>
+          <br>1804-1824: United States of America</br>
+          <br>Office Scope: Federal</br>
+          <br>Role Scope: State</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+  <auth:office id="ON131" name="Warden">
+    <auth:description>
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Warden: The officer who presides at ward-meetings or elections.<br/>
+          <br>1787 - 1824: Boston, MA; Philadelphia, PA; Charleston, SC</br>
+          <br>Office Scope: City</br>
+          <br>Role Scope: City / Ward</br></p>
+      </div>
+    </auth:description>
+  </auth:office>
+  
+</office-authority-list>
