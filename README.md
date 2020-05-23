@@ -1,3 +1,13 @@
+TODO:
+
+1. New algorithm
+ - consider margins of victory
+ - weight results based on the number of total votes / scope of the election
+ - consider a position's partisan lean
+2. More data
+ - gubernatorial and state congress returns
+ - Older data?
+ 
 ## Citations
 
  MIT Election Data and Science Lab, 2017, "1976-2018-house2.tab", U.S. House 1976–2018, https://doi.org/10.7910/DVN/IG0UN2/ELBYL3, Harvard Dataverse, V7, UNF:6:8iuXTceVO5a7EpOwUD5UPw== [fileUNF]
