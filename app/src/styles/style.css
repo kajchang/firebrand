@@ -1,0 +1,14 @@
+@tailwind base;
+
+@font-face {
+    src: url("/fonts/big_noodle_titling_oblique.ttf") format("truetype");
+    font-family: Big Noodle Too;
+}
+
+
+@tailwind components;
+@tailwind utilities;
+
+.rating {
+    font-family: "Big Noodle Too", sans-serif;
+}
