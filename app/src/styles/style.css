@@ -5,10 +5,16 @@
     font-family: Big Noodle Too;
 }
 
+@font-face {
+    src: url("/fonts/BigstarRegular-jE91M.otf") format("opentype");
+    font-family: Big Star;
+}
+
 
 @tailwind components;
 @tailwind utilities;
 
-.rating {
-    font-family: "Big Noodle Too", sans-serif;
+.text-outlined {
+    -webkit-text-stroke-width: 0.5px;
+    -webkit-text-stroke-color: black;
 }
