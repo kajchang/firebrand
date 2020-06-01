@@ -17,4 +17,5 @@
 .text-outlined {
     -webkit-text-stroke-width: 0.5px;
     -webkit-text-stroke-color: black;
+    text-shadow: darkorange 0 0 2px;
 }

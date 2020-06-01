@@ -16,9 +16,13 @@ const Home: React.FunctionComponent = () => {
       <h3 className='text-3xl text-center font-big-star py-3'>Top Politicians</h3>
       <div className='rounded-lg bg-gray-100 w-5/6 mx-auto'>
         <ul>
-          <li className='flex flex-row items-center text-2xl p-3'>
+          <li className='flex flex-row items-center rounded-lg hover:bg-gray-300 cursor-pointer text-2xl p-3'>
             <img src='/badges/rank-GrandmasterTier.png' height={ 50 } width={ 50 }/>
-            <span className='text-outlined text-white text-3xl font-big-noodle mr-5'>3700</span> Bernie Sanders
+            <span className='text-outlined text-white text-3xl font-big-noodle mr-5'>3700</span>Bernie Sanders
+          </li>
+          <li className='flex flex-row items-center rounded-lg hover:bg-gray-300 cursor-pointer text-2xl p-3'>
+            <img src='/badges/rank-GrandmasterTier.png' height={ 50 } width={ 50 }/>
+            <span className='text-outlined text-white text-3xl font-big-noodle mr-5'>3655</span>Barack Obama
           </li>
         </ul>
       </div>
