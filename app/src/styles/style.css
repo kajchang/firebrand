@@ -3,6 +3,12 @@
 @font-face {
     src: url("/fonts/big_noodle_titling_oblique.ttf") format("truetype");
     font-family: Big Noodle Too;
+    font-style: italic;
+}
+
+@font-face {
+    src: url("/fonts/big_noodle_titling.ttf") format("truetype");
+    font-family: Big Noodle Too;
 }
 
 @font-face {
@@ -14,8 +20,17 @@
 @tailwind components;
 @tailwind utilities;
 
+@keyframes text-shadow-pulse-darkorange {
+    from {
+        text-shadow: darkorange 0 0 2px;
+    }
+    to {
+        text-shadow: darkorange 0 0 4px;
+    }
+}
+
 .text-outlined {
     -webkit-text-stroke-width: 0.5px;
     -webkit-text-stroke-color: black;
-    text-shadow: darkorange 0 0 2px;
+    animation: text-shadow-pulse-darkorange 1s infinite alternate;
 }
