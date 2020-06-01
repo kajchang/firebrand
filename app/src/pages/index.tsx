@@ -1,6 +1,16 @@
 import React from 'react';
 
-const Home: React.FunctionComponent = () => {
+import { connectToDatabase } from '@/utils/db';
+
+import { Politician } from '@/types';
+
+type HomePageProps = {
+  topPoliticians: Politician[]
+};
+
+const HomePage: React.FunctionComponent<HomePageProps> = ({ topPoliticians }) => {
+  console.log(topPoliticians);
+
   return (
     <div className='flex flex-col items-center bg-gray-200 min-h-screen'>
       <div className='text-center bg-white w-full py-5' style={ { borderTop: 'rgb(191,13,62) solid 45px', borderBottom: 'rgb(10,49,97) solid 45px' } }>
@@ -18,22 +28,38 @@ const Home: React.FunctionComponent = () => {
         <span>* Ratings are technically calculated using Trueskill, not ELO</span>
         <span>** Ratings are purely for entertainment purposes</span>
       </div>
-      <div className='rounded-lg bg-gray-100 font-big-noodle w-5/6'>
+      <div className='rounded-lg bg-gray-100 font-big-noodle w-5/6 my-5'>
         <ul>
-          <li className='flex flex-row items-center rounded-lg hover:bg-gray-300 cursor-pointer text-2xl p-3'>
-            1.
-            <img src='/badges/rank-GrandmasterTier.png' height={ 50 } width={ 50 } className='mx-1'/>
-            <i className='text-outlined text-white text-3xl mr-3'>3700</i>Bernie Sanders
-          </li>
-          <li className='flex flex-row items-center rounded-lg hover:bg-gray-300 cursor-pointer text-2xl p-3'>
-            2.
-            <img src='/badges/rank-GrandmasterTier.png' height={ 50 } width={ 50 } className='mx-1'/>
-            <i className='text-outlined text-white text-3xl mr-3'>3655</i>Barack Obama
-          </li>
+          {
+            topPoliticians.map((politician, idx) => (
+              <li key={ idx } className='flex flex-row items-center rounded-lg hover:bg-gray-300 cursor-pointer text-2xl p-3'>
+                { idx + 1 }.
+                <img src='/badges/rank-GrandmasterTier.png' height={ 50 } width={ 50 } className='mx-1'/>
+                <i className='text-outlined text-white text-3xl mr-3'>{ Math.round(politician.contests[0].rating.mu) }</i>{ politician.name }
+              </li>
+            ))
+          }
         </ul>
       </div>
     </div>
   );
 }
 
-export default Home;
+export async function getServerSideProps() {
+  const db = await connectToDatabase(process.env.MONGODB_URI);
+
+  const collection = await db.collection('politicians');
+  const topPoliticians = await collection
+    .find({}).limit(100)
+    .sort({ 'contests.rating.mu': -1 })
+    .project({ 'contests': { $slice: -1 }, 'contests._id': 0, '_id': 0 })
+    .toArray();
+
+  return {
+    props: {
+      topPoliticians
+    }
+  };
+}
+
+export default HomePage;
