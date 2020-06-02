@@ -25,6 +25,9 @@ const HomePage: React.FunctionComponent<HomePageProps> = ({ topPoliticians }) =>
       </Head>
       <Header headerChildren='Firebrand' tagLineChildren='ELO* Ratings for US Politicians' tagLineProps={ { className: 'text-flag-red' } }/>
       <h3 className='text-3xl text-center font-big-star w-3/4 py-1 my-2' style={ { borderBottom: 'black solid 5px' } }>Top Rated Politicians</h3>
+      <div className='rounded-lg bg-yellow-500 text-center text-2xl font-big-noodle w-3/4 p-3'>
+        Warning: The input data and algorithm still have a lot of inconsistencies that need to be resolved.
+      </div>
       <div className='flex flex-row justify-around font-big-noodle w-3/4 my-1'>
         <span>* Ratings are technically calculated using Trueskill, not ELO</span>
         <span>** Ratings are purely for entertainment purposes</span>
