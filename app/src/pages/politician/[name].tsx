@@ -29,9 +29,14 @@ const PoliticianPage: React.FunctionComponent<PoliticianPageProps> = ({ err, pol
     return <Error statusCode={ err.statusCode }/>
   }
 
-  const party = politician
+  let party = politician
     .fullContests[politician.fullContests.length - 1]
-    .candidates.find(candidate => candidate.name.includes(name as string)).party.split(/\s+/).join(' ');
+    .candidates.find(candidate => candidate.name.includes(name as string)).party;
+  if (party == null) {
+    party = 'None';
+  } else {
+    party = party.split(/\s+/).join(' ');
+  }
 
   function styleRatingDelta(ratingDelta) {
     return (
