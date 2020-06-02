@@ -10,8 +10,6 @@ db = client.get_database()
 contests = db['contests']
 politicians = db['politicians']
 
-politicians.delete_many({})
-
 STARTING_RATING = 1500
 trueskill.setup(STARTING_RATING, STARTING_RATING / 3, STARTING_RATING / 3 / 2, STARTING_RATING / 3 / 100)
 
@@ -121,4 +119,6 @@ def main():
 
 
 if __name__ == '__main__':
-    politicians.insert_many(main().values())
+    ratings = main()
+    politicians.delete_many({})
+    politicians.insert_many(ratings.values())
