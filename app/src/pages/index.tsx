@@ -11,7 +11,7 @@ import { partyToColor } from '@/utils/helpers';
 
 import { Politician, Contest } from '@/types';
 
-type PoliticianWithLatestContest = Politician & { latestContest: Contest[] };
+type PoliticianWithLatestContest = Politician & { latestContest: Contest };
 
 type HomePageProps = {
   topPoliticians: PoliticianWithLatestContest[]
@@ -42,7 +42,7 @@ const HomePage: React.FunctionComponent<HomePageProps> = ({ topPoliticians }) =>
                     { idx + 1 }.
                     <Rating rating={ politician.rating.mu }/>
                     <div className='w-3 h-3 mx-2' style={
-                      { backgroundColor: partyToColor(politician.latestContest[0].candidates.find(candidate => candidate.name.includes(politician.name)).party) }
+                      { backgroundColor: partyToColor(politician.latestContest.candidates.find(candidate => candidate.name.includes(politician.name)).party || 'None') }
                     }/>
                     { politician.name }
                   </li>
@@ -65,7 +65,7 @@ export async function getServerSideProps() {
       { $match: {} },
       { $sort: { 'rating.mu': -1 } },
       { $limit: 100 },
-      { $project: { 'name': 1, 'rating': 1, '_id': 0, 'latestContest': { $arrayElemAt : ['$contests', -1] } } },
+      { $project: { 'name': 1, 'rating': 1, 'latestContest': { $arrayElemAt : ['$contests', -1] } } },
       {
         $lookup: {
           'from': 'contests',
@@ -74,7 +74,8 @@ export async function getServerSideProps() {
           'as': 'latestContest'
         }
       },
-      { $project: { 'latestContest': { '_id': 0 } } }
+      { $project: { 'name': 1, 'rating': 1, 'latestContest': { $arrayElemAt : ['$latestContest', 0] } } },
+      { $project: { '_id': 0, 'latestContest': { '_id': 0 } } }
     ])
     .toArray();
 

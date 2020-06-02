@@ -3,13 +3,13 @@ import React from 'react';
 import Head from 'next/head';
 import Error from 'next/error';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 
 import Header from '@/components/header';
 import Rating from '@/components/rating';
 
 import { connectToDatabase } from '@/utils/db';
 import { partyToColor } from '@/utils/helpers';
+import { useRouter } from 'next/router';
 
 import { Contest, Politician } from '@/types';
 import { NextPageContext } from 'next';
@@ -29,14 +29,11 @@ const PoliticianPage: React.FunctionComponent<PoliticianPageProps> = ({ err, pol
     return <Error statusCode={ err.statusCode }/>
   }
 
-  let party = politician
-    .fullContests[politician.fullContests.length - 1]
-    .candidates.find(candidate => candidate.name.includes(name as string)).party;
-  if (party == null) {
-    party = 'None';
-  } else {
-    party = party.split(/\s+/).join(' ');
-  }
+  const party = (
+    politician
+      .fullContests[politician.fullContests.length - 1]
+      .candidates.find(candidate => candidate.name.includes(name as string)).party || 'None')
+    .split(/\s+/).join(' ');
 
   function styleRatingDelta(ratingDelta) {
     return (
@@ -53,7 +50,7 @@ const PoliticianPage: React.FunctionComponent<PoliticianPageProps> = ({ err, pol
       </Head>
       <Header
         headerChildren={ name as string }
-        tagLineChildren={ <div className='flex flex-col'>
+        tagLineChildren={ <div className='flex flex-col items-center'>
           { party }
           <Rating rating={ politician.rating.mu }/>
         </div> }

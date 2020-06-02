@@ -34,6 +34,10 @@ def get_order_of_contest(contest):
         return 2
     elif 'runoff' in normalized_contest_name:
         return 1
+    elif normalized_contest_name.endswith('round'):
+        number_words = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh']
+
+        return len(number_words) + 2 - number_words.index(normalized_contest_name.split()[-2].lower())
     else:
         return 0
 
@@ -51,11 +55,12 @@ def rating_from_dict(dictt):
 
 """
 TODO:
-more ordering for elections within a year e.g. 1st round/pass for municipal elections, runoff
-make sure party is never null
 better results_input s
     - maybe cutoff candidates at some point because a lot of third party candidates are ranked 3rd and getting a lot of points b/c there are a lot of candidates in the race
 experiment with rank decay
+split like-named politicians
+make sure party is never null
+scrape more elections, especially missing presidential elections
 """
 
 
@@ -87,10 +92,11 @@ def main():
                     filter(lambda candidate: candidate['votes'] is not None, contest['candidates']),
                     key=lambda candidate: candidate['votes'], reverse=True
                 )
+                vote_ranks = sorted(list(set(candidate['votes'] for candidate in contest['candidates'])), reverse=True)
 
             for (idx, candidate) in enumerate(contest['candidates']):
                 if any(term in candidate['name'].lower() for term in ['n/a', 'scatter', 'other', 'uncommitted']) or \
-                   candidate['name'].lower() in ['', 'libertarian', 'nobody', 'no', 'blank', 'null', 'void']:
+                   candidate['name'].lower() in ['', 'libertarian', 'nobody', 'no', 'blank', 'null', 'void', 'miscellaneous', '--']:
                     continue
 
                 if '/' in candidate['name']:
@@ -101,11 +107,18 @@ def main():
                 current_ratings_input.append(tuple(
                     rating_from_dict(candidate['contests'][-1]['rating']) for candidate in ticket
                 ))
-                results_input.append(idx if votes_recorded else (0 if candidate['won'] else 1))
+                results_input.append(vote_ranks.index(candidate['votes']) if votes_recorded
+                                     else (0 if candidate['won'] else 1))
 
                 tickets.append(ticket)
 
-            if len(current_ratings_input) < 2:
+            if len(current_ratings_input) < 2 or not any(candidate['won'] for candidate in contest['candidates']):
+                for ticket in tickets:
+                    for candidate in ticket:
+                        candidate['contests'].append({
+                            '_id': contest['_id'],
+                            'rating': candidate['contests'][-1]['rating']
+                        })
                 continue
 
             try:
