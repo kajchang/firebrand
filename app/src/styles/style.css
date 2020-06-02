@@ -18,19 +18,49 @@
 
 
 @tailwind components;
+
+.text-GrandMaster {
+    animation: text-shadow-pulse-darkgoldenrod 1s infinite alternate;
+    @apply text-white;
+}
+
+.text-Master {
+    animation: text-shadow-pulse-goldenrod 1s infinite alternate;
+    @apply text-white;
+}
+
+.text-Platinum {
+    @apply text-gray-500;
+}
+
+.text-Gold {
+    @apply text-yellow-600;
+}
+
+.text-Silver {
+    @apply text-gray-500;
+}
+
+.text-Bronze {
+    @apply text-orange-900;
+}
+
 @tailwind utilities;
 
-@keyframes text-shadow-pulse-darkorange {
+@keyframes text-shadow-pulse-darkgoldenrod {
     from {
-        text-shadow: darkorange 0 0 2px;
+        text-shadow: darkgoldenrod 0 0 4px;
     }
     to {
-        text-shadow: darkorange 0 0 4px;
+        text-shadow: darkgoldenrod 0 0 5px;
     }
 }
 
-.text-outlined {
-    -webkit-text-stroke-width: 0.5px;
-    -webkit-text-stroke-color: black;
-    animation: text-shadow-pulse-darkorange 1s infinite alternate;
+@keyframes text-shadow-pulse-goldenrod {
+    from {
+        text-shadow: goldenrod 0 0 4px;
+    }
+    to {
+        text-shadow: goldenrod 0 0 5px;
+    }
 }

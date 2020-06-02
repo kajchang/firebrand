@@ -4,6 +4,8 @@ from pymongo import MongoClient
 
 import trueskill
 
+import re
+
 client = MongoClient('mongodb://localhost:27017/firebrand')
 db = client.get_database()
 
@@ -99,8 +101,8 @@ def main():
                    candidate['name'].lower() in ['', 'libertarian', 'nobody', 'no', 'blank', 'null', 'void', 'miscellaneous', '--']:
                     continue
 
-                if '/' in candidate['name']:
-                    ticket = tuple(safe_get_candidate(name.strip()) for name in candidate['name'].split('/'))
+                if '/' in candidate['name'] or '&' in candidate['name']:
+                    ticket = tuple(safe_get_candidate(name.strip()) for name in re.split(r'[/&]', candidate['name']))
                 else:
                     ticket = (safe_get_candidate(candidate['name']),)
 

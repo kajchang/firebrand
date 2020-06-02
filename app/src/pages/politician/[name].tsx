@@ -29,15 +29,14 @@ const PoliticianPage: React.FunctionComponent<PoliticianPageProps> = ({ err, pol
     return <Error statusCode={ err.statusCode }/>
   }
 
-  const party = (
-    politician
-      .fullContests[politician.fullContests.length - 1]
-      .candidates.find(candidate => candidate.name.includes(name as string)).party || 'None')
+  const party = politician
+    .fullContests[politician.fullContests.length - 1]
+    .candidates.find(candidate => candidate.name.includes(name as string)).party
     .split(/\s+/).join(' ');
 
   function styleRatingDelta(ratingDelta) {
     return (
-      <span className={ 'text-' + (ratingDelta > 0 ? 'green' : 'red') + '-500 mr-2' }>
+      <span className={ 'text-' + (ratingDelta > 0 ? 'green' : (ratingDelta == 0 ? 'gray' : 'red')) + '-500 mr-2' }>
         { ratingDelta > 0 ? '+' : '' }{ Math.round(ratingDelta) }
       </span>
     );
