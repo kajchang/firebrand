@@ -49,6 +49,16 @@ def rating_from_dict(dictt):
     return trueskill.Rating(dictt['mu'], dictt['sigma'])
 
 
+"""
+TODO:
+more ordering for elections within a year e.g. 1st round/pass for municipal elections, runoff
+make sure party is never null
+better results_input s
+    - maybe cutoff candidates at some point because a lot of third party candidates are ranked 3rd and getting a lot of points b/c there are a lot of candidates in the race
+experiment with rank decay
+"""
+
+
 def main():
     ratings = {}
 
