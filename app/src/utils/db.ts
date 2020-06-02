@@ -1,7 +1,7 @@
 // https://vercel.com/guides/deploying-a-mongodb-powered-api-with-node-and-vercel
 
-const url = require('url');
-const MongoClient = require('mongodb').MongoClient;
+import url from 'url';
+import { MongoClient } from 'mongodb';
 
 let cachedDb = null;
 

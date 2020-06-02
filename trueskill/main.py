@@ -114,6 +114,9 @@ def main():
                         'rating': rating_to_dict(rating)
                     })
 
+    for candidate in ratings:
+        ratings[candidate]['rating'] = ratings[candidate]['contests'][-1]['rating']
+
     return ratings
 
 
