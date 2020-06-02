@@ -10,7 +10,7 @@ const TIERS = {
   'Gold': 2000,
   'Platinum': 2250,
   'Master': 2500,
-  'GrandMaster': Infinity
+  'Grandmaster': Infinity
 }
 
 const Rating: React.FunctionComponent<RatingProps> = ({ rating }) => {

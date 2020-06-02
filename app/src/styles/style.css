@@ -19,7 +19,7 @@
 
 @tailwind components;
 
-.text-GrandMaster {
+.text-Grandmaster {
     animation: text-shadow-pulse-darkgoldenrod 1s infinite alternate;
     @apply text-white;
 }
