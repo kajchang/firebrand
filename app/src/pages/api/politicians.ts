@@ -15,7 +15,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const results = await collection
     .aggregate([
       { $sort: { 'rating.mu': -1 } },
-      { $project: { 'name': 1, 'rating': 1, 'latestContest': { $arrayElemAt : ['$contests', -1] } } },
+      { $project: { 'name': 1, 'rating': 1, 'ranking': 1, 'latestContest': { $arrayElemAt : ['$contests', -1] } } },
       {
         $lookup: {
           'from': 'contests',
@@ -24,28 +24,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           'as': 'latestContest'
         }
       },
-      { $project: { 'name': 1, 'rating': 1, 'latestContest': { $arrayElemAt : ['$latestContest', 0] } } },
+      { $project: { 'name': 1, 'rating': 1, 'ranking': 1, 'latestContest': { $arrayElemAt : ['$latestContest', 0] } } },
       { $project: { '_id': 0, 'latestContest': { '_id': 0 } } },
-      {
-        $group: {
-          '_id': null,
-          'politician': {
-            $push: {
-              'name': '$name',
-              'latestContest': '$latestContest',
-              'rating': '$rating'
-            }
-          }
-        }
-      },
-      {
-        $unwind: {
-          path: '$politician',
-          includeArrayIndex: 'ranking'
-        }
-      },
-      { $match: { 'politician.name': { $regex: new RegExp(req.query.search as string, 'gi') } } },
-      { $project: { name: '$politician.name', latestContest: '$politician.latestContest', rating: '$politician.rating', ranking: 1, _id: 0 } },
+      { $match: { 'name': { $regex: new RegExp(req.query.search as string, 'gi') } } },
       { $limit: 100 }
     ])
     .toArray();

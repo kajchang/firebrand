@@ -29,7 +29,6 @@ const HomePage: React.FunctionComponent<HomePageProps> = ({ topPoliticians }) =>
     }
     fetchingTimeout.current = setTimeout(() => {
       console.log('fetching...');
-      console.log(fetchingTimeout);
       fetch('/api/politicians?search=' + search)
         .then(res => res.json())
         .then(data => setSearchResults(data.results));
@@ -65,7 +64,7 @@ const HomePage: React.FunctionComponent<HomePageProps> = ({ topPoliticians }) =>
               <Link key={ idx } href={ `/politician/${ politician.name }` }>
                 <a>
                   <li className='flex flex-row items-center rounded-lg hover:bg-gray-300 cursor-pointer text-2xl p-3'>
-                    { idx + 1 }.
+                    { politician.ranking }.
                     <Rating rating={ politician.rating.mu }/>
                     <div className='w-3 h-3 mx-2' style={
                       { backgroundColor: partyToColor(politician.latestContest.candidates.find(candidate => candidate.name.includes(politician.name)).party) }
@@ -89,7 +88,7 @@ export async function getServerSideProps() {
   const topPoliticians = await collection
     .aggregate([
       { $sort: { 'rating.mu': -1 } },
-      { $project: { 'name': 1, 'rating': 1, 'latestContest': { $arrayElemAt : ['$contests', -1] } } },
+      { $project: { 'name': 1, 'rating': 1, 'ranking': 1, 'latestContest': { $arrayElemAt : ['$contests', -1] } } },
       {
         $lookup: {
           'from': 'contests',
@@ -98,27 +97,8 @@ export async function getServerSideProps() {
           'as': 'latestContest'
         }
       },
-      { $project: { 'name': 1, 'rating': 1, 'latestContest': { $arrayElemAt : ['$latestContest', 0] } } },
+      { $project: { 'name': 1, 'rating': 1, 'ranking': 1, 'latestContest': { $arrayElemAt : ['$latestContest', 0] } } },
       { $project: { '_id': 0, 'latestContest': { '_id': 0 } } },
-      {
-        $group: {
-          '_id': null,
-          'politician': {
-            $push: {
-              'name': '$name',
-              'latestContest': '$latestContest',
-              'rating': '$rating'
-            }
-          }
-        }
-      },
-      {
-        $unwind: {
-          path: '$politician',
-          includeArrayIndex: 'ranking'
-        }
-      },
-      { $project: { name: '$politician.name', latestContest: '$politician.latestContest', rating: '$politician.rating', ranking: 1, _id: 0 } },
       { $limit: 100 }
     ])
     .toArray();

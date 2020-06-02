@@ -137,8 +137,9 @@ def main():
                         'rating': rating_to_dict(rating)
                     })
 
-    for candidate in ratings:
-        ratings[candidate]['rating'] = ratings[candidate]['contests'][-1]['rating']
+    for (idx, candidate) in enumerate(sorted(ratings.values(), key=lambda candidate: candidate['contests'][-1]['rating']['mu'], reverse=True)):
+        candidate['ranking'] = idx + 1
+        candidate['rating'] = candidate['contests'][-1]['rating']
 
     return ratings
 

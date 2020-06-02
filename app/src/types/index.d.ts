@@ -27,5 +27,6 @@ export type Politician = {
   _id: string
   name: string
   rating: Rating
+  ranking: number
   contests: RatedContest[]
 }
