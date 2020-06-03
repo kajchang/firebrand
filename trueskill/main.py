@@ -94,8 +94,8 @@ better results_input s
     - maybe cutoff candidates at some point because a lot of third party candidates are ranked 3rd and getting a lot of points b/c there are a lot of candidates in the race
 experiment with rank decay
 split like-named politicians
-somehow weight municipal election less?
-experiment with grouping the candidates who recieve < 1% of the vote
+add metadata for 2016 presidential primary
+get 2008 / 2012 presidential primary data?
 """
 
 
@@ -137,12 +137,16 @@ def main():
                     filter(lambda candidate: candidate['votes'] is not None, contest['candidates'])
                 )
 
+                total_votes = sum(candidate['votes'] for candidate in contest['candidates'])
+
                 vote_ranks = sorted(list(set(
                     candidate['votes'] for candidate in filter(
-                        lambda candidate: not candidate['won'], contest['candidates'])
+                        lambda candidate: not candidate['won'] and candidate['votes'] / total_votes > 0.01, contest['candidates'])
                 )), reverse=True)
 
-            if any(candidate['won'] for candidate in contest['candidates']):
+            num_winners = list(candidate['won'] for candidate in contest['candidates']).count(True)
+
+            if num_winners > 0:
                 tickets.append(tuple())
                 current_ratings_input.append(tuple())
                 results_input.append(0)
@@ -168,7 +172,10 @@ def main():
                     # Rank based on votes if votes data is available
                     # Otherwise, count all losers as a tie
                     results_input.append(
-                        (vote_ranks.index(candidate['votes']) + len(contest['candidates']) - len(vote_ranks))
+                        (
+                            (vote_ranks.index(candidate['votes']) + (1 if num_winners > 0 else 0)) if (candidate['votes'] / total_votes > 0.01) else
+                            1 + len(vote_ranks)
+                        )
                         if votes_recorded else 1
                     )
 
