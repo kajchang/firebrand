@@ -98,7 +98,7 @@ export async function getServerSideProps() {
         }
       },
       { $project: { 'name': 1, 'rating': 1, 'ranking': 1, 'latestContest': { $arrayElemAt : ['$latestContest', 0] } } },
-      { $project: { '_id': 0, 'latestContest': { '_id': 0 } } },
+      { $project: { '_id': 0, 'latestContest': { '_id': 0, 'date': 0 } } },
       { $limit: 100 }
     ])
     .toArray();

@@ -103,7 +103,6 @@ export async function getServerSideProps(context: NextPageContext) {
   const politician = (await collection
     .aggregate([
       { $match: { 'name': query.name } },
-      { $project: { 'name': 0, '_id': 0 } },
       {
         $lookup: {
           'from': 'contests',
@@ -111,7 +110,8 @@ export async function getServerSideProps(context: NextPageContext) {
           foreignField: '_id',
           'as': 'fullContests'
         }
-      }
+      },
+      { $project: { 'name': 0, '_id': 0, 'fullContests': { 'date': 0 } } }
     ])
     .toArray())[0];
 

@@ -1,53 +1,35 @@
-from datetime import datetime
-
 from pymongo import MongoClient
-
-import trueskill
 
 import re
 import itertools
+from datetime import datetime
 
+import os
+import json
+
+import trueskill
+
+# Access MongoDB
 client = MongoClient('mongodb://localhost:27017/firebrand')
 db = client.get_database()
 
 contests = db['contests']
 politicians = db['politicians']
 
+# Setup rating settings
+
 STARTING_RATING = 1500
 trueskill.setup(STARTING_RATING, STARTING_RATING / 3, STARTING_RATING / 3 / 2, STARTING_RATING / 3 / 100)
 
-_2016_PRIMARY_SCHEDULE = {
-    'Democratic': ['Iowa', 'New Hampshire', 'Nevada', 'South Carolina', 'Alabama', 'Arkansas', 'Colorado', 'Georgia',
-                   'Massachusetts', 'Minnesota', 'Oklahoma', 'Tennessee', 'Texas', 'Vermont', 'Virginia',
-                   'American Samoa', 'Democrats Abroad', 'Kansas', 'Louisiana', 'Nebraska', 'Maine', 'Michigan',
-                   'Mississippi', 'CNMI', 'Florida', 'Illinois', 'Missouri', 'North Carolina', 'Ohio', 'Arizona',
-                   'Idaho', 'Utah', 'Alaska', 'Hawaii', 'Washington', 'Wisconsin', 'Wyoming', 'New York', 'Connecticut',
-                   'Delaware', 'Maryland', 'Pennsylvania', 'Rhode Island', 'Indiana', 'Guam', 'Nebraska',
-                   'West Virginia', 'Kentucky', 'Oregon', 'Washington', 'U.S. Virgin Islands', 'Puerto Rico',
-                   'California', 'Montana', 'New Jersey', 'New Mexico', 'North Dakota', 'South Dakota',
-                   'Washington, D.C.'],
-    'Republican': ['Iowa', 'New Hampshire', 'South Carolina', 'Nevada', 'Alabama', 'Alaska', 'Arkansas', 'Colorado',
-                   'Georgia', 'Massachusetts', 'Minnesota', 'Oklahoma', 'Tennessee', 'Texas', 'Vermont', 'Virginia',
-                   'Wyoming', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Puerto Rico', 'Hawaii', 'Idaho', 'Michigan',
-                   'Mississippi', 'U.S. Virgin Islands', 'Washington, D.C.', 'Wyoming', 'Guam', 'Florida', 'Illinois',
-                   'Missouri', 'North Carolina', 'Ohio', 'CNMI', 'Arizona', 'Utah', 'American Samoa', 'Wisconsin',
-                   'New York', 'Connecticut', 'Delaware', 'Maryland', 'Pennsylvania', 'Rhode Island', 'Indiana',
-                   'Nebraska', 'West Virginia', 'Oregon', 'Washington', 'California', 'Montana', 'New Jersey',
-                   'New Mexico', 'South Dakota']
-}
-_2020_PRIMARY_SCHEDULE = ['Iowa', 'New Hampshire', 'Nevada', 'South Carolina', 'Wyoming', 'Alabama', 'Arkansas',
-                          'California', 'Colorado', 'Maine', 'Massachusetts', 'Minnesota', 'North Carolina', 'Oklahoma',
-                          'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Idaho', 'Michigan', 'Mississippi',
-                          'Missouri', 'North Dakota', 'Washington', 'Arizona', 'Florida', 'Illinois', 'Arkansas',
-                          'Alaska', 'Wisconsin', 'Wyoming', 'Ohio', 'Kansas', 'Nebraska', 'Idaho', 'Oregon', 'Hawaii',
-                          'District of Columbia', 'Indiana', 'Iowa', 'Maryland', 'Montana', 'New Mexico',
-                          'Pennsylvania', 'Rhode Island', 'South Dakota', 'Georgia', 'Nevada', 'North Dakota',
-                          'South Carolina', 'West Virginia', 'Kentucky', 'Mississippi', 'New York', 'North Carolina',
-                          'South Carolina', 'Virginia', 'Colorado', 'Oklahoma', 'Utah', 'Delaware', 'New Jersey',
-                          'Louisiana', 'Alabama', 'Maine', 'Texas', 'Arizona', 'Kansas', 'Michigan', 'Missouri',
-                          'Washington', 'Tennessee', 'Hawaii', 'Connecticut', 'Georgia', 'Minnesota', 'South Dakota',
-                          'Vermont', 'Wisconsin', 'Alaska', 'Florida', 'Wyoming', 'Oklahoma', 'Massachusetts',
-                          'New Hampshire', 'Rhode Island', 'Delaware', 'Louisiana', 'Louisiana']
+# Load Metadata
+
+METADATA_PATH = os.path.join(os.path.dirname(__file__), 'data', 'metadata')
+with open(os.path.join(METADATA_PATH, '2016_primary_schedule.json')) as _2016_primary_schedule_file:
+    _2016_PRIMARY_SCHEDULE = json.load(_2016_primary_schedule_file)
+with open(os.path.join(METADATA_PATH, '2020_primary_schedule.json')) as _2020_primary_schedule_file:
+    _2020_PRIMARY_SCHEDULE = json.load(_2020_primary_schedule_file)
+with open(os.path.join(METADATA_PATH, '2020_primary_dropout_dates.json')) as _2020_primary_dropout_dates_file:
+    _2020_PRIMARY_DROPOUT_DATES = json.load(_2020_primary_dropout_dates_file)
 
 start_year = min(*contests.distinct('year'))
 
@@ -66,19 +48,20 @@ def get_order_of_contest(contest):
         return 0
     elif 'primary' in normalized_contest_name or 'caucus' in normalized_contest_name:
         if contest['year'] == 2016 and \
-                any(candidate['name'] == 'Hillary Clinton' or candidate['name'] == 'Donald Trump' for candidate in
-                    contest['candidates']):
+                any(candidate['name'] in ['Hillary Clinton', 'Donald Trump'] for candidate in contest['candidates']):
             contest_parts = contest['name'].split()
             party = contest_parts[-2]
             territory = ' '.join(contest_parts[:-2])
-            return len(_2016_PRIMARY_SCHEDULE[party]) + max_normal_order - _2016_PRIMARY_SCHEDULE[party].index(territory)
-        elif contest['year'] == 2020 and \
-                any(candidate['name'] == 'Joe Biden' or candidate['name'] == 'Donald Trump' for candidate in
-                    contest['candidates']):
+            primary_schedule = _2016_PRIMARY_SCHEDULE[party]
+        elif contest['year'] == 2020 and 'presidential' in normalized_contest_name and\
+                ('democratic' in normalized_contest_name or 'republican' in normalized_contest_name):
             contest_parts = contest['name'].split()
-            territory = ' '.join(contest_parts[:-7])
-            return len(_2020_PRIMARY_SCHEDULE) + max_normal_order - _2020_PRIMARY_SCHEDULE.index(territory)
-        return 3 + modifier
+            territory = ' '.join(contest_parts[:-3])
+            primary_schedule = _2020_PRIMARY_SCHEDULE
+        else:
+            return 3 + modifier
+
+        return len(primary_schedule) + max_normal_order - primary_schedule.index(territory)
     elif 'runoff' in normalized_contest_name:
         return 2 + modifier
     elif normalized_contest_name.endswith('round'):
@@ -111,9 +94,8 @@ better results_input s
     - maybe cutoff candidates at some point because a lot of third party candidates are ranked 3rd and getting a lot of points b/c there are a lot of candidates in the race
 experiment with rank decay
 split like-named politicians
-stop dropouts from losing rating
 somehow weight municipal election less?
-experiment with grouping the people who recieve < 1% of the vote
+experiment with grouping the candidates who recieve < 1% of the vote
 """
 
 
@@ -133,6 +115,16 @@ def main():
         for contest in sorted(contests_in_year, key=get_order_of_contest, reverse=True):
             if len(contest['candidates']) == 0:
                 continue
+
+            if contest['year'] == 2020 and 'presidential' in contest['name'] and\
+                    ('Democratic' in contest['name'] or 'Republican' in contest['name']):
+                contest_date = contest['date'].isoformat()
+                party = contest['name'].split()[-3]
+                dropout_dates = _2020_PRIMARY_DROPOUT_DATES[party]
+
+                contest['candidates'] = list(
+                    filter(lambda candidate: dropout_dates.get(candidate['name'], '9') > contest_date, contest['candidates'])
+                )
 
             tickets = []
 
