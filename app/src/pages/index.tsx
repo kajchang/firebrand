@@ -44,7 +44,7 @@ const HomePage: React.FunctionComponent<HomePageProps> = ({ topPoliticians }) =>
         <title>Firebrand - ELO Ratings for U.S. Politicians</title>
       </Head>
       <Header headerChildren='Firebrand' tagLineChildren='ELO* Ratings for US Politicians' tagLineProps={ { className: 'text-flag-red' } }/>
-      <h3 className='text-3xl text-center font-big-star w-3/4 py-1 my-1' style={ { borderBottom: 'black solid 5px' } }>Top Rated Politicians</h3>
+      <h3 className='text-3xl text-center font-big-star w-3/4 py-1 my-2' style={ { borderTop: 'black solid 5px', borderBottom: 'black solid 5px' } }>Top Rated Politicians</h3>
       <div className='rounded-lg bg-yellow-500 text-center text-xl md:text-2xl font-big-noodle w-5/6 p-3 my-1'>
         Warning: The input data and algorithm still have a lot of inconsistencies that need to be resolved.
       </div>

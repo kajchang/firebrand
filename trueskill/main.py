@@ -5,6 +5,7 @@ from pymongo import MongoClient
 import trueskill
 
 import re
+import itertools
 
 client = MongoClient('mongodb://localhost:27017/firebrand')
 db = client.get_database()
@@ -107,7 +108,7 @@ experiment with rank decay
 split like-named politicians
 stop dropouts from losing rating
 somehow weight municipal election less?
-put all winners on one-team for races w/ multiple seats / blanket primaries
+put special elections behind regular ones
 """
 
 
@@ -144,6 +145,11 @@ def main():
                         lambda candidate: not candidate['won'], contest['candidates'])
                 )), reverse=True)
 
+            if any(candidate['won'] for candidate in contest['candidates']):
+                tickets.append(tuple())
+                current_ratings_input.append(tuple())
+                results_input.append(0)
+
             for (idx, candidate) in enumerate(contest['candidates']):
                 if any(term in candidate['name'].lower() for term in ['scatter', 'uncommitted']) or \
                         candidate['name'].lower() in ['', 'n/a', 'other', 'libertarian', 'nobody', 'no', 'blank',
@@ -152,24 +158,25 @@ def main():
 
                 ticket = tuple(safe_get_candidate(name.strip()) for name in split_candidate_name(candidate['name']))
 
-                current_ratings_input.append(tuple(
+                current_rating_input = tuple(
                     rating_from_dict(candidate['contests'][-1]['rating']) for candidate in ticket
-                ))
+                )
 
-                # Rank based on votes if votes data is available
-                # Otherwise, count all winners as a tie and all losers as another tie
-                results_input.append(0 if candidate['won'] else
-                                     ((vote_ranks.index(candidate['votes']) + len(contest['candidates']) - len(
-                                         vote_ranks))
-                                      if votes_recorded else 1))
+                if candidate['won']:
+                    tickets[0] = tuple(itertools.chain(tickets[0], ticket))
+                    current_ratings_input[0] = tuple(itertools.chain(current_ratings_input[0], current_rating_input))
+                else:
+                    tickets.append(ticket)
+                    current_ratings_input.append(current_rating_input)
+                    # Rank based on votes if votes data is available
+                    # Otherwise, count all losers as a tie
+                    results_input.append(
+                        (vote_ranks.index(candidate['votes']) + len(contest['candidates']) - len(vote_ranks))
+                        if votes_recorded else 1
+                    )
 
-                tickets.append(ticket)
-
-            if contest['name'] == 'Primary for U.S. House California District 12':
-                print(tickets)
-                print(current_ratings_input, results_input)
-
-            if len(current_ratings_input) < 2 or (not votes_recorded and not any(candidate['won'] for candidate in contest['candidates'])):
+            if len(current_ratings_input) < 2 or (
+                    not votes_recorded and not any(candidate['won'] for candidate in contest['candidates'])):
                 for ticket in tickets:
                     for candidate in ticket:
                         candidate['contests'].append({
