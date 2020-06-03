@@ -55,6 +55,11 @@ start_year = min(*contests.distinct('year'))
 def get_order_of_contest(contest):
     normalized_contest_name = contest['name'].lower()
 
+    is_special = 'special' in normalized_contest_name
+
+    modifier = 3 if is_special else 0
+    max_normal_order = 3 + 3
+
     # Have contests that haven't occurred yet appear first
     if contest['year'] == datetime.now().year and \
             all(candidate['votes'] is None and not candidate['won'] for candidate in contest['candidates']):
@@ -66,22 +71,22 @@ def get_order_of_contest(contest):
             contest_parts = contest['name'].split()
             party = contest_parts[-2]
             territory = ' '.join(contest_parts[:-2])
-            return len(_2016_PRIMARY_SCHEDULE[party]) + 3 - _2016_PRIMARY_SCHEDULE[party].index(territory)
+            return len(_2016_PRIMARY_SCHEDULE[party]) + max_normal_order - _2016_PRIMARY_SCHEDULE[party].index(territory)
         elif contest['year'] == 2020 and \
                 any(candidate['name'] == 'Joe Biden' or candidate['name'] == 'Donald Trump' for candidate in
                     contest['candidates']):
             contest_parts = contest['name'].split()
             territory = ' '.join(contest_parts[:-7])
-            return len(_2020_PRIMARY_SCHEDULE) + 3 - _2020_PRIMARY_SCHEDULE.index(territory)
-        return 3
+            return len(_2020_PRIMARY_SCHEDULE) + max_normal_order - _2020_PRIMARY_SCHEDULE.index(territory)
+        return 3 + modifier
     elif 'runoff' in normalized_contest_name:
-        return 2
+        return 2 + modifier
     elif normalized_contest_name.endswith('round'):
         # might have to update in the future
         number_words = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh']
-        return len(number_words) + 3 - number_words.index(normalized_contest_name.split()[-2].lower())
+        return len(number_words) + max_normal_order - number_words.index(normalized_contest_name.split()[-2].lower())
     else:
-        return 1
+        return 1 + modifier
 
 
 def rating_to_dict(rating: trueskill.Rating):
@@ -108,7 +113,7 @@ experiment with rank decay
 split like-named politicians
 stop dropouts from losing rating
 somehow weight municipal election less?
-put special elections behind regular ones
+experiment with grouping the people who recieve < 1% of the vote
 """
 
 
