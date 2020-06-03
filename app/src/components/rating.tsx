@@ -11,10 +11,10 @@ const TIERS = {
   'Platinum': 2250,
   'Master': 2500,
   'Grandmaster': Infinity
-}
+};
 
 const Rating: React.FunctionComponent<RatingProps> = ({ rating }) => {
-  const tier = Object.keys(TIERS).find(tier => TIERS[tier] > rating);
+  const tier = Object.keys(TIERS).find(tier => TIERS[tier] >= rating);
 
   return (
     <div className='flex flex-row items-center mx-1'>

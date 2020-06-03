@@ -73,7 +73,7 @@ const HomePage: React.FunctionComponent<HomePageProps> = ({ topPoliticians }) =>
           }
         </ul>
       </div>
-      <div className='flex flex-row justify-around font-big-noodle w-3/4 my-1'>
+      <div className='flex flex-row justify-around font-big-noodle w-3/4 mb-5'>
         <span>* Ratings are technically calculated using Trueskill, not ELO</span>
         <span>** Ratings are purely for entertainment purposes</span>
       </div>

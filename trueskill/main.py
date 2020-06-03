@@ -26,22 +26,27 @@ start_year = min(*contests.distinct('year'))
 def get_order_of_contest(contest):
     normalized_contest_name = contest['name'].lower()
 
-    if 'primary' in normalized_contest_name or 'caucus' in normalized_contest_name:
+    # Have contests that haven't occurred yet appear first
+    if contest['year'] == datetime.now().year and\
+        all(candidate['votes'] is None and not candidate['won'] for candidate in contest['candidates']):
+        return 0
+    elif 'primary' in normalized_contest_name or 'caucus' in normalized_contest_name:
+        # Use the primary schedule for 2016
         if contest['year'] == 2016 and\
            any(candidate['name'] == 'Hillary Clinton' or candidate['name'] == 'Donald Trump' for candidate in contest['candidates']):
             contest_parts = contest['name'].split()
             party = contest_parts[-2]
             territory = ' '.join(contest_parts[:-2])
-            return len(_2016_PRIMARY_SCHEDULE[party]) + 2 - _2016_PRIMARY_SCHEDULE[party].index(territory)
-        return 2
+            return len(_2016_PRIMARY_SCHEDULE[party]) + 3 - _2016_PRIMARY_SCHEDULE[party].index(territory)
+        return 3
     elif 'runoff' in normalized_contest_name:
-        return 1
+        return 2
     elif normalized_contest_name.endswith('round'):
+        # might have to update in the future
         number_words = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh']
-
-        return len(number_words) + 2 - number_words.index(normalized_contest_name.split()[-2].lower())
+        return len(number_words) + 3 - number_words.index(normalized_contest_name.split()[-2].lower())
     else:
-        return 0
+        return 1
 
 
 def rating_to_dict(rating: trueskill.Rating):
@@ -53,6 +58,11 @@ def rating_to_dict(rating: trueskill.Rating):
 
 def rating_from_dict(dictt):
     return trueskill.Rating(dictt['mu'], dictt['sigma'])
+
+
+# Splits candidates from races where candidates run on a ticket
+def split_candidate_name(candidate_name):
+    return re.split(r'/|&|(?: and )', candidate_name)
 
 
 """
@@ -90,27 +100,31 @@ def main():
 
             votes_recorded = contest['candidates'][0]['votes'] is not None
             if votes_recorded:
-                contest['candidates'] = sorted(
-                    filter(lambda candidate: candidate['votes'] is not None, contest['candidates']),
-                    key=lambda candidate: candidate['votes'], reverse=True
+                contest['candidates'] = list(
+                    filter(lambda candidate: candidate['votes'] is not None, contest['candidates'])
                 )
-                vote_ranks = sorted(list(set(candidate['votes'] for candidate in contest['candidates'])), reverse=True)
+
+                vote_ranks = sorted(list(set(
+                    candidate['votes'] for candidate in filter(
+                        lambda candidate: not candidate['won'], contest['candidates'])
+                )), reverse=True)
 
             for (idx, candidate) in enumerate(contest['candidates']):
-                if any(term in candidate['name'].lower() for term in ['n/a', 'scatter', 'other', 'uncommitted']) or \
-                   candidate['name'].lower() in ['', 'libertarian', 'nobody', 'no', 'blank', 'null', 'void', 'miscellaneous', '--']:
+                if any(term in candidate['name'].lower() for term in ['scatter', 'uncommitted']) or \
+                   candidate['name'].lower() in ['', 'n/a', 'other', 'libertarian', 'nobody', 'no', 'blank', 'null', 'void', 'miscellaneous', '--']:
                     continue
 
-                if '/' in candidate['name'] or '&' in candidate['name']:
-                    ticket = tuple(safe_get_candidate(name.strip()) for name in re.split(r'[/&]', candidate['name']))
-                else:
-                    ticket = (safe_get_candidate(candidate['name']),)
+                ticket = tuple(safe_get_candidate(name.strip()) for name in split_candidate_name(candidate['name']))
 
                 current_ratings_input.append(tuple(
                     rating_from_dict(candidate['contests'][-1]['rating']) for candidate in ticket
                 ))
-                results_input.append(vote_ranks.index(candidate['votes']) if votes_recorded
-                                     else (0 if candidate['won'] else 1))
+
+                # Rank based on votes if votes data is available
+                # Otherwise, count all winners as a tie and all losers as another tie
+                results_input.append(0 if candidate['won'] else
+                                     ((vote_ranks.index(candidate['votes']) + len(contest['candidates']) - len(vote_ranks))
+                                      if votes_recorded else 1))
 
                 tickets.append(ticket)
 
@@ -138,6 +152,7 @@ def main():
                     })
 
     for (idx, candidate) in enumerate(sorted(ratings.values(), key=lambda candidate: candidate['contests'][-1]['rating']['mu'], reverse=True)):
+        # Pre-calculate derived fields
         candidate['ranking'] = idx + 1
         candidate['rating'] = candidate['contests'][-1]['rating']
 
