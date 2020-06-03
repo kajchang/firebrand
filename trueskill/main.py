@@ -105,6 +105,9 @@ better results_input s
     - maybe cutoff candidates at some point because a lot of third party candidates are ranked 3rd and getting a lot of points b/c there are a lot of candidates in the race
 experiment with rank decay
 split like-named politicians
+stop dropouts from losing rating
+somehow weight municipal election less?
+put all winners on one-team for races w/ multiple seats / blanket primaries
 """
 
 
@@ -161,6 +164,10 @@ def main():
                                       if votes_recorded else 1))
 
                 tickets.append(ticket)
+
+            if contest['name'] == 'Primary for U.S. House California District 12':
+                print(tickets)
+                print(current_ratings_input, results_input)
 
             if len(current_ratings_input) < 2 or (not votes_recorded and not any(candidate['won'] for candidate in contest['candidates'])):
                 for ticket in tickets:
