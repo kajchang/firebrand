@@ -53,22 +53,24 @@ const HomePage: React.FunctionComponent<HomePageProps> = ({ topPoliticians }) =>
         placeholder='Search...' value={ search }
         onChange={ e => setSearch(e.target.value) }
       />
-      <div className='rounded-lg bg-gray-100 font-big-noodle w-5/6 my-5'>
+      <div className='font-big-noodle w-5/6 my-5'>
         <ul>
           {
             displayedResults.map((politician, idx) => (
-              <Link key={ idx } href={ `/politician/${ politician.name }` }>
-                <a>
-                  <li className={ `flex flex-row items-center rounded-lg bg-${ politician.ranked ? 'gray-100' : 'red-300' } hover:bg-${ politician.ranked ? 'gray-300' : 'red-400' } cursor-pointer text-2xl p-3` }>
-                    { politician.ranked ? politician.ranking : '???' }.
-                    <Rating rating={ politician.rating.mu }/>
-                    <div className='w-3 h-3 mx-2' style={
-                      { backgroundColor: partyToColor(politician.latestContest.candidates.find(candidate => candidate.name.includes(politician.name)).party) }
-                    }/>
-                    { politician.name }
-                  </li>
-                </a>
-              </Link>
+              <li className={ `${ idx == 0 ? 'rounded-t-lg' : '' } ${ idx == displayedResults.length - 1 ? 'rounded-b-lg' : '' } bg-${ politician.ranked ? 'gray-100' : 'red-300' }` }>
+                <Link key={ idx } href={ `/politician/${ politician.name }` }>
+                  <a>
+                    <div className={ `flex flex-row items-center rounded-lg hover:bg-${ politician.ranked ? 'gray-300' : 'red-400' } cursor-pointer text-2xl p-3` }>
+                      { politician.ranked ? politician.ranking : '???' }.
+                      <Rating rating={ politician.rating.mu }/>
+                      <div className='w-3 h-3 mx-2' style={
+                        { backgroundColor: partyToColor(politician.latestContest.candidates.find(candidate => candidate.name.includes(politician.name)).party) }
+                      }/>
+                      { politician.name }
+                    </div>
+                  </a>
+                </Link>
+              </li>
             ))
           }
         </ul>
