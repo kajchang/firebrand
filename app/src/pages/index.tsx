@@ -46,7 +46,7 @@ const HomePage: React.FunctionComponent<HomePageProps> = ({ topPoliticians }) =>
       <Header headerChildren='Firebrand' tagLineChildren='ELO* Ratings for US Politicians' tagLineProps={ { className: 'text-flag-red' } }/>
       <h3 className='text-3xl text-center font-big-star w-3/4 py-1 my-2' style={ { borderTop: 'black solid 5px', borderBottom: 'black solid 5px' } }>Top Rated Politicians</h3>
       <div className='rounded-lg bg-yellow-500 text-center text-xl md:text-2xl font-big-noodle w-5/6 p-3 my-1'>
-        Warning: The input data and algorithm still have a lot of inconsistencies that need to be resolved.
+        Warning: Most data are automatically collected and may be inaccurate
       </div>
       <input
         className='rounded-lg text-2xl font-big-noodle w-5/6 px-5 py-3 mt-3'
@@ -59,8 +59,8 @@ const HomePage: React.FunctionComponent<HomePageProps> = ({ topPoliticians }) =>
             displayedResults.map((politician, idx) => (
               <Link key={ idx } href={ `/politician/${ politician.name }` }>
                 <a>
-                  <li className='flex flex-row items-center rounded-lg hover:bg-gray-300 cursor-pointer text-2xl p-3'>
-                    { politician.ranking }.
+                  <li className={ `flex flex-row items-center rounded-lg bg-${ politician.ranked ? 'gray-100' : 'red-300' } hover:bg-${ politician.ranked ? 'gray-300' : 'red-400' } cursor-pointer text-2xl p-3` }>
+                    { politician.ranked ? politician.ranking : '???' }.
                     <Rating rating={ politician.rating.mu }/>
                     <div className='w-3 h-3 mx-2' style={
                       { backgroundColor: partyToColor(politician.latestContest.candidates.find(candidate => candidate.name.includes(politician.name)).party) }
@@ -87,8 +87,9 @@ export async function getServerSideProps() {
   const collection = await db.collection('politicians');
   const topPoliticians = await collection
     .aggregate([
-      { $sort: { 'rating.mu': -1 } },
-      { $project: { 'name': 1, 'rating': 1, 'ranking': 1, 'latestContest': { $arrayElemAt : ['$contests', -1] } } },
+      { $sort: { 'ranking': 1 } },
+      { $limit: 100 },
+      { $project: { 'name': 1, 'rating': 1, 'ranking': 1, 'ranked': 1, 'latestContest': { $arrayElemAt : ['$contests', -1] } } },
       {
         $lookup: {
           'from': 'contests',
@@ -97,9 +98,8 @@ export async function getServerSideProps() {
           'as': 'latestContest'
         }
       },
-      { $project: { 'name': 1, 'rating': 1, 'ranking': 1, 'latestContest': { $arrayElemAt : ['$latestContest', 0] } } },
-      { $project: { '_id': 0, 'latestContest': { '_id': 0, 'date': 0 } } },
-      { $limit: 100 }
+      { $project: { 'name': 1, 'rating': 1, 'ranking': 1, 'ranked': 1, 'latestContest': { $arrayElemAt : ['$latestContest', 0] } } },
+      { $project: { '_id': 0, 'latestContest': { '_id': 0, 'date': 0 } } }
     ])
     .toArray();
 

@@ -56,7 +56,12 @@ const PoliticianPage: React.FunctionComponent<PoliticianPageProps> = ({ err, pol
         tagLineProps={ { style: { color: partyToColor(party) } } }
         topRowChildren={ <Link href='/'><a className='text-white font-bold ml-3'>← Back</a></Link> }
       />
-      <div className='font-big-noodle w-5/6 my-5'>
+      {
+        !politician.ranked ? <div className='rounded-lg bg-red-300 text-center text-xl md:text-2xl font-big-noodle w-5/6 p-3 my-3'>
+          This rating has a low confidence and is excluded from rankings
+        </div> : null
+      }
+      <div className='font-big-noodle w-5/6 mb-5'>
         <ul>
           {
             Object.entries(politician.fullContests

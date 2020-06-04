@@ -28,5 +28,6 @@ export type Politician = {
   name: string
   rating: Rating
   ranking: number
+  ranked: boolean
   contests: RatedContest[]
 }

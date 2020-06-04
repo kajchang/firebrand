@@ -19,6 +19,7 @@ politicians = db['politicians']
 # Setup rating settings
 
 STARTING_RATING = 1500
+MAX_SIGMA = 250
 trueskill.setup(STARTING_RATING, STARTING_RATING / 3, STARTING_RATING / 3 / 2, STARTING_RATING / 3 / 100)
 
 # Load Metadata
@@ -203,11 +204,21 @@ def main():
                         'rating': rating_to_dict(rating)
                     })
 
+    ranking = 1
+    excluded_ranking = len(ratings)
     for (idx, candidate) in enumerate(
             sorted(ratings.values(), key=lambda candidate: candidate['contests'][-1]['rating']['mu'], reverse=True)):
         # Pre-calculate derived fields
-        candidate['ranking'] = idx + 1
         candidate['rating'] = candidate['contests'][-1]['rating']
+        if candidate['rating']['sigma'] < MAX_SIGMA:
+            candidate['ranking'] = ranking
+            candidate['ranked'] = True
+            ranking += 1
+        else:
+            # Hide low confidence politicians from rankings
+            candidate['ranking'] = excluded_ranking
+            candidate['ranked'] = False
+            excluded_ranking += 1
 
     return ratings
 
