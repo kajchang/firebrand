@@ -103,13 +103,17 @@ get 2008 / 2012 presidential primary data?
 def main():
     ratings = {}
 
-    def safe_get_candidate(name):
+    def safe_get_politician(name, party):
         if ratings.get(name) is None:
             ratings[name] = {
                 'name': name,
-                'contests': [{'_id': None, 'rating': rating_to_dict(trueskill.Rating())}]
+                'contests': [{'_id': None, 'rating': rating_to_dict(trueskill.Rating())}],
+                'party': party
             }
-        return ratings[name]
+        politician = ratings[name]
+        if party != 'Unknown':
+            politician['party'] = party
+        return politician
 
     for year in range(start_year, datetime.now().year + 1):
         contests_in_year = list(contests.find({'year': year, 'hidden': None}))
@@ -158,7 +162,7 @@ def main():
                                                       'null', 'void', 'miscellaneous', '--']:
                     continue
 
-                ticket = tuple(safe_get_candidate(name.strip()) for name in split_candidate_name(candidate['name']))
+                ticket = tuple(safe_get_politician(name.strip(), candidate['party']) for name in split_candidate_name(candidate['name']))
 
                 current_rating_input = tuple(
                     rating_from_dict(candidate['contests'][-1]['rating']) for candidate in ticket

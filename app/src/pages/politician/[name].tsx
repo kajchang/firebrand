@@ -29,11 +29,6 @@ const PoliticianPage: React.FunctionComponent<PoliticianPageProps> = ({ err, pol
     return <Error statusCode={ err.statusCode }/>
   }
 
-  const party = politician
-    .fullContests[politician.fullContests.length - 1]
-    .candidates.find(candidate => candidate.name.includes(name as string)).party
-    .split(/\s+/).join(' ');
-
   function styleRatingDelta(ratingDelta) {
     return (
       <span className={ 'text-' + (ratingDelta > 0 ? 'green' : (ratingDelta == 0 ? 'gray' : 'red')) + '-500 mr-2' }>
@@ -50,10 +45,10 @@ const PoliticianPage: React.FunctionComponent<PoliticianPageProps> = ({ err, pol
       <Header
         headerChildren={ name as string }
         tagLineChildren={ <div className='flex flex-col items-center'>
-          { party }
+          { politician.party }
           <Rating rating={ politician.rating.mu }/>
         </div> }
-        tagLineProps={ { style: { color: partyToColor(party) } } }
+        tagLineProps={ { style: { color: partyToColor(politician.party) } } }
         topRowChildren={ <Link href='/'><a className='text-white font-bold ml-3'>← Back</a></Link> }
       />
       {
@@ -68,10 +63,10 @@ const PoliticianPage: React.FunctionComponent<PoliticianPageProps> = ({ err, pol
               .sort((a, b) => politician.contests.findIndex(contest => contest._id == a._id) - politician.contests.findIndex(contest => contest._id == b._id))
               .reduce((acc: object, cur): object => {
                 if (!Object.keys(acc).includes(String(cur.year))) {
-                 acc[String(cur.year)] = [];
-               }
+                  acc[String(cur.year)] = [];
+                }
                 acc[String(cur.year)].push(cur);
-               return acc;
+                return acc;
               }, {}))
               .sort((a, b) => Number(b[0]) - Number(a[0]))
               .map(([year, contests]: [string, Contest[]], idx) => (

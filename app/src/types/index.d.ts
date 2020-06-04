@@ -29,5 +29,6 @@ export type Politician = {
   rating: Rating
   ranking: number
   ranked: boolean
+  party: string
   contests: RatedContest[]
 }

@@ -10,6 +10,7 @@ import { connectToDatabase } from '@/utils/db';
 import { partyToColor } from '@/utils/helpers';
 
 import { Politician, Contest } from '@/types';
+import SparkLine from "@/components/sparkline";
 
 type PoliticianWithLatestContest = Politician & { latestContest: Contest };
 
@@ -62,9 +63,10 @@ const HomePage: React.FunctionComponent<HomePageProps> = ({ topPoliticians }) =>
                   <a>
                     <div className={ `flex flex-row items-center rounded-lg hover:bg-${ politician.ranked ? 'gray-300' : 'red-400' } cursor-pointer text-2xl p-3` }>
                       { politician.ranked ? politician.ranking : '???' }.
+                      <SparkLine className='mx-2' contests={ politician.contests }/>
                       <Rating rating={ politician.rating.mu }/>
                       <div className='w-3 h-3 mx-2' style={
-                        { backgroundColor: partyToColor(politician.latestContest.candidates.find(candidate => candidate.name.includes(politician.name)).party) }
+                        { backgroundColor: partyToColor(politician.party) }
                       }/>
                       { politician.name }
                     </div>
@@ -91,17 +93,7 @@ export async function getServerSideProps() {
     .aggregate([
       { $sort: { 'ranking': 1 } },
       { $limit: 100 },
-      { $project: { 'name': 1, 'rating': 1, 'ranking': 1, 'ranked': 1, 'latestContest': { $arrayElemAt : ['$contests', -1] } } },
-      {
-        $lookup: {
-          'from': 'contests',
-          localField: 'latestContest._id',
-          foreignField: '_id',
-          'as': 'latestContest'
-        }
-      },
-      { $project: { 'name': 1, 'rating': 1, 'ranking': 1, 'ranked': 1, 'latestContest': { $arrayElemAt : ['$latestContest', 0] } } },
-      { $project: { '_id': 0, 'latestContest': { '_id': 0, 'date': 0 } } }
+      { $project: { '_id': 0, 'contests': { '_id': 0 } } }
     ])
     .toArray();
 

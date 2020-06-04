@@ -17,17 +17,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       { $sort: { 'ranking': 1 } },
       { $match: { 'name': { $regex: new RegExp(req.query.search as string, 'gi') } } },
       { $limit: 100 },
-      { $project: { 'name': 1, 'rating': 1, 'ranking': 1, 'ranked': 1, 'latestContest': { $arrayElemAt : ['$contests', -1] } } },
-      {
-        $lookup: {
-          'from': 'contests',
-          localField: 'latestContest._id',
-          foreignField: '_id',
-          'as': 'latestContest'
-        }
-      },
-      { $project: { 'name': 1, 'rating': 1, 'ranking': 1, 'ranked': 1, 'latestContest': { $arrayElemAt : ['$latestContest', 0] } } },
-      { $project: { '_id': 0, 'latestContest': { '_id': 0, 'date': 0 } } }
+      { $project: { '_id': 0, 'contests': { '_id': 0 } } }
     ])
     .toArray();
 
