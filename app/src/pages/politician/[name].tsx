@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {ReactChild} from 'react';
 
 import Head from 'next/head';
 import Error from 'next/error';
@@ -11,14 +11,14 @@ import { connectToDatabase } from '@/utils/db';
 import { partyToColor } from '@/utils/helpers';
 import { useRouter } from 'next/router';
 
-import { Contest, Politician } from '@/types';
+import {Contest, Politician, RatedContest} from '@/types';
 import { NextPageContext } from 'next';
 
-type PoliticianWithDetailedContests = Politician & { fullContests: Contest[] };
+type PoliticianWithFullContests = Politician & { fullContests: Contest[] };
 
 type PoliticianPageProps = {
   err: { statusCode: number }
-  politician: PoliticianWithDetailedContests
+  politician: PoliticianWithFullContests
 };
 
 const PoliticianPage: React.FunctionComponent<PoliticianPageProps> = ({ err, politician }) => {
@@ -26,7 +26,7 @@ const PoliticianPage: React.FunctionComponent<PoliticianPageProps> = ({ err, pol
   const { name } = router.query;
 
   if (err) {
-    return <Error statusCode={ err.statusCode }/>
+    return <Error statusCode={ err.statusCode }/>;
   }
 
   const party = politician
@@ -34,7 +34,12 @@ const PoliticianPage: React.FunctionComponent<PoliticianPageProps> = ({ err, pol
     .candidates.find(candidate => candidate.name.includes(name as string)).party
     .split(/\s+/).join(' ');
 
-  function styleRatingDelta(ratingDelta) {
+  function getRatingDelta(contestId: string): number {
+    const idx = politician.contests.findIndex(contest => contest._id == contestId);
+    return politician.contests[idx].rating.mu - politician.contests[idx - 1].rating.mu;
+  }
+
+  function styleRatingDelta(ratingDelta: number): ReactChild {
     return (
       <span className={ 'text-' + (ratingDelta > 0 ? 'green' : (ratingDelta == 0 ? 'gray' : 'red')) + '-500 mr-2' }>
         { ratingDelta > 0 ? '+' : '' }{ Math.round(ratingDelta) }
@@ -76,10 +81,7 @@ const PoliticianPage: React.FunctionComponent<PoliticianPageProps> = ({ err, pol
                     {
                       contests.reverse().map((contest, idx) => (
                         <li key={ idx } className='flex flex-row items-center rounded-lg text-2xl p-3'>
-                          { styleRatingDelta(
-                            politician.contests[politician.fullContests.indexOf(contest) + 1].rating.mu -
-                            politician.contests[politician.fullContests.indexOf(contest)].rating.mu
-                          ) }
+                          { styleRatingDelta(getRatingDelta(contest._id)) }
                           { contest.name }
                         </li>
                       ))
@@ -105,10 +107,10 @@ export async function getServerSideProps(context: NextPageContext) {
       { $match: { 'name': query.name } },
       {
         $lookup: {
-          'from': 'contests',
+          from: 'contests',
           localField: 'contests._id',
           foreignField: '_id',
-          'as': 'fullContests'
+          as: 'fullContests'
         }
       },
       { $project: { 'name': 0, '_id': 0, 'fullContests': { 'date': 0 } } }

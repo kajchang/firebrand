@@ -88,6 +88,14 @@ export async function getServerSideProps() {
   const topPoliticians = await collection
     .aggregate([
       { $sort: { 'rating.mu': -1 } },
+      { $limit: 100 },
+      { $project: { 'name': 1, 'rating': 1, 'ranking': 1, 'contests': { $filter: {
+        input: '$contests', as: 'contest',
+        cond: { $or: [
+          { $ne: ['$$contest._id', null] },
+          { $eq: [{ $indexOfArray: ['$contests', '$$contest'] }, 0] },
+        ] }
+      } } } },
       { $project: { 'name': 1, 'rating': 1, 'ranking': 1, 'latestContest': { $arrayElemAt : ['$contests', -1] } } },
       {
         $lookup: {
@@ -99,7 +107,6 @@ export async function getServerSideProps() {
       },
       { $project: { 'name': 1, 'rating': 1, 'ranking': 1, 'latestContest': { $arrayElemAt : ['$latestContest', 0] } } },
       { $project: { '_id': 0, 'latestContest': { '_id': 0, 'date': 0 } } },
-      { $limit: 100 }
     ])
     .toArray();
 

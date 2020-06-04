@@ -22,6 +22,6 @@ const Rating: React.FunctionComponent<RatingProps> = ({ rating }) => {
       <i className={ `text-3xl ml-1 text-${ tier }` }>{ Math.round(rating) }</i>
     </div>
   );
-}
+};
 
 export default Rating;

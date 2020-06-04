@@ -19,6 +19,7 @@ politicians = db['politicians']
 # Setup rating settings
 
 STARTING_RATING = 1500
+YEARLY_DECAY = 5
 trueskill.setup(STARTING_RATING, STARTING_RATING / 3, STARTING_RATING / 3 / 2, STARTING_RATING / 3 / 100)
 
 # Load Metadata
@@ -122,6 +123,7 @@ def main():
                 party = contest['name'].split()[-3]
                 dropout_dates = _2020_PRIMARY_DROPOUT_DATES[party]
 
+                # Filter out dropouts for presidential primaries
                 contest['candidates'] = list(
                     filter(lambda candidate: dropout_dates.get(candidate['name'], '9') > contest_date, contest['candidates'])
                 )
@@ -202,6 +204,24 @@ def main():
                         '_id': contest['_id'],
                         'rating': rating_to_dict(rating)
                     })
+
+        # Rating decay
+
+        for candidate in ratings.values():
+            last_contest = candidate['contests'][-1]
+            current_rating = last_contest['rating']
+            if current_rating['mu'] > STARTING_RATING:
+                decay_amount = min(YEARLY_DECAY, current_rating['mu'] - STARTING_RATING)
+                if last_contest['_id'] is not None:
+                    candidate['contests'].append({
+                        '_id': None,
+                        'rating': {
+                            'mu': current_rating['mu'] - decay_amount,
+                            'sigma': current_rating['sigma']
+                        }
+                    })
+                else:
+                    current_rating['mu'] = current_rating['mu'] - decay_amount
 
     for (idx, candidate) in enumerate(
             sorted(ratings.values(), key=lambda candidate: candidate['contests'][-1]['rating']['mu'], reverse=True)):
