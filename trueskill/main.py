@@ -26,20 +26,14 @@ trueskill.setup(STARTING_RATING, STARTING_RATING / 3, STARTING_RATING / 3 / 2, S
 # Load Metadata
 
 METADATA_PATH = os.path.join(os.path.dirname(__file__), 'data', 'metadata')
-PRESIDENTIAL_PRIMARY_METADATA = {
-    2016: {},
-    2020: {}
-}
-with open(os.path.join(METADATA_PATH, '2016_primary_schedule.json')) as _2016_primary_schedule_file:
-    PRESIDENTIAL_PRIMARY_METADATA[2016]['SCHEDULE'] = json.load(_2016_primary_schedule_file, object_pairs_hook=OrderedDict)
-with open(os.path.join(METADATA_PATH, '2020_primary_schedule.json')) as _2020_primary_schedule_file:
-    PRESIDENTIAL_PRIMARY_METADATA[2020]['SCHEDULE'] = json.load(_2020_primary_schedule_file, object_pairs_hook=OrderedDict)
-with open(os.path.join(METADATA_PATH, '2016_primary_dropout_dates.json')) as _2016_primary_dropout_dates_file:
-    PRESIDENTIAL_PRIMARY_METADATA[2016]['DROPOUTS'] = json.load(_2016_primary_dropout_dates_file)
-with open(os.path.join(METADATA_PATH, '2020_primary_dropout_dates.json')) as _2020_primary_dropout_dates_file:
-    PRESIDENTIAL_PRIMARY_METADATA[2020]['DROPOUTS'] = json.load(_2020_primary_dropout_dates_file)
-
-start_year = min(*contests.distinct('year'))
+PRESIDENTIAL_PRIMARY_METADATA = {}
+METADATA_START_YEAR = 2012
+for year in range(METADATA_START_YEAR, datetime.now().year + 1, 4):
+    PRESIDENTIAL_PRIMARY_METADATA[year] = {}
+    with open(os.path.join(METADATA_PATH, '{0}_primary_schedule.json'.format(year))) as primary_schedule_file:
+        PRESIDENTIAL_PRIMARY_METADATA[year]['SCHEDULE'] = json.load(primary_schedule_file, object_pairs_hook=OrderedDict)
+    with open(os.path.join(METADATA_PATH, '{0}_primary_dropout_dates.json'.format(year))) as primary_dropout_dates_file:
+        PRESIDENTIAL_PRIMARY_METADATA[year]['DROPOUTS'] = json.load(primary_dropout_dates_file)
 
 
 def get_order_of_contest(contest):
@@ -64,11 +58,7 @@ def get_order_of_contest(contest):
         else:
             return 3 + modifier
 
-        try:
-            return len(primary_schedule) + max_normal_order - primary_schedule.index(territory)
-        except ValueError:
-            print(contest, primary_schedule)
-            quit()
+        return len(primary_schedule) + max_normal_order - primary_schedule.index(territory)
     elif 'runoff' in normalized_contest_name:
         return 2 + modifier
     elif normalized_contest_name.endswith('round'):
@@ -118,6 +108,8 @@ def main():
         if party != 'Unknown':
             politician['party'] = party
         return politician
+
+    start_year = min(*contests.distinct('year'))
 
     for year in range(start_year, datetime.now().year + 1):
         contests_in_year = list(contests.find({'year': year, 'hidden': None}))

@@ -21,8 +21,8 @@ const SparkLine = ({ className, contests }) => {
           <g
             key={ idx } transform={ `translate(${ idx * barWidth }, 0)` }
             color={
-              (idx == 0 || (contest.rating.mu - contests[idx - 1].rating.mu) > 0) ? 'green' :
-                ((contest.rating.mu - contests[idx - 1].rating.mu) < 0 ? 'red' : 'gray')
+              (idx == 0 || (contest.rating.mu - contests[idx - 1].rating.mu) == 0) ? 'gray' :
+                ((contest.rating.mu - contests[idx - 1].rating.mu) > 0 ? 'green' : 'red')
             }
           >
             <rect
