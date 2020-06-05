@@ -15,7 +15,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const results = await collection
     .aggregate([
       { $sort: { 'ranking': 1 } },
-      { $match: { 'name': { $regex: new RegExp(req.query.search as string, 'gi') } } },
+      { $match: {
+        'name': { $regex: new RegExp((req.query.search as string).replace(/[-[\]/{}()*+?.\\^$|]/g, '\\$&'), 'gi') }
+      } },
       { $limit: 100 },
       { $project: { '_id': 0, 'contests': { '_id': 0 } } }
     ])

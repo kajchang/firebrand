@@ -20,7 +20,7 @@ politicians = db['politicians']
 # Setup rating settings
 
 STARTING_RATING = 1500
-MAX_SIGMA = 250
+MAX_SIGMA = STARTING_RATING / 3 / 2
 trueskill.setup(STARTING_RATING, STARTING_RATING / 3, STARTING_RATING / 3 / 2, STARTING_RATING / 3 / 100)
 
 # Load Metadata
@@ -97,8 +97,6 @@ def split_candidate_name(candidate_name):
 
 """
 TODO:
-better results_input s
-    - maybe cutoff candidates at some point because a lot of third party candidates are ranked 3rd and getting a lot of points b/c there are a lot of candidates in the race
 experiment with rank decay
 split like-named politicians
 add metadata for 2016 presidential primary
@@ -127,7 +125,7 @@ def main():
             if len(contest['candidates']) == 0:
                 continue
 
-            if 'presidential' in contest['name'] and\
+            if 'Presidential' in contest['name'] and\
                     ('Democratic' in contest['name'] or 'Republican' in contest['name']):
                 contest_parts = contest['name'].split()
                 party = contest_parts[-3]
