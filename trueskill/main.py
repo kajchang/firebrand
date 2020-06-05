@@ -27,7 +27,7 @@ trueskill.setup(STARTING_RATING, STARTING_RATING / 3, STARTING_RATING / 3 / 2, S
 
 METADATA_PATH = os.path.join(os.path.dirname(__file__), 'data', 'metadata')
 PRESIDENTIAL_PRIMARY_METADATA = {}
-METADATA_START_YEAR = 2004
+METADATA_START_YEAR = 2000
 for year in range(METADATA_START_YEAR, datetime.now().year + 1, 4):
     PRESIDENTIAL_PRIMARY_METADATA[year] = {}
     with open(os.path.join(METADATA_PATH, '{0}_primary_schedule.json'.format(year))) as primary_schedule_file:
@@ -143,7 +143,8 @@ def main():
 
                 vote_ranks = sorted(list(set(
                     candidate['votes'] for candidate in filter(
-                        lambda candidate: not candidate['won'] and candidate['votes'] / total_votes > 0.01, contest['candidates'])
+                        lambda candidate: not candidate['won'] and candidate['votes'] / total_votes > 0.01,
+                        contest['candidates'])
                 )), reverse=True)
 
             num_winners = list(candidate['won'] for candidate in contest['candidates']).count(True)
@@ -156,7 +157,7 @@ def main():
             for (idx, candidate) in enumerate(contest['candidates']):
                 if any(term in candidate['name'].lower() for term in ['scatter', 'uncommitted']) or \
                         candidate['name'].lower() in ['', 'n/a', 'other', 'libertarian', 'nobody', 'no', 'blank',
-                                                      'null', 'void', 'miscellaneous', '--', 'other (+)']:
+                                                      'null', 'void', 'miscellaneous', '--', 'other (+)', 'unallocated']:
                     continue
 
                 ticket = tuple(safe_get_politician(name.strip(), candidate['party']) for name in split_candidate_name(candidate['name']))
