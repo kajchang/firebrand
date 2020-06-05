@@ -1,7 +1,9 @@
 export function partyToColor(party: string): string {
   const COLOR_MAP = {
     'Democratic': '#0015bc',
-    'Republican': '#e91d0e'
+    'Republican': '#e91d0e',
+    'Libertarian': '#fed105',
+    'Green': '#508c1b'
   };
 
   const partyParts = party.split(/\s+/);

@@ -27,7 +27,7 @@ trueskill.setup(STARTING_RATING, STARTING_RATING / 3, STARTING_RATING / 3 / 2, S
 
 METADATA_PATH = os.path.join(os.path.dirname(__file__), 'data', 'metadata')
 PRESIDENTIAL_PRIMARY_METADATA = {}
-METADATA_START_YEAR = 2012
+METADATA_START_YEAR = 2008
 for year in range(METADATA_START_YEAR, datetime.now().year + 1, 4):
     PRESIDENTIAL_PRIMARY_METADATA[year] = {}
     with open(os.path.join(METADATA_PATH, '{0}_primary_schedule.json'.format(year))) as primary_schedule_file:
@@ -89,8 +89,7 @@ def split_candidate_name(candidate_name):
 TODO:
 experiment with rank decay
 split like-named politicians
-add metadata for 2016 presidential primary
-get 2008 / 2012 presidential primary data?
+get 2000 / 2004 presidential primary data
 """
 
 
