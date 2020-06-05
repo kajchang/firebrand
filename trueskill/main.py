@@ -27,7 +27,7 @@ trueskill.setup(STARTING_RATING, STARTING_RATING / 3, STARTING_RATING / 3 / 2, S
 
 METADATA_PATH = os.path.join(os.path.dirname(__file__), 'data', 'metadata')
 PRESIDENTIAL_PRIMARY_METADATA = {}
-METADATA_START_YEAR = 2000
+METADATA_START_YEAR = 1992
 for year in range(METADATA_START_YEAR, datetime.now().year + 1, 4):
     PRESIDENTIAL_PRIMARY_METADATA[year] = {}
     with open(os.path.join(METADATA_PATH, '{0}_primary_schedule.json'.format(year))) as primary_schedule_file:
