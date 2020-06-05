@@ -3,6 +3,7 @@ from pymongo import MongoClient
 import re
 import itertools
 from datetime import datetime
+from collections import OrderedDict
 
 import os
 import json
@@ -25,12 +26,18 @@ trueskill.setup(STARTING_RATING, STARTING_RATING / 3, STARTING_RATING / 3 / 2, S
 # Load Metadata
 
 METADATA_PATH = os.path.join(os.path.dirname(__file__), 'data', 'metadata')
+PRESIDENTIAL_PRIMARY_METADATA = {
+    2016: {},
+    2020: {}
+}
 with open(os.path.join(METADATA_PATH, '2016_primary_schedule.json')) as _2016_primary_schedule_file:
-    _2016_PRIMARY_SCHEDULE = json.load(_2016_primary_schedule_file)
+    PRESIDENTIAL_PRIMARY_METADATA[2016]['SCHEDULE'] = json.load(_2016_primary_schedule_file, object_pairs_hook=OrderedDict)
 with open(os.path.join(METADATA_PATH, '2020_primary_schedule.json')) as _2020_primary_schedule_file:
-    _2020_PRIMARY_SCHEDULE = json.load(_2020_primary_schedule_file)
+    PRESIDENTIAL_PRIMARY_METADATA[2020]['SCHEDULE'] = json.load(_2020_primary_schedule_file, object_pairs_hook=OrderedDict)
+with open(os.path.join(METADATA_PATH, '2016_primary_dropout_dates.json')) as _2016_primary_dropout_dates_file:
+    PRESIDENTIAL_PRIMARY_METADATA[2016]['DROPOUTS'] = json.load(_2016_primary_dropout_dates_file)
 with open(os.path.join(METADATA_PATH, '2020_primary_dropout_dates.json')) as _2020_primary_dropout_dates_file:
-    _2020_PRIMARY_DROPOUT_DATES = json.load(_2020_primary_dropout_dates_file)
+    PRESIDENTIAL_PRIMARY_METADATA[2020]['DROPOUTS'] = json.load(_2020_primary_dropout_dates_file)
 
 start_year = min(*contests.distinct('year'))
 
@@ -48,21 +55,20 @@ def get_order_of_contest(contest):
             all(candidate['votes'] is None and not candidate['won'] for candidate in contest['candidates']):
         return 0
     elif 'primary' in normalized_contest_name or 'caucus' in normalized_contest_name:
-        if contest['year'] == 2016 and \
-                any(candidate['name'] in ['Hillary Clinton', 'Donald Trump'] for candidate in contest['candidates']):
-            contest_parts = contest['name'].split()
-            party = contest_parts[-2]
-            territory = ' '.join(contest_parts[:-2])
-            primary_schedule = _2016_PRIMARY_SCHEDULE[party]
-        elif contest['year'] == 2020 and 'presidential' in normalized_contest_name and\
+        if 'presidential' in normalized_contest_name and \
                 ('democratic' in normalized_contest_name or 'republican' in normalized_contest_name):
             contest_parts = contest['name'].split()
+            party = contest_parts[-3]
             territory = ' '.join(contest_parts[:-3])
-            primary_schedule = _2020_PRIMARY_SCHEDULE
+            primary_schedule = list(PRESIDENTIAL_PRIMARY_METADATA[contest['year']]['SCHEDULE'][party].keys())
         else:
             return 3 + modifier
 
-        return len(primary_schedule) + max_normal_order - primary_schedule.index(territory)
+        try:
+            return len(primary_schedule) + max_normal_order - primary_schedule.index(territory)
+        except ValueError:
+            print(contest, primary_schedule)
+            quit()
     elif 'runoff' in normalized_contest_name:
         return 2 + modifier
     elif normalized_contest_name.endswith('round'):
@@ -121,11 +127,13 @@ def main():
             if len(contest['candidates']) == 0:
                 continue
 
-            if contest['year'] == 2020 and 'presidential' in contest['name'] and\
+            if 'presidential' in contest['name'] and\
                     ('Democratic' in contest['name'] or 'Republican' in contest['name']):
-                contest_date = contest['date'].isoformat()
-                party = contest['name'].split()[-3]
-                dropout_dates = _2020_PRIMARY_DROPOUT_DATES[party]
+                contest_parts = contest['name'].split()
+                party = contest_parts[-3]
+                territory = ' '.join(contest_parts[:-3])
+                contest_date = PRESIDENTIAL_PRIMARY_METADATA[contest['year']]['SCHEDULE'][party][territory]
+                dropout_dates = PRESIDENTIAL_PRIMARY_METADATA[contest['year']]['DROPOUTS'][party]
 
                 contest['candidates'] = list(
                     filter(lambda candidate: dropout_dates.get(candidate['name'], '9') > contest_date, contest['candidates'])

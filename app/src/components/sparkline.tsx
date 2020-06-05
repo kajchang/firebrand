@@ -12,7 +12,10 @@ const SparkLine = ({ className, contests }) => {
   const barWidth = chartWidth / contests.length;
 
   return (
-    <svg version='1.1' height={ chartHeight } width={ chartWidth } className={ className }>
+    <svg
+      version='1.1' width={ chartWidth } height={ chartHeight }
+      viewBox={ `0 0 ${ chartWidth } ${ chartHeight }` } className={ className }
+    >
       {
         contests.map((contest, idx) => (
           <g
@@ -21,7 +24,7 @@ const SparkLine = ({ className, contests }) => {
           >
             <rect
               fill='currentColor'
-              stroke='currentColor'
+              stroke='none'
               height={ (contest.rating.mu - floorRating) / (peakRating - floorRating) * chartHeight }
               y={ chartHeight - (contest.rating.mu - floorRating) / (peakRating - floorRating) * chartHeight }
               width={ barWidth }
