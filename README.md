@@ -8,12 +8,16 @@ This website displays results from the [Trueskill](https://trueskill.org) algori
 
 Gathering comprehensive, high-quality data is the hardest element of the project.
 
-Most of the data was collected semi-automatically from these sources:
+All of the data is collected semi-automatically from these sources with minimal editing:
 
-[Ballotpedia](https://ballotpedia.org)
-
-[Wikipedia](https://www.wikipedia.org)
-
-[Dave Leip's Presidential Election Atlas](https://uselectionatlas.org)
+- [Ballotpedia](https://ballotpedia.org)
+- [Wikipedia](https://www.wikipedia.org)
+- [Dave Leip's Presidential Election Atlas](https://uselectionatlas.org)
 
 I also recently found a high-quality data source, [Our Campaigns](https://www.ourcampaigns.com), that I'm going to look into using to extend and replace some low-quality data.
+
+Other relevant resources I ended up not using:
+
+- [MIT Election Lab](https://electionlab.mit.edu/)
+- [FEC Election Results](https://transition.fec.gov/pubrec/electionresults.shtml)
+- [The OpenElections Project](https://github.com/openelections)
