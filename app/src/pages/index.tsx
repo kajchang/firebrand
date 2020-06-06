@@ -53,14 +53,14 @@ const HomePage: React.FunctionComponent<HomePageProps> = ({ topPoliticians }) =>
         placeholder='Search...' value={ search }
         onChange={ e => setSearch(e.target.value) }
       />
-      <div className='font-big-noodle w-5/6 my-5'>
+      <div className='text-xl md:text-2xl font-big-noodle w-5/6 my-5'>
         <ul>
           {
             displayedResults.map((politician, idx) => (
               <li className={ `${ idx == 0 ? 'rounded-t-lg' : '' } ${ idx == displayedResults.length - 1 ? 'rounded-b-lg' : '' } bg-${ politician.ranked ? 'gray-100' : 'red-300' }` }>
                 <Link key={ idx } href={ `/politician/${ politician.name }` }>
                   <a>
-                    <div className={ `flex flex-row items-center rounded-lg hover:bg-${ politician.ranked ? 'gray-300' : 'red-400' } cursor-pointer text-2xl p-3` }>
+                    <div className={ `flex flex-row items-center rounded-lg hover:bg-${ politician.ranked ? 'gray-300' : 'red-400' } cursor-pointer p-3` }>
                       { politician.ranked ? politician.ranking : '???' }.
                       <SparkLine className='mx-2' contests={ politician.contests }/>
                       <Rating rating={ politician.rating.mu }/>
@@ -76,7 +76,7 @@ const HomePage: React.FunctionComponent<HomePageProps> = ({ topPoliticians }) =>
           }
         </ul>
       </div>
-      <div className='flex flex-row justify-around font-big-noodle w-3/4 mb-5'>
+      <div className='flex flex-row justify-around text-md md:text-lg text-center font-big-noodle w-full mb-5'>
         <span>* Ratings are technically calculated using Trueskill, not ELO</span>
         <span>** Ratings are purely for entertainment purposes</span>
       </div>
