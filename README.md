@@ -1,8 +1,23 @@
 ## firebrand - ELO* Rankings for U.S. Politicians
 
-![screenshot](https://github.com/kajchang/firebrand/raw/master/assets/screenshot.png)
+<p align="center">
+	<img src="https://github.com/kajchang/firebrand/raw/master/assets/screenshot.png" height="350"/>
+</p>
 
 This website displays results from the [Trueskill](https://trueskill.org) algorithm on historical American election returns.
+
+### Data Status Tracker
+
+**Presidential Elections** - 1789-2016 (complete)
+**Presidential Primaries** - 1992-2020 (complete, verified)
+
+**Congressional Elections** - complete histories for most recent and current members of Congress
+
+**Gubernatorial Elections** - complete histories for most recent and current Governors
+**Other State Executive Elections** - spotty
+**State Legislative Elections** - 2000-2020 (complete, unverified)
+
+**Municipal / Countywide / School Board Elections** - spotty at best
 
 ### Data Sources
 
