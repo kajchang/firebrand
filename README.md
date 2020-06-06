@@ -8,22 +8,15 @@
 
 ### Data Status Tracker
 
-**Presidential Elections** - 1789-2016 (complete)
+- **Presidential Elections** - 1789-2016 (complete)
+- **Presidential Primaries** - 1992-2020 (complete, verified)
+- **Congressional Elections** - complete histories for most recent and current members of Congress
 
-**Presidential Primaries** - 1992-2020 (complete, verified)
+- **Gubernatorial Elections** - complete histories for most recent and current Governors
+- **Other State Executive Elections** - spotty
+- **State Legislative Elections** - 2000-2020 (complete, unverified)
 
-
-**Congressional Elections** - complete histories for most recent and current members of Congress
-
-
-**Gubernatorial Elections** - complete histories for most recent and current Governors
-
-**Other State Executive Elections** - spotty
-
-**State Legislative Elections** - 2000-2020 (complete, unverified)
-
-
-**Municipal / Countywide / School Board Elections** - spotty at best
+- **Municipal / Countywide / School Board Elections** - spotty at best
 
 ### Data Sources
 
