@@ -49,7 +49,7 @@ def get_order_of_contest(contest):
             all(candidate['votes'] is None and not candidate['won'] for candidate in contest['candidates']):
         return 0
     elif 'primary' in normalized_contest_name or 'caucus' in normalized_contest_name:
-        if 'presidential' in normalized_contest_name and \
+        if contest['year'] in PRESIDENTIAL_PRIMARY_METADATA and 'presidential' in normalized_contest_name and \
                 ('democratic' in normalized_contest_name or 'republican' in normalized_contest_name):
             contest_parts = contest['name'].split()
             party = contest_parts[-3]
@@ -116,7 +116,7 @@ def main():
             if len(contest['candidates']) == 0:
                 continue
 
-            if 'Presidential' in contest['name'] and\
+            if contest['year'] in PRESIDENTIAL_PRIMARY_METADATA and 'Presidential' in contest['name'] and\
                     ('Democratic' in contest['name'] or 'Republican' in contest['name']):
                 contest_parts = contest['name'].split()
                 party = contest_parts[-3]
