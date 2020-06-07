@@ -42,13 +42,13 @@ def get_order_of_contest(contest):
     is_special = 'special' in normalized_contest_name
 
     modifier = 3 if is_special else 0
-    max_normal_order = 3 + 3
+    max_normal_order = 3 * 2
 
     # Have contests that haven't occurred yet appear first
     if contest['year'] == datetime.now().year and \
             all(candidate['votes'] is None and not candidate['won'] for candidate in contest['candidates']):
         return 0
-    elif 'primary' in normalized_contest_name or 'caucus' in normalized_contest_name:
+    elif 'primar' in normalized_contest_name or 'caucus' in normalized_contest_name:
         if contest['year'] in PRESIDENTIAL_PRIMARY_METADATA and 'presidential' in normalized_contest_name and \
                 ('democratic' in normalized_contest_name or 'republican' in normalized_contest_name):
             contest_parts = contest['name'].split()

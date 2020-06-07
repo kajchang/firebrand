@@ -57,10 +57,10 @@ const HomePage: React.FunctionComponent<HomePageProps> = ({ topPoliticians }) =>
         <ul>
           {
             displayedResults.map((politician, idx) => (
-              <li className={ `${ idx == 0 ? 'rounded-t-lg' : '' } ${ idx == displayedResults.length - 1 ? 'rounded-b-lg' : '' } bg-${ politician.ranked ? 'gray-100' : 'red-300' }` }>
+              <li className={ `${ idx == 0 ? 'rounded-t-lg' : '' } ${ idx == displayedResults.length - 1 ? 'rounded-b-lg' : '' } ${ politician.ranked ? 'bg-gray-100' : 'bg-red-300' }` }>
                 <Link key={ idx } href={ `/politician/${ politician.name }` }>
                   <a>
-                    <div className={ `flex flex-row items-center rounded-lg hover:bg-${ politician.ranked ? 'gray-300' : 'red-400' } cursor-pointer p-3` }>
+                    <div className={ `flex flex-row items-center rounded-lg ${ politician.ranked ? 'hover:bg-gray-300' : 'hover:bg-red-400' } cursor-pointer p-3` }>
                       { politician.ranked ? politician.ranking : '???' }.
                       <SparkLine className='mx-2' contests={ politician.contests }/>
                       <Rating rating={ politician.rating.mu }/>
