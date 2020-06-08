@@ -123,7 +123,8 @@ def main():
     for year in range(start_year, CURRENT_YEAR + 1):
         contests_in_year = list(contests.find({'year': year, 'hidden': None}))
         for contest in sorted(contests_in_year, key=get_order_of_contest, reverse=True):
-            if len(contest['candidates']) == 0:
+            if len(contest['candidates']) == 0 or\
+                    all(candidate['votes'] is None and not candidate['won'] for candidate in contest['candidates']):
                 continue
 
             if contest['year'] in PRESIDENTIAL_PRIMARY_METADATA and 'Presidential' in contest['name'] and\

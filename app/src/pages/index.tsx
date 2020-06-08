@@ -58,10 +58,14 @@ const HomePage: React.FunctionComponent<HomePageProps> = ({ topPoliticians }) =>
               const excluded = politician.rating.low_confidence || politician.retired;
 
               return (
-                <li className={ `${ idx == 0 ? 'rounded-t-lg' : '' } ${ idx == displayedResults.length - 1 ? 'rounded-b-lg' : '' } ${ !politician.rating.low_confidence ? 'bg-gray-100' : 'bg-red-300' }` }>
+                <li
+                  className={ `${ idx == 0 ? 'rounded-t-lg' : '' } ${ idx == displayedResults.length - 1 ? 'rounded-b-lg' : '' } ${ !politician.rating.low_confidence ? 'bg-gray-100' : 'bg-red-300' }` }
+                >
                   <Link key={ idx } href={ `/politician/${ politician.name }` }>
                     <a>
-                      <div className={ `flex flex-row items-center rounded-lg ${ !politician.rating.low_confidence ? 'hover:bg-gray-300' : 'hover:bg-red-400' } cursor-pointer p-3` }>
+                      <div
+                        className={ `flex flex-row items-center rounded-lg ${ !politician.rating.low_confidence ? 'hover:bg-gray-300' : 'hover:bg-red-400' } cursor-pointer p-3` }
+                      >
                         { !excluded ? politician.ranking : (
                           politician.rating.low_confidence ? '???' : '——'
                         ) }.

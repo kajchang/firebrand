@@ -14,6 +14,66 @@ import { useRouter } from 'next/router';
 import { Contest, Politician } from '@/types';
 import { NextPageContext } from 'next';
 
+type ContestListItemProps = {
+  contest: Contest
+  ratingDelta: number
+};
+
+const ContestListItem:React.FunctionComponent<ContestListItemProps> = ({ contest, ratingDelta }) => {
+  const [open, setOpen] = React.useState(false);
+
+  return (
+    <li className='flex flex-col rounded-lg text-xl md:text-2xl p-3'>
+      <div className='flex flex-row items-center'>
+        <span className={ (ratingDelta > 0 ? 'text-green-500' : (ratingDelta == 0 ? 'text-gray-500' : 'text-red-500')) + ' mr-2' }>
+          { ratingDelta > 0 ? '+' : '' }{ Math.round(ratingDelta) }
+        </span>
+        <div onClick={ () => setOpen(!open) } className='flex flex-row items-center cursor-pointer'>
+          <span className={ `text-sm text-rotatable ${ open ? 'text-rotated-down' : '' } mr-1` }>▶</span> { contest.name }
+        </div>
+      </div>
+      {
+        open ? (
+          <div className='text-sm md:text-lg font-sans'>
+            <table className='table-fixed p-3'>
+              <thead className='text-center'>
+                <tr>
+                  <th colSpan={ 2 } className='border w-2/3 p-2'>Candidate</th>
+                  <th className='border w-1/3 px-4 py-2'>Votes</th>
+                </tr>
+              </thead>
+              <tbody>
+              {
+                contest.candidates.slice(0, 5).map((candidate, idx) => (
+                  <tr key={ idx }>
+                    <td className='border px-2 py-2' style={ { background: partyToColor(candidate.party) } }/>
+                    <td className='border px-4 py-2'>
+                      { candidate.name }
+                      { candidate.won ? <span className='text-green-500 ml-1'>✓</span> : null }
+                    </td>
+                    <td className='border px-4 py-2'>{ candidate.votes != null ? candidate.votes.toLocaleString() : '—' }</td>
+                  </tr>
+                ))
+              }
+              </tbody>
+            </table>
+            {
+              contest.source ? (
+                <a
+                  href={ contest.source } target='_blank' rel='noopener noreferrer'
+                  className='text-blue-500 hover:text-blue-700 font-sans'
+                >
+                  Source
+                </a>
+              ) : null
+            }
+          </div>
+        ) : null
+      }
+    </li>
+  );
+}
+
 type PoliticianWithDetailedContests = Politician & { full_contests: Contest[] };
 
 type PoliticianPageProps = {
@@ -22,20 +82,12 @@ type PoliticianPageProps = {
 };
 
 const PoliticianPage: React.FunctionComponent<PoliticianPageProps> = ({ err, politician }) => {
-  const router = useRouter();
-  const { name } = router.query;
-
   if (err) {
     return <Error statusCode={ err.statusCode }/>
   }
 
-  function styleRatingDelta(ratingDelta) {
-    return (
-      <span className={ (ratingDelta > 0 ? 'text-green-500' : (ratingDelta == 0 ? 'text-gray-500' : 'text-red-500')) + ' mr-2' }>
-        { ratingDelta > 0 ? '+' : '' }{ Math.round(ratingDelta) }
-      </span>
-    );
-  }
+  const router = useRouter();
+  const { name } = router.query;
 
   const excluded = politician.rating.low_confidence || politician.retired;
 
@@ -85,13 +137,13 @@ const PoliticianPage: React.FunctionComponent<PoliticianPageProps> = ({ err, pol
                   <div className='rounded-lg bg-gray-100'>
                     {
                       contests.reverse().map((contest, idx) => (
-                        <li key={ idx } className='flex flex-row items-center rounded-lg text-xl md:text-2xl p-3'>
-                          { styleRatingDelta(
+                        <ContestListItem
+                          key={ idx } contest={ contest }
+                          ratingDelta={
                             politician.rating_history[politician.full_contests.indexOf(contest) + 1].rating.mu -
                             politician.rating_history[politician.full_contests.indexOf(contest)].rating.mu
-                          ) }
-                          { contest.name }
-                        </li>
+                          }
+                        />
                       ))
                     }
                   </div>

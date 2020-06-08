@@ -45,7 +45,16 @@
     @apply text-orange-900;
 }
 
+.text-rotatable {
+    transition: transform 0.3s;
+    @apply select-none leading-none;
+}
+
 @tailwind utilities;
+
+.text-rotated-down {
+    transform: rotate(90deg);
+}
 
 @keyframes text-shadow-pulse-darkgoldenrod {
     from {

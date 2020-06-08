@@ -10,6 +10,7 @@ export type Contest = {
   _id: string
   name: string
   year: number
+  source: string
   candidates: Candidate[]
 }
 
