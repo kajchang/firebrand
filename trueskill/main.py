@@ -166,7 +166,7 @@ def main():
                 results_input.append(0)
 
             for (idx, candidate) in enumerate(contest['candidates']):
-                if any(term in candidate['name'].lower() for term in ['scatter', 'uncommitted']) or \
+                if any(term in candidate['name'].lower() for term in ['scatter', 'uncommitted', 'write-in']) or \
                         candidate['name'].lower() in ['', 'n/a', 'other', 'libertarian', 'nobody', 'no', 'blank',
                                                       'null', 'void', 'miscellaneous', '--', 'other (+)', 'unallocated']:
                     continue

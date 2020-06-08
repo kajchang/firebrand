@@ -9,11 +9,9 @@ import Rating from '@/components/rating';
 
 import { connectToDatabase } from '@/utils/db';
 import { partyToColor } from '@/utils/helpers';
-import { useRouter } from 'next/router';
 
 import { Contest, Politician } from '@/types';
 import { NextPageContext } from 'next';
-import politicians from "../api/politicians";
 
 type ContestListItemProps = {
   politician: Politician
@@ -23,6 +21,8 @@ type ContestListItemProps = {
 
 const ContestListItem:React.FunctionComponent<ContestListItemProps> = ({ politician, contest, ratingDelta }) => {
   const [open, setOpen] = React.useState(false);
+
+  const candidates = contest.candidates.sort((a, b) => b.votes - a.votes);
 
   return (
     <li className='flex flex-col rounded-lg text-xl md:text-2xl p-3'>
@@ -48,8 +48,8 @@ const ContestListItem:React.FunctionComponent<ContestListItemProps> = ({ politic
               </thead>
               <tbody className='font-serif'>
               {
-                contest.candidates
-                  .slice(0, Math.max(5, contest.candidates.findIndex(candidate => candidate.name.includes(politician.name)) + 1))
+                candidates
+                  .slice(0, Math.max(5, candidates.findIndex(candidate => candidate.name.includes(politician.name)) + 1))
                   .map((candidate, idx) => (
                     <tr key={ idx } className='border-t'>
                       <td className='px-2 py-2' style={ { background: partyToColor(candidate.party) } }/>
@@ -67,7 +67,7 @@ const ContestListItem:React.FunctionComponent<ContestListItemProps> = ({ politic
               contest.source ? (
                 <a
                   href={ contest.source } target='_blank' rel='noopener noreferrer'
-                  className='text-blue-500 hover:text-blue-700 font-sans font-serif'
+                  className='text-blue-500 hover:text-blue-700 font-sans font-sans'
                 >
                   Source
                 </a>
