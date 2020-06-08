@@ -26,6 +26,7 @@ All of the data is collected semi-automatically from these sources with minimal 
 
 - [Ballotpedia](https://ballotpedia.org)
 - [Wikipedia](https://www.wikipedia.org)
+- [New York Times](https://www.nytimes.com/elections/2008/primaries/results/votes/index.html)
 - [Dave Leip's Presidential Election Atlas](https://uselectionatlas.org)
 
 I also recently found a high-quality data source, [Our Campaigns](https://www.ourcampaigns.com), that I'm going to look into using to extend and replace some low-quality data.

@@ -13,13 +13,15 @@ import { useRouter } from 'next/router';
 
 import { Contest, Politician } from '@/types';
 import { NextPageContext } from 'next';
+import politicians from "../api/politicians";
 
 type ContestListItemProps = {
+  politician: Politician
   contest: Contest
   ratingDelta: number
 };
 
-const ContestListItem:React.FunctionComponent<ContestListItemProps> = ({ contest, ratingDelta }) => {
+const ContestListItem:React.FunctionComponent<ContestListItemProps> = ({ politician, contest, ratingDelta }) => {
   const [open, setOpen] = React.useState(false);
 
   return (
@@ -36,26 +38,28 @@ const ContestListItem:React.FunctionComponent<ContestListItemProps> = ({ contest
       </div>
       {
         open ? (
-          <div className='text-sm md:text-lg font-sans'>
+          <div className='text-sm md:text-lg'>
             <table className='table-fixed p-3'>
-              <thead className='text-center'>
-                <tr>
-                  <th colSpan={ 2 } className='border w-2/3 p-2'>Candidate</th>
-                  <th className='border w-1/3 px-4 py-2'>Votes</th>
+              <thead className='font-sans'>
+                <tr className='border-b-2 border-black'>
+                  <th colSpan={ 2 } className='font-normal w-2/3 px-8 py-2'>Candidate</th>
+                  <th className='font-normal w-1/3 px-4 py-2'>Votes</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className='font-serif'>
               {
-                contest.candidates.slice(0, 5).map((candidate, idx) => (
-                  <tr key={ idx }>
-                    <td className='border px-2 py-2' style={ { background: partyToColor(candidate.party) } }/>
-                    <td className='border px-4 py-2'>
-                      { candidate.name }
-                      { candidate.won ? <span className='text-green-500 ml-1'>✓</span> : null }
-                    </td>
-                    <td className='border px-4 py-2'>{ candidate.votes != null ? candidate.votes.toLocaleString() : '—' }</td>
-                  </tr>
-                ))
+                contest.candidates
+                  .slice(0, Math.max(5, contest.candidates.findIndex(candidate => candidate.name.includes(politician.name)) + 1))
+                  .map((candidate, idx) => (
+                    <tr key={ idx } className='border-t'>
+                      <td className='px-2 py-2' style={ { background: partyToColor(candidate.party) } }/>
+                      <td className='px-4 py-2'>
+                        { candidate.name }
+                        { candidate.won ? <span className='text-green-500 ml-1'>✓</span> : null }
+                      </td>
+                      <td className='px-4 py-2'>{ candidate.votes != null ? candidate.votes.toLocaleString() : '—' }</td>
+                    </tr>
+                  ))
               }
               </tbody>
             </table>
@@ -63,7 +67,7 @@ const ContestListItem:React.FunctionComponent<ContestListItemProps> = ({ contest
               contest.source ? (
                 <a
                   href={ contest.source } target='_blank' rel='noopener noreferrer'
-                  className='text-blue-500 hover:text-blue-700 font-sans'
+                  className='text-blue-500 hover:text-blue-700 font-sans font-serif'
                 >
                   Source
                 </a>
@@ -88,18 +92,15 @@ const PoliticianPage: React.FunctionComponent<PoliticianPageProps> = ({ err, pol
     return <Error statusCode={ err.statusCode }/>
   }
 
-  const router = useRouter();
-  const { name } = router.query;
-
   const excluded = politician.rating.low_confidence || politician.retired;
 
   return (
     <div className='flex flex-col items-center bg-gray-200 min-h-screen'>
       <Head>
-        <title>{ name }</title>
+        <title>{ politician.name }</title>
       </Head>
       <Header
-        headerChildren={ name as string }
+        headerChildren={ politician.name }
         tagLineChildren={ <div className='flex flex-col items-center'>
           { politician.party }
           <Rating rating={ politician.rating.mu }/>
@@ -140,7 +141,7 @@ const PoliticianPage: React.FunctionComponent<PoliticianPageProps> = ({ err, pol
                     {
                       contests.reverse().map((contest, idx) => (
                         <ContestListItem
-                          key={ idx } contest={ contest }
+                          key={ idx } politician={ politician } contest={ contest }
                           ratingDelta={
                             politician.rating_history[politician.full_contests.indexOf(contest) + 1].rating.mu -
                             politician.rating_history[politician.full_contests.indexOf(contest)].rating.mu
@@ -175,7 +176,7 @@ export async function getServerSideProps(context: NextPageContext) {
           'as': 'full_contests'
         }
       },
-      { $project: { '_id': 0, 'name': 0, 'full_contests': { 'date': 0 } } }
+      { $project: { '_id': 0, 'full_contests': { 'date': 0 } } }
     ])
     .toArray())[0];
 
