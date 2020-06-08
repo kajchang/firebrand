@@ -31,7 +31,7 @@ const PoliticianPage: React.FunctionComponent<PoliticianPageProps> = ({ err, pol
 
   function styleRatingDelta(ratingDelta) {
     return (
-      <span className={ 'text-' + (ratingDelta > 0 ? 'green' : (ratingDelta == 0 ? 'gray' : 'red')) + '-500 mr-2' }>
+      <span className={ (ratingDelta > 0 ? 'text-green-500' : (ratingDelta == 0 ? 'text-gray-500' : 'text-red-500')) + ' mr-2' }>
         { ratingDelta > 0 ? '+' : '' }{ Math.round(ratingDelta) }
       </span>
     );
