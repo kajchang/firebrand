@@ -167,8 +167,8 @@ def main():
 
             for (idx, candidate) in enumerate(contest['candidates']):
                 if any(term in candidate['name'].lower() for term in ['scatter', 'uncommitted', 'write-in']) or \
-                        candidate['name'].lower() in ['', 'n/a', 'other', 'libertarian', 'nobody', 'no', 'blank',
-                                                      'null', 'void', 'miscellaneous', '--', 'other (+)', 'unallocated']:
+                        candidate['name'].lower() in ['', 'n/a', 'other', 'libertarian', 'nobody', 'no', 'blank', 'others',
+                                                      'null', 'void', 'miscellaneous', '--', 'other (+)', 'unallocated', 'all others']:
                     continue
 
                 ticket = tuple(
