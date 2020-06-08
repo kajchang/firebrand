@@ -56,9 +56,10 @@ const PoliticianPage: React.FunctionComponent<PoliticianPageProps> = ({ err, pol
       {
         excluded ? (
             <div className='rounded-lg bg-red-300 text-center text-xl md:text-2xl font-big-noodle w-5/6 p-3 my-3'>
+              This politician is unranked because{' '}
               { politician.rating.low_confidence ? (
-                'This rating has a low confidence'
-              ) : (`This politician has not run since ${ politician.last_ran_in }`) } and is excluded from rankings
+                'this rating has a low confidence'
+              ) : (`they have not run since ${ politician.last_ran_in }`) }
             </div>
         ) : null
       }
@@ -84,7 +85,7 @@ const PoliticianPage: React.FunctionComponent<PoliticianPageProps> = ({ err, pol
                   <div className='rounded-lg bg-gray-100'>
                     {
                       contests.reverse().map((contest, idx) => (
-                        <li key={ idx } className='flex flex-row items-center rounded-lg text-2xl p-3'>
+                        <li key={ idx } className='flex flex-row items-center rounded-lg text-xl md:text-2xl p-3'>
                           { styleRatingDelta(
                             politician.rating_history[politician.full_contests.indexOf(contest) + 1].rating.mu -
                             politician.rating_history[politician.full_contests.indexOf(contest)].rating.mu
