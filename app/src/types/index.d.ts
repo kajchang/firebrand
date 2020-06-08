@@ -2,8 +2,8 @@ type Candidate = {
   name: string
   votes: number|null
   won: boolean
-  incumbent: boolean|null
-  party: string|null
+  incumbent: boolean
+  party: string
 }
 
 export type Contest = {
@@ -19,16 +19,17 @@ type Rating = {
 }
 
 type RatedContest = {
-  _id: string
+  contest_id: string
   rating: Rating
 }
 
 export type Politician = {
   _id: string
   name: string
-  rating: Rating
+  rating: Rating & { low_confidence: boolean }
   ranking: number
-  ranked: boolean
+  last_ran_in: number
+  retired: boolean
   party: string
-  contests: RatedContest[]
+  rating_history: RatedContest[]
 }

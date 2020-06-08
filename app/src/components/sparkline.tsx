@@ -3,8 +3,8 @@ import React from 'react';
 import { RatedContest } from '@/types';
 
 type SparkLineProps = {
-  className: string;
-  contests: RatedContest[];
+  className: string
+  contests: RatedContest[]
 };
 
 const SparkLine: React.FunctionComponent<SparkLineProps> = ({ className, contests }) => {

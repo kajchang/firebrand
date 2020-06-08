@@ -14,7 +14,7 @@ import { useRouter } from 'next/router';
 import { Contest, Politician } from '@/types';
 import { NextPageContext } from 'next';
 
-type PoliticianWithDetailedContests = Politician & { fullContests: Contest[] };
+type PoliticianWithDetailedContests = Politician & { full_contests: Contest[] };
 
 type PoliticianPageProps = {
   err: { statusCode: number }
@@ -37,6 +37,8 @@ const PoliticianPage: React.FunctionComponent<PoliticianPageProps> = ({ err, pol
     );
   }
 
+  const excluded = politician.rating.low_confidence || politician.retired;
+
   return (
     <div className='flex flex-col items-center bg-gray-200 min-h-screen'>
       <Head>
@@ -52,15 +54,22 @@ const PoliticianPage: React.FunctionComponent<PoliticianPageProps> = ({ err, pol
         topRowChildren={ <Link href='/'><a className='text-white font-bold ml-3'>← Back</a></Link> }
       />
       {
-        !politician.ranked ? <div className='rounded-lg bg-red-300 text-center text-xl md:text-2xl font-big-noodle w-5/6 p-3 my-3'>
-          This rating has a low confidence and is excluded from rankings
-        </div> : null
+        excluded ? (
+            <div className='rounded-lg bg-red-300 text-center text-xl md:text-2xl font-big-noodle w-5/6 p-3 my-3'>
+              { politician.rating.low_confidence ? (
+                'This rating has a low confidence'
+              ) : (`This politician has not run since ${ politician.last_ran_in }`) } and is excluded from rankings
+            </div>
+        ) : null
       }
       <div className='font-big-noodle w-5/6 mb-5'>
         <ul>
           {
-            Object.entries(politician.fullContests
-              .sort((a, b) => politician.contests.findIndex(contest => contest._id == a._id) - politician.contests.findIndex(contest => contest._id == b._id))
+            Object.entries(politician.full_contests
+              .sort((a, b) =>
+                politician.rating_history.findIndex(contest => contest.contest_id == a._id) -
+                politician.rating_history.findIndex(contest => contest.contest_id == b._id)
+              )
               .reduce((acc: object, cur): object => {
                 if (!Object.keys(acc).includes(String(cur.year))) {
                   acc[String(cur.year)] = [];
@@ -77,8 +86,8 @@ const PoliticianPage: React.FunctionComponent<PoliticianPageProps> = ({ err, pol
                       contests.reverse().map((contest, idx) => (
                         <li key={ idx } className='flex flex-row items-center rounded-lg text-2xl p-3'>
                           { styleRatingDelta(
-                            politician.contests[politician.fullContests.indexOf(contest) + 1].rating.mu -
-                            politician.contests[politician.fullContests.indexOf(contest)].rating.mu
+                            politician.rating_history[politician.full_contests.indexOf(contest) + 1].rating.mu -
+                            politician.rating_history[politician.full_contests.indexOf(contest)].rating.mu
                           ) }
                           { contest.name }
                         </li>
@@ -106,12 +115,12 @@ export async function getServerSideProps(context: NextPageContext) {
       {
         $lookup: {
           'from': 'contests',
-          localField: 'contests._id',
+          localField: 'rating_history.contest_id',
           foreignField: '_id',
-          'as': 'fullContests'
+          'as': 'full_contests'
         }
       },
-      { $project: { 'name': 0, '_id': 0, 'fullContests': { 'date': 0 } } }
+      { $project: { '_id': 0, 'name': 0, 'full_contests': { 'date': 0 } } }
     ])
     .toArray())[0];
 
@@ -126,12 +135,12 @@ export async function getServerSideProps(context: NextPageContext) {
     }
   }
 
-  politician.contests.forEach(contest => {
-    if (contest._id != null) {
-      contest._id = contest._id.toString();
+  politician.rating_history.forEach(entry => {
+    if (entry.contest_id != null) {
+      entry.contest_id = entry.contest_id.toString();
     }
   });
-  politician.fullContests.forEach(contest => {
+  politician.full_contests.forEach(contest => {
     contest._id = contest._id.toString();
   });
 

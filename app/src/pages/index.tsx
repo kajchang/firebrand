@@ -5,17 +5,15 @@ import Link from 'next/link';
 
 import Header from '@/components/header';
 import Rating from '@/components/rating';
+import SparkLine from '@/components/sparkline';
 
 import { connectToDatabase } from '@/utils/db';
 import { partyToColor } from '@/utils/helpers';
 
-import { Politician, Contest } from '@/types';
-import SparkLine from "@/components/sparkline";
-
-type PoliticianWithLatestContest = Politician & { latestContest: Contest };
+import { Politician } from '@/types';
 
 type HomePageProps = {
-  topPoliticians: PoliticianWithLatestContest[]
+  topPoliticians: Politician[]
 };
 
 const HomePage: React.FunctionComponent<HomePageProps> = ({ topPoliticians }) => {
@@ -56,23 +54,29 @@ const HomePage: React.FunctionComponent<HomePageProps> = ({ topPoliticians }) =>
       <div className='text-xl md:text-2xl font-big-noodle w-5/6 my-5'>
         <ul>
           {
-            displayedResults.map((politician, idx) => (
-              <li className={ `${ idx == 0 ? 'rounded-t-lg' : '' } ${ idx == displayedResults.length - 1 ? 'rounded-b-lg' : '' } ${ politician.ranked ? 'bg-gray-100' : 'bg-red-300' }` }>
-                <Link key={ idx } href={ `/politician/${ politician.name }` }>
-                  <a>
-                    <div className={ `flex flex-row items-center rounded-lg ${ politician.ranked ? 'hover:bg-gray-300' : 'hover:bg-red-400' } cursor-pointer p-3` }>
-                      { politician.ranked ? politician.ranking : '???' }.
-                      <SparkLine className='mx-2' contests={ politician.contests }/>
-                      <Rating rating={ politician.rating.mu }/>
-                      <div className='w-3 h-3 mx-2' style={
-                        { backgroundColor: partyToColor(politician.party) }
-                      }/>
-                      { politician.name }
-                    </div>
-                  </a>
-                </Link>
-              </li>
-            ))
+            displayedResults.map((politician, idx) => {
+              const excluded = politician.rating.low_confidence || politician.retired;
+
+              return (
+                <li className={ `${ idx == 0 ? 'rounded-t-lg' : '' } ${ idx == displayedResults.length - 1 ? 'rounded-b-lg' : '' } ${ !excluded ? 'bg-gray-100' : 'bg-red-300' }` }>
+                  <Link key={ idx } href={ `/politician/${ politician.name }` }>
+                    <a>
+                      <div className={ `flex flex-row items-center rounded-lg ${ !excluded ? 'hover:bg-gray-300' : 'hover:bg-red-400' } cursor-pointer p-3` }>
+                        { !excluded ? politician.ranking : (
+                          politician.rating.low_confidence ? '???' : '——'
+                        ) }.
+                        <SparkLine className='mx-2' contests={ politician.rating_history }/>
+                        <Rating rating={ politician.rating.mu }/>
+                        <div className='w-3 h-3 mx-2' style={
+                          { backgroundColor: partyToColor(politician.party) }
+                        }/>
+                        { politician.name }
+                      </div>
+                    </a>
+                  </Link>
+                </li>
+              );
+            })
           }
         </ul>
       </div>
@@ -92,7 +96,7 @@ export async function getServerSideProps() {
     .aggregate([
       { $sort: { 'ranking': 1 } },
       { $limit: 100 },
-      { $project: { '_id': 0, 'contests': { '_id': 0 } } }
+      { $project: { '_id': 0, 'rating_history': { 'contest_id': 0 } } }
     ])
     .toArray();
 

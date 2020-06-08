@@ -19,6 +19,9 @@ politicians = db['politicians']
 
 # Setup rating settings
 
+CURRENT_YEAR = datetime.now().year
+YEARS_UNTIL_EXCLUDED = 12
+
 STARTING_RATING = 1500
 MAX_SIGMA = STARTING_RATING / 3 / 2
 trueskill.setup(STARTING_RATING, STARTING_RATING / 3, STARTING_RATING / 3 / 2, STARTING_RATING / 3 / 100)
@@ -28,7 +31,7 @@ trueskill.setup(STARTING_RATING, STARTING_RATING / 3, STARTING_RATING / 3 / 2, S
 METADATA_PATH = os.path.join(os.path.dirname(__file__), 'data', 'metadata')
 PRESIDENTIAL_PRIMARY_METADATA = {}
 METADATA_START_YEAR = 1992
-for year in range(METADATA_START_YEAR, datetime.now().year + 1, 4):
+for year in range(METADATA_START_YEAR, CURRENT_YEAR + 1, 4):
     PRESIDENTIAL_PRIMARY_METADATA[year] = {}
     with open(os.path.join(METADATA_PATH, '{0}_primary_schedule.json'.format(year))) as primary_schedule_file:
         PRESIDENTIAL_PRIMARY_METADATA[year]['SCHEDULE'] = json.load(primary_schedule_file, object_pairs_hook=OrderedDict)
@@ -96,21 +99,28 @@ get 2000 presidential primary data
 def main():
     ratings = {}
 
-    def safe_get_politician(name, party):
+    def safe_get_politician(name, context):
+        party = context['candidate']['party']
+
         if ratings.get(name) is None:
-            ratings[name] = {
+            politician = {
                 'name': name,
-                'contests': [{'_id': None, 'rating': rating_to_dict(trueskill.Rating())}],
-                'party': party
+                'rating_history': [{'contest_id': None, 'rating': rating_to_dict(trueskill.Rating())}],
+                'party': party,
+                'last_ran_in': context['contest']['year']
             }
-        politician = ratings[name]
-        if party != 'Unknown':
-            politician['party'] = party
+            ratings[name] = politician
+        else:
+            politician = ratings[name]
+            if party != 'Unknown':
+                politician['party'] = party
+            politician['last_ran_in'] = context['contest']['year']
+
         return politician
 
     start_year = min(*contests.distinct('year'))
 
-    for year in range(start_year, datetime.now().year + 1):
+    for year in range(start_year, CURRENT_YEAR + 1):
         contests_in_year = list(contests.find({'year': year, 'hidden': None}))
         for contest in sorted(contests_in_year, key=get_order_of_contest, reverse=True):
             if len(contest['candidates']) == 0:
@@ -160,10 +170,13 @@ def main():
                                                       'null', 'void', 'miscellaneous', '--', 'other (+)', 'unallocated']:
                     continue
 
-                ticket = tuple(safe_get_politician(name.strip(), candidate['party']) for name in split_candidate_name(candidate['name']))
+                ticket = tuple(
+                    safe_get_politician(name.strip(), {'contest': contest, 'candidate': candidate})
+                    for name in split_candidate_name(candidate['name'])
+                )
 
                 current_rating_input = tuple(
-                    rating_from_dict(candidate['contests'][-1]['rating']) for candidate in ticket
+                    rating_from_dict(candidate['rating_history'][-1]['rating']) for candidate in ticket
                 )
 
                 if candidate['won']:
@@ -186,9 +199,9 @@ def main():
                     not votes_recorded and not any(candidate['won'] for candidate in contest['candidates'])):
                 for ticket in tickets:
                     for candidate in ticket:
-                        candidate['contests'].append({
-                            '_id': contest['_id'],
-                            'rating': candidate['contests'][-1]['rating']
+                        candidate['rating_history'].append({
+                            'contest_id': contest['_id'],
+                            'rating': candidate['rating_history'][-1]['rating']
                         })
                 continue
 
@@ -201,26 +214,33 @@ def main():
 
             for (ticket, output) in zip(tickets, outputs):
                 for (candidate, rating) in zip(ticket, output):
-                    candidate['contests'].append({
-                        '_id': contest['_id'],
+                    candidate['rating_history'].append({
+                        'contest_id': contest['_id'],
                         'rating': rating_to_dict(rating)
                     })
 
     ranking = 1
     excluded_ranking = len(ratings)
-    for (idx, candidate) in enumerate(
-            sorted(ratings.values(), key=lambda candidate: candidate['contests'][-1]['rating']['mu'], reverse=True)):
+    for (idx, politician) in enumerate(
+            sorted(ratings.values(), key=lambda candidate: candidate['rating_history'][-1]['rating']['mu'], reverse=True)):
         # Pre-calculate derived fields
-        candidate['rating'] = candidate['contests'][-1]['rating']
-        if candidate['rating']['sigma'] < MAX_SIGMA:
-            candidate['ranking'] = ranking
-            candidate['ranked'] = True
-            ranking += 1
+        politician['rating'] = politician['rating_history'][-1]['rating']
+        politician['rating']['low_confidence'] = False
+        politician['retired'] = False
+        if politician['rating']['sigma'] > MAX_SIGMA:
+            # Hide low confidence politicians from rankings
+            politician['ranking'] = excluded_ranking
+            politician['rating']['low_confidence'] = True
+            excluded_ranking += 1
+        elif politician['last_ran_in'] < CURRENT_YEAR - YEARS_UNTIL_EXCLUDED:
+            # Hide politicians that have not run in YEARS_UNTIL_EXCLUDED years
+            politician['ranking'] = excluded_ranking
+            politician['retired'] = True
+            excluded_ranking += 1
         else:
             # Hide low confidence politicians from rankings
-            candidate['ranking'] = excluded_ranking
-            candidate['ranked'] = False
-            excluded_ranking += 1
+            politician['ranking'] = ranking
+            ranking += 1
 
     return ratings
 
