@@ -47,7 +47,7 @@
 
 .text-rotatable {
     transition: transform 0.3s;
-    @apply select-none leading-none;
+    @apply leading-none;
 }
 
 @tailwind utilities;

@@ -28,7 +28,7 @@ const ContestListItem:React.FunctionComponent<ContestListItemProps> = ({ contest
         <span className={ (ratingDelta > 0 ? 'text-green-500' : (ratingDelta == 0 ? 'text-gray-500' : 'text-red-500')) + ' mr-2' }>
           { ratingDelta > 0 ? '+' : '' }{ Math.round(ratingDelta) }
         </span>
-        <div onClick={ () => setOpen(!open) } className='flex flex-row items-center cursor-pointer'>
+        <div onClick={ () => setOpen(!open) } className='flex flex-row items-center cursor-pointer select-none'>
           <span className={ `text-sm text-rotatable ${ open ? 'text-rotated-down' : '' } mr-1` }>▶</span> { contest.name }
         </div>
       </div>
