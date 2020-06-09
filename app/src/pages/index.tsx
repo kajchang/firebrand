@@ -59,6 +59,7 @@ const HomePage: React.FunctionComponent<HomePageProps> = ({ topPoliticians }) =>
 
               return (
                 <li
+                  key={ idx }
                   className={ `${ idx == 0 ? 'rounded-t-lg' : '' } ${ idx == displayedResults.length - 1 ? 'rounded-b-lg' : '' } ${ !politician.rating.low_confidence ? 'bg-gray-100' : 'bg-red-300' }` }
                 >
                   <Link key={ idx } href={ `/politician/${ politician.name }` }>
