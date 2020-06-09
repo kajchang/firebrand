@@ -1,1 +1,2 @@
 trueskill==0.4.5
+colorama==0.4.1

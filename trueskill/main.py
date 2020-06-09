@@ -10,6 +10,8 @@ import json
 
 import trueskill
 
+import colorama
+
 # Access MongoDB
 client = MongoClient('mongodb://localhost:27017/firebrand')
 db = client.get_database()
@@ -37,6 +39,10 @@ for year in range(METADATA_START_YEAR, CURRENT_YEAR + 1, 4):
         PRESIDENTIAL_PRIMARY_METADATA[year]['SCHEDULE'] = json.load(primary_schedule_file, object_pairs_hook=OrderedDict)
     with open(os.path.join(METADATA_PATH, '{0}_primary_dropout_dates.json'.format(year))) as primary_dropout_dates_file:
         PRESIDENTIAL_PRIMARY_METADATA[year]['DROPOUTS'] = json.load(primary_dropout_dates_file)
+
+
+# Setup colorama
+colorama.init()
 
 
 def get_order_of_contest(contest):
@@ -122,6 +128,8 @@ def main():
 
     for year in range(start_year, CURRENT_YEAR + 1):
         contests_in_year = list(contests.find({'year': year, 'hidden': None}))
+        if len(contests_in_year) > 0:
+            print(colorama.Fore.YELLOW + 'Found ' + str(len(contests_in_year)) + ' contests in ' + str(year))
         for contest in sorted(contests_in_year, key=get_order_of_contest, reverse=True):
             if len(contest['candidates']) == 0 or\
                     all(candidate['votes'] is None and not candidate['won'] for candidate in contest['candidates']):
@@ -220,6 +228,7 @@ def main():
                         'rating': rating_to_dict(rating)
                     })
 
+    print(colorama.Fore.GREEN + 'Calculated ratings for ' + str(len(ratings)) + ' politicians')
     ranking = 1
     excluded_ranking = len(ratings)
     for (idx, politician) in enumerate(
@@ -242,6 +251,8 @@ def main():
             # Hide low confidence politicians from rankings
             politician['ranking'] = ranking
             ranking += 1
+
+    print(colorama.Fore.RESET)
 
     return ratings
 
