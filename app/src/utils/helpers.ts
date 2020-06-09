@@ -6,7 +6,11 @@ export function partyToColor(party: string): string {
     'Green': '#508c1b'
   };
 
-  const partyParts = party.split(/\s+/);
-  const partyName = partyParts.slice(0, partyParts.length - 1).join(' ');
-  return COLOR_MAP[partyName] || '#d3d3d3';
+  for (let [partyId, color] of Object.entries(COLOR_MAP)) {
+    if (new RegExp(partyId, 'g').test(party)) {
+      return color;
+    }
+  }
+
+  return '#d3d3d3';
 }
