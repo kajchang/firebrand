@@ -9,6 +9,7 @@ import Rating from '@/components/rating';
 
 import { connectToDatabase } from '@/utils/db';
 import { partyToColor } from '@/utils/helpers';
+import { isWebUri } from 'valid-url';
 
 import { Contest, Politician } from '@/types';
 import { NextPageContext } from 'next';
@@ -63,16 +64,20 @@ const ContestListItem:React.FunctionComponent<ContestListItemProps> = ({ politic
               }
               </tbody>
             </table>
-            {
-              contest.source ? (
-                <a
-                  href={ contest.source } target='_blank' rel='noopener noreferrer'
-                  className='text-blue-500 hover:text-blue-700 font-sans font-sans'
-                >
-                  Source
-                </a>
-              ) : null
-            }
+            { contest.source ? (
+              <span className='font-sans'>
+                {
+                  isWebUri(contest.source) ? (
+                    <a
+                      href={ contest.source } target='_blank' rel='noopener noreferrer'
+                      className='text-blue-500 hover:text-blue-700 font-sans font-sans'
+                    >
+                      Source: { (new URL(contest.source)).hostname }
+                    </a>
+                  ) : `Source: ${ contest.source }`
+                }
+              </span>
+            ) : null }
           </div>
         ) : null
       }

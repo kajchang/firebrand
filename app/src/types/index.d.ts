@@ -11,6 +11,7 @@ export type Contest = {
   name: string
   date: string
   candidates: Candidate[]
+  source: string
 }
 
 type Rating = {
