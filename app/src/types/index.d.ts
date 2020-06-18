@@ -7,10 +7,9 @@ type Candidate = {
 }
 
 export type Contest = {
-  _id: string
+  _id: number
   name: string
-  year: number
-  source: string
+  date: string
   candidates: Candidate[]
 }
 
@@ -20,7 +19,7 @@ type Rating = {
 }
 
 type RatedContest = {
-  contest_id: string
+  contest_id: number
   rating: Rating
 }
 

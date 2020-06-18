@@ -127,10 +127,11 @@ const PoliticianPage: React.FunctionComponent<PoliticianPageProps> = ({ err, pol
                 politician.rating_history.findIndex(contest => contest.contest_id == b._id)
               )
               .reduce((acc: object, cur): object => {
-                if (!Object.keys(acc).includes(String(cur.year))) {
-                  acc[String(cur.year)] = [];
+                const constest_year = new Date(cur.date).getFullYear();
+                if (!Object.keys(acc).includes(String(constest_year))) {
+                  acc[String(constest_year)] = [];
                 }
-                acc[String(cur.year)].push(cur);
+                acc[String(constest_year)].push(cur);
                 return acc;
               }, {}))
               .sort((a, b) => Number(b[0]) - Number(a[0]))
@@ -176,7 +177,7 @@ export async function getServerSideProps(context: NextPageContext) {
           'as': 'full_contests'
         }
       },
-      { $project: { '_id': 0, 'full_contests': { 'date': 0 } } }
+      { $project: { '_id': 0 } }
     ])
     .toArray())[0];
 
@@ -191,13 +192,8 @@ export async function getServerSideProps(context: NextPageContext) {
     }
   }
 
-  politician.rating_history.forEach(entry => {
-    if (entry.contest_id != null) {
-      entry.contest_id = entry.contest_id.toString();
-    }
-  });
   politician.full_contests.forEach(contest => {
-    contest._id = contest._id.toString();
+    contest.date = contest.date.toISOString();
   });
 
   return {
