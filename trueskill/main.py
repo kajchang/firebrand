@@ -61,7 +61,7 @@ def main():
         for (idx, candidate) in enumerate(sorted(contest['candidates'], key=lambda candidate: candidate['votes'], reverse=True)):
             if not is_one_shot and total_votes > 0 and len(contest['candidates']) > 2 and (candidate['votes'] / total_votes) < 0.01:
                 break
-            if candidate['party'] == 'Write-In':
+            if candidate['party'] == 'Write-In' or candidate['name'].startswith('No ') or candidate['name'] in ['Uncommitted']:
                 continue
             if politicians.get(candidate['_id']) is None:
                 politicians[candidate['_id']] = {

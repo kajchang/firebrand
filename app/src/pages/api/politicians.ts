@@ -19,7 +19,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         'name': { $regex: new RegExp((req.query.search as string).replace(/[-[\]/{}()*+?.\\^$|]/g, '\\$&'), 'gi') }
       } },
       { $limit: 100 },
-      { $project: { '_id': 0, 'rating_history': { 'contest_id': 0 } } }
+      { $project: { 'rating_history': { 'contest_id': 0 } } }
     ])
     .toArray();
 

@@ -8,7 +8,6 @@ import Header from '@/components/header';
 import Rating from '@/components/rating';
 
 import { connectToDatabase } from '@/utils/db';
-import { partyToColor } from '@/utils/helpers';
 import { isWebUri } from 'valid-url';
 
 import { Contest, Politician } from '@/types';
@@ -53,31 +52,42 @@ const ContestListItem:React.FunctionComponent<ContestListItemProps> = ({ politic
                   .slice(0, Math.max(5, candidates.findIndex(candidate => candidate.name.includes(politician.name)) + 1))
                   .map((candidate, idx) => (
                     <tr key={ idx } className='border-t'>
-                      <td className='px-2 py-2' style={ { background: partyToColor(candidate.party) } }/>
+                      <td className='px-2 py-2' style={ { background: candidate.party.color } }/>
                       <td className='px-4 py-2'>
                         { candidate.name }
                         { candidate.won ? <span className='text-green-500 ml-1'>✓</span> : null }
                       </td>
-                      <td className='px-4 py-2'>{ candidate.votes != null ? candidate.votes.toLocaleString() : '—' }</td>
+                      <td className='px-4 py-2'>{ candidate.votes.toLocaleString() }</td>
                     </tr>
                   ))
               }
               </tbody>
             </table>
-            { contest.source ? (
-              <span className='font-sans'>
-                {
-                  isWebUri(contest.source) ? (
-                    <a
-                      href={ contest.source } target='_blank' rel='noopener noreferrer'
-                      className='text-blue-500 hover:text-blue-700 font-sans font-sans'
-                    >
-                      Source: { (new URL(contest.source)).hostname }
-                    </a>
-                  ) : `Source: ${ contest.source }`
-                }
-              </span>
-            ) : null }
+            <span className='font-sans text-sm'>
+              { contest.source ? (
+                <>
+                  Primary Source:{ ' ' }
+                  {
+                    isWebUri(contest.source) ? (
+                      <a
+                        href={ contest.source } target='_blank' rel='noopener noreferrer'
+                        className='text-link'
+                      >
+                        { (new URL(contest.source)).hostname }
+                      </a>
+                    ) : <span dangerouslySetInnerHTML={ { __html: contest.source } }/>
+                  }
+                  <br/>Secondary{ ' ' }
+                </>
+              ) : null }
+              Source:{ ' ' }
+              <a
+                href={ `https://www.ourcampaigns.com/RaceDetail.html?RaceID=${ contest._id }` } target='_blank' rel='noopener noreferrer'
+                className='text-link'
+              >
+                ourcampaigns.com
+              </a>
+            </span>
           </div>
         ) : null
       }
@@ -107,10 +117,10 @@ const PoliticianPage: React.FunctionComponent<PoliticianPageProps> = ({ err, pol
       <Header
         headerChildren={ politician.name }
         tagLineChildren={ <div className='flex flex-col items-center'>
-          { politician.party }
+          { politician.party.name }
           <Rating rating={ politician.rating.mu }/>
         </div> }
-        tagLineProps={ { style: { color: partyToColor(politician.party) } } }
+        tagLineProps={ { style: { color: politician.party.color } } }
         topRowChildren={ <Link href='/'><a className='text-white font-bold ml-3'>← Back</a></Link> }
       />
       {
@@ -173,7 +183,7 @@ export async function getServerSideProps(context: NextPageContext) {
   const collection = await db.collection('politicians');
   const politician = (await collection
     .aggregate([
-      { $match: { 'name': query.name } },
+      { $match: { '_id': parseInt(query.id as string) } },
       {
         $lookup: {
           'from': 'contests',
@@ -184,7 +194,8 @@ export async function getServerSideProps(context: NextPageContext) {
       },
       { $project: { '_id': 0 } }
     ])
-    .toArray())[0];
+    .toArray()
+  )[0];
 
   if (typeof politician == 'undefined') {
     context.res.statusCode = 404;

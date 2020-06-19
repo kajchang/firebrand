@@ -20,36 +20,47 @@ race_members_col = ourcampaigns_db['RaceMember']
 contests_to_insert = []
 
 us_root = 1
-us_containers = [us_root]
 container_queue = [us_root, 188, 67720]
+valid_containers = list(container_queue)
 while len(container_queue) > 0:
     container = container_queue.pop()
     for child_container in container_col.find({'ParentLink': container}, projection={'ContainerID': True}):
-        us_containers.append(child_container['ContainerID'])
+        valid_containers.append(child_container['ContainerID'])
         container_queue.append(child_container['ContainerID'])
 
-valid_offices = ['President', 'Vice President', 'Senate', 'State Senate', 'State House', 'House of Representatives', 'Governor', 'Lieutenant Governor']
-valid_race_types = ['General Election', 'General Election - Requires Run-Off', 'Caucus', 'Primary Election', 'Primary Election Run-Off', 'Run-Off', 'Special Election', 'Special Election Primary']
+valid_offices = [585, 835, 699, 743, 739, 368, 345, 411]
+valid_race_types = ['General Election', 'General Election - Requires Run-Off', 'Caucus', 'Primary Election', 'Primary Election Run-Off', 'Run-Off', 'Special Election', 'Special Election Primary', 'Running Mate']
 
 for race in race_col.find({
-        '$and': [
-            { 'Title': { '$not': { '$regex': re.compile(r'selection', re.IGNORECASE) } } },
-            { 'Title': { '$nin': ['Rules and Administration Chairperson'] } }
-        ],
+        'Title': { '$not': { '$regex': re.compile(r'selection|convention|chairperson|primaries', re.IGNORECASE) } },
         '$or': [
             { 'ParentRace': 0 },
-            { '$and': [ { 'Office': 'President' }, { 'Type': { '$in': ['Caucus', 'Primary Election'] } } ] }
+            { '$and': [ { 'OfficeLink': 585 }, { 'Type': { '$in': ['Caucus', 'Primary Election'] } } ] },
         ],
-        'PollEnd': {'$type': 'date', '$lte': datetime.now()},
-        'Office': {'$in': valid_offices},
-        'Type': {'$in': valid_race_types },
+        'AllVotes': { '$ne': 538 },
+        'Type': { '$in': valid_race_types },
+        'OfficeLink': { '$in': valid_offices },
+        'PollEnd': { '$type': 'date', '$lte': datetime.now() },
         'Silly': '',
         'Description': { '$not': { '$regex': re.compile(r'non-binding', re.IGNORECASE) } },
-        'ParentContainer': { '$in': us_containers } 
+        'ParentContainer': { '$in': valid_containers } 
     }, projection={'Title': True, 'RaceID': True, 'PollEnd': True, 'DataSources': True}):
     contest = {'_id': race['RaceID'], 'name': race['Title'], 'date': race['PollEnd'], 'candidates': [], 'source': race['DataSources']}
-    for race_member in race_members_col.find({'RaceLink': race['RaceID']}, projection={'CandidateLink': True, 'PartyLink': True, 'Won': True, 'Incumbent': True, 'FinalVoteTotal': True}):
-        party = party_col.find_one({'PartyID': race_member['PartyLink']}, projection={'Name': True})
+    for race_member in race_members_col.find({
+        'RaceLink': race['RaceID'],
+        'WriteIn': '',
+        '$and': [
+            { '$or': [
+                { 'DropoutDate': { '$type': 'string' } },
+                { 'DropoutDate': { '$gt': race['PollEnd'] } }
+            ] },
+            { '$or': [
+                { 'EntryDate': { '$type': 'string' } },
+                { 'EntryDate': { '$lt': race['PollEnd'] } }
+            ] }
+        ]
+    }, projection={'CandidateLink': True, 'PartyLink': True, 'Won': True, 'Incumbent': True, 'FinalVoteTotal': True}):
+        party = party_col.find_one({'PartyID': race_member['PartyLink']}, projection={'Name': True, 'Color': True})
         if party is None:
             continue
         candidate = candidate_col.find_one({'CandidateID': race_member['CandidateLink']}, projection={'FirstName': True, 'LastName': True})
@@ -65,8 +76,8 @@ for race in race_col.find({
             candidate['LastName'] = candidate['LastName'][1:-1]
         contest['candidates'].append({
             '_id': race_member['CandidateLink'],
-            'name': candidate['FirstName'] + ' ' + candidate['LastName'],
-            'party': party['Name'],
+            'name': (candidate['FirstName'] + ' ' + candidate['LastName']).strip(),
+            'party': { 'name': party['Name'], 'color': party['Color'] },
             'incumbent': race_member['Incumbent'] == 'Y',
             'won': race_member['Won'] == 'Y',
             'votes': race_member['FinalVoteTotal']
