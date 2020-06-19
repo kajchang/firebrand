@@ -41,15 +41,12 @@ const HomePage: React.FunctionComponent<HomePageProps> = ({ topPoliticians }) =>
         <title>Firebrand - Power Ratings for U.S. Politicians</title>
       </Head>
       <Header headerChildren='Firebrand' tagLineChildren='Power Ratings for US Politicians' tagLineProps={ { className: 'text-flag-red' } }/>
-      <div className='rounded-lg bg-yellow-500 text-center text-xl md:text-2xl font-big-noodle w-5/6 p-3 my-5'>
-        Warning: Most data are automatically collected and may be inaccurate
-      </div>
       <input
-        className='rounded-lg text-2xl font-big-noodle w-5/6 px-5 py-3'
+        className='rounded-lg text-2xl font-big-noodle w-5/6 px-5 py-3 my-5'
         placeholder='Search...' value={ search }
         onChange={ e => setSearch(e.target.value) }
       />
-      <div className='text-xl md:text-2xl font-big-noodle w-5/6 my-5'>
+      <div className='text-xl md:text-2xl font-big-noodle w-5/6 mb-5'>
         <ul>
           {
             displayedResults.map((politician, idx) => {

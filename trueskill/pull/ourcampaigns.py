@@ -51,11 +51,11 @@ for race in race_col.find({
         'WriteIn': '',
         '$and': [
             { '$or': [
-                { 'DropoutDate': { '$type': 'string' } },
+                { 'DropoutDate': '0000-00-00' },
                 { 'DropoutDate': { '$gt': race['PollEnd'] } }
             ] },
             { '$or': [
-                { 'EntryDate': { '$type': 'string' } },
+                { 'EntryDate': '0000-00-00' },
                 { 'EntryDate': { '$lt': race['PollEnd'] } }
             ] }
         ]

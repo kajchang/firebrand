@@ -27,6 +27,15 @@ STARTING_RATING = 1500
 MAX_SIGMA = STARTING_RATING / 3 / 2
 trueskill.setup(STARTING_RATING, STARTING_RATING / 3, STARTING_RATING / 3 / 2, STARTING_RATING / 3 / 100, backend='mpmath')
 
+# Load Presidential Primary Metadata
+
+METADATA_PATH = os.path.join(os.path.dirname(__file__), 'data', 'metadata')
+PRESIDENTIAL_PRIMARY_METADATA = {}
+for year in range(1992, CURRENT_YEAR + 1, 4):
+    PRESIDENTIAL_PRIMARY_METADATA[year] = {}
+    with open(os.path.join(METADATA_PATH, '{0}_primary_dropout_dates.json'.format(year))) as primary_schedule_file:
+        PRESIDENTIAL_PRIMARY_METADATA[year]['DROPOUT_DATES'] = json.load(primary_schedule_file, object_pairs_hook=OrderedDict)
+
 # Setup colorama
 colorama.init()
 
@@ -53,15 +62,33 @@ def main():
         current_ratings_input = []
         results_input = []
 
-        winners_seen = 0
+        is_presidential_primary = 'US President' in contest['name'] and ('Primary' in contest['name'] or 'Caucus' in contest['name'])
         has_winner = len(list(filter(lambda candidate: candidate['won'], contest['candidates']))) > 0
         is_one_shot = all(candidate['votes'] == 1 or candidate['votes'] == 0 for candidate in contest['candidates'])
+
+        winners_seen = 0
         total_votes = sum(candidate['votes'] for candidate in contest['candidates'])
 
         for (idx, candidate) in enumerate(sorted(contest['candidates'], key=lambda candidate: candidate['votes'], reverse=True)):
-            if not is_one_shot and total_votes > 0 and len(contest['candidates']) > 2 and (candidate['votes'] / total_votes) < 0.01:
+            if (
+                not is_one_shot and
+                total_votes > 0 and
+                len(contest['candidates']) > 2 and
+                (candidate['votes'] / total_votes) < 0.01
+            ):
                 break
-            if candidate['party'] == 'Write-In' or candidate['name'].startswith('No ') or candidate['name'] in ['Uncommitted']:
+            if (
+                is_presidential_primary and
+                PRESIDENTIAL_PRIMARY_METADATA.get(contest['date'].year) is not None and
+                PRESIDENTIAL_PRIMARY_METADATA[contest['date'].year]['DROPOUT_DATES'].get(candidate['party']['name']) is not None and
+                PRESIDENTIAL_PRIMARY_METADATA[contest['date'].year]['DROPOUT_DATES'][candidate['party']['name']].get(candidate['name'], '9') < contest['date'].isoformat()
+            ):
+                continue
+            if (
+                candidate['party'] == 'Write-In' or
+                candidate['name'].startswith('No ') or
+                candidate['name'] in ['Uncommitted']
+            ):
                 continue
             if politicians.get(candidate['_id']) is None:
                 politicians[candidate['_id']] = {
