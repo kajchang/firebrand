@@ -1,17 +1,29 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
+import { VictoryArea, VictoryAxis, VictoryChart, VictoryLine, VictoryTheme } from 'victory';
 import Head from 'next/head';
 import Error from 'next/error';
 import Link from 'next/link';
 
 import Header from '@/components/header';
-import Rating from '@/components/rating';
+import Rating, { TIERS } from '@/components/rating';
 
 import { connectToDatabase } from '@/utils/db';
 import { isWebUri } from 'valid-url';
 
 import { Contest, Politician } from '@/types';
 import { NextPageContext } from 'next';
+import { VictoryLabelProps } from 'victory-core';
+
+const RatingChartLabel: React.FunctionComponent<VictoryLabelProps> = ({ x, y, text }) => {
+  return (
+    <g transform={`translate(${x - 60}, ${y - 15})`}>
+      <foreignObject width={ 100 } height={ 25 }>
+        <Rating rating={ parseInt(text as string) } iconSize={ 25 } textClassName='text-md'/>
+      </foreignObject>
+    </g>
+  );
+}
 
 type ContestListItemProps = {
   politician: Politician
@@ -19,7 +31,7 @@ type ContestListItemProps = {
   ratingDelta: number
 };
 
-const ContestListItem:React.FunctionComponent<ContestListItemProps> = ({ politician, contest, ratingDelta }) => {
+const ContestListItem: React.FunctionComponent<ContestListItemProps> = ({ politician, contest, ratingDelta }) => {
   const [open, setOpen] = React.useState(false);
 
   const candidates = contest.candidates.sort((a, b) => b.votes - a.votes);
@@ -57,7 +69,7 @@ const ContestListItem:React.FunctionComponent<ContestListItemProps> = ({ politic
                         { candidate.name }
                         { candidate.won ? <span className='text-green-500 ml-1'>✓</span> : null }
                       </td>
-                      <td className='px-4 py-2'>{ candidate.votes.toLocaleString() }</td>
+                      <td className='px-4 py-2'>{ candidate.votes > 1 ? candidate.votes.toLocaleString() : '—' }</td>
                     </tr>
                   ))
               }
@@ -107,6 +119,13 @@ const PoliticianPage: React.FunctionComponent<PoliticianPageProps> = ({ err, pol
     return <Error statusCode={ err.statusCode }/>
   }
 
+  const sortedFullContests = useMemo(() => politician.full_contests.sort((a, b) =>
+    politician.rating_history.findIndex(contest => contest.contest_id == a._id) -
+    politician.rating_history.findIndex(contest => contest.contest_id == b._id)
+  ), [politician]);
+  const startDate = useMemo(() => new Date(sortedFullContests[0].date), [sortedFullContests]);
+  const endDate = useMemo(() => new Date(sortedFullContests[sortedFullContests.length - 1].date), [sortedFullContests]);
+
   const excluded = politician.rating.low_confidence || politician.retired;
 
   return (
@@ -133,14 +152,72 @@ const PoliticianPage: React.FunctionComponent<PoliticianPageProps> = ({ err, pol
             </div>
         ) : null
       }
+      {
+        sortedFullContests.length > 1 ? (
+          <div>
+            <VictoryChart theme={ VictoryTheme.grayscale } height={ 300 } width={ 750 } padding={ { left: 100, top: 50, bottom: 50 } }>
+              <VictoryArea
+                interpolation='monotoneX'
+                style={ { data: { fill: 'lightgray' } } }
+                data={
+                  sortedFullContests.map(contest => {
+                    const rating = politician.rating_history[politician.full_contests.indexOf(contest) + 1].rating;
+                    return {
+                      x: new Date(contest.date),
+                      y: rating.mu + 2 * rating.sigma,
+                      y0: rating.mu - 2 * rating.sigma
+                    };
+                  })
+                }
+              />
+              <VictoryLine
+                interpolation='monotoneX'
+                data={
+                  [{
+                    x: startDate,
+                    y: politician.rating_history[0].rating.mu
+                  }].concat(sortedFullContests.map(contest => ({
+                    x: new Date(contest.date),
+                    y: politician.rating_history[politician.full_contests.indexOf(contest) + 1].rating.mu
+                  })))
+                }
+              />
+              <VictoryAxis
+                scale='time'
+                domain={ [startDate, endDate] }
+                tickCount={ Math.min(7, endDate.getFullYear() - startDate.getFullYear() + 1) }
+                tickFormat={ (ts: number): number => new Date(ts).getFullYear() }
+              />
+              <VictoryAxis
+                dependentAxis
+                tickValues={ Object.values(TIERS).slice(1) }
+                domain={ [0, 3000] }
+                tickLabelComponent={ <RatingChartLabel/> }
+              />
+              {
+                Object.values(TIERS)
+                  .slice(1)
+                  .map(minTierRating => (
+                    <VictoryLine
+                      style={ { data: { strokeDasharray: '5,5' } } }
+                      data={
+                        [
+                          { x: startDate, y: minTierRating },
+                          { x: endDate, y: minTierRating }
+                        ]
+                      }
+                    />
+                  ))
+              }
+            </VictoryChart>
+          </div>
+        ) : null
+      }
       <div className='font-big-noodle w-5/6 mb-5'>
         <ul>
           {
-            Object.entries(politician.full_contests
-              .sort((a, b) =>
-                politician.rating_history.findIndex(contest => contest.contest_id == a._id) -
-                politician.rating_history.findIndex(contest => contest.contest_id == b._id)
-              )
+            Object.entries(sortedFullContests
+              // group contests by year
               .reduce((acc: object, cur): object => {
                 const constest_year = new Date(cur.date).getFullYear();
                 if (!Object.keys(acc).includes(String(constest_year))) {
@@ -148,7 +225,9 @@ const PoliticianPage: React.FunctionComponent<PoliticianPageProps> = ({ err, pol
                 }
                 acc[String(constest_year)].push(cur);
                 return acc;
-              }, {}))
+              }, {})
+            )
+              // sort groups by year
               .sort((a, b) => Number(b[0]) - Number(a[0]))
               .map(([year, contests]: [string, Contest[]], idx) => (
                 <div key={ idx }>

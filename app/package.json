@@ -13,7 +13,8 @@
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "tailwindcss": "^1.4.6",
-    "valid-url": "^1.0.9"
+    "valid-url": "^1.0.9",
+    "victory": "^34.3.11"
   },
   "devDependencies": {
     "@types/mongodb": "^3.5.20",
