@@ -2,24 +2,26 @@ import React from 'react';
 
 type RatingProps = {
   rating: number
+  iconSize?: number
+  textClassName?: string
 };
 
-const TIERS = {
-  'Bronze': 1000,
-  'Silver': 1500,
-  'Gold': 2000,
-  'Platinum': 2250,
-  'Master': 2500,
-  'Grandmaster': Infinity
+export const TIERS = {
+  'Bronze': 0,
+  'Silver': 1000,
+  'Gold': 1500,
+  'Platinum': 2000,
+  'Master': 2250,
+  'Grandmaster': 2500
 };
 
-const Rating: React.FunctionComponent<RatingProps> = ({ rating }) => {
-  const tier = Object.keys(TIERS).find(tier => TIERS[tier] >= rating);
+const Rating: React.FunctionComponent<RatingProps> = ({ rating, iconSize = 45, textClassName = 'text-3xl' }) => {
+  const tier = Object.keys(TIERS).reverse().find(tier => TIERS[tier] <= rating);
 
   return (
     <div className='flex flex-row items-center'>
-      <img src={ `/badges/rank-${ tier }Tier.png` } alt='tier' height={ 45 } width={ 45 } className='mr-1'/>
-      <i className={ `text-3xl ml-1 text-${ tier }` }>{ Math.round(rating) }</i>
+      <img src={ `/badges/rank-${ tier }Tier.png` } alt='tier' height={ iconSize } width={ iconSize }/>
+      <i className={ `${ textClassName } text-${ tier }` }>{ Math.round(rating) }</i>
     </div>
   );
 }
