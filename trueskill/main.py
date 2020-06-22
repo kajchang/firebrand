@@ -1,6 +1,5 @@
 from pymongo import MongoClient
 
-import re
 import itertools
 from datetime import datetime
 from collections import OrderedDict
@@ -16,67 +15,30 @@ import colorama
 client = MongoClient('mongodb://localhost:27017/firebrand')
 db = client.get_database()
 
-contests = db['contests']
-politicians = db['politicians']
+contests_col = db['contests']
+politicians_col = db['politicians']
 
 # Setup rating settings
 
+FOUNDING_YEAR = 1776
 CURRENT_YEAR = datetime.now().year
-YEARS_UNTIL_EXCLUDED = 12
+YEARS_UNTIL_EXCLUDED = 8
 
 STARTING_RATING = 1500
 MAX_SIGMA = STARTING_RATING / 3 / 2
-trueskill.setup(STARTING_RATING, STARTING_RATING / 3, STARTING_RATING / 3 / 2, STARTING_RATING / 3 / 100)
+trueskill.setup(STARTING_RATING, STARTING_RATING / 3, STARTING_RATING / 3 / 2, STARTING_RATING / 3 / 100, backend='mpmath')
 
-# Load Metadata
+# Load Presidential Primary Metadata
 
 METADATA_PATH = os.path.join(os.path.dirname(__file__), 'data', 'metadata')
 PRESIDENTIAL_PRIMARY_METADATA = {}
-METADATA_START_YEAR = 1992
-for year in range(METADATA_START_YEAR, CURRENT_YEAR + 1, 4):
+for year in range(1992, CURRENT_YEAR + 1, 4):
     PRESIDENTIAL_PRIMARY_METADATA[year] = {}
-    with open(os.path.join(METADATA_PATH, '{0}_primary_schedule.json'.format(year))) as primary_schedule_file:
-        PRESIDENTIAL_PRIMARY_METADATA[year]['SCHEDULE'] = json.load(primary_schedule_file, object_pairs_hook=OrderedDict)
-    with open(os.path.join(METADATA_PATH, '{0}_primary_dropout_dates.json'.format(year))) as primary_dropout_dates_file:
-        PRESIDENTIAL_PRIMARY_METADATA[year]['DROPOUTS'] = json.load(primary_dropout_dates_file)
-
+    with open(os.path.join(METADATA_PATH, '{0}_primary_dropout_dates.json'.format(year))) as primary_schedule_file:
+        PRESIDENTIAL_PRIMARY_METADATA[year]['DROPOUT_DATES'] = json.load(primary_schedule_file, object_pairs_hook=OrderedDict)
 
 # Setup colorama
 colorama.init()
-
-
-def get_order_of_contest(contest):
-    normalized_contest_name = contest['name'].lower()
-
-    is_special = 'special' in normalized_contest_name
-
-    modifier = 3 if is_special else 0
-    max_normal_order = 3 * 2
-
-    # Have contests that haven't occurred yet appear first
-    if contest['year'] == datetime.now().year and \
-            all(candidate['votes'] is None and not candidate['won'] for candidate in contest['candidates']):
-        return 0
-    elif 'primar' in normalized_contest_name or 'caucus' in normalized_contest_name:
-        if contest['year'] in PRESIDENTIAL_PRIMARY_METADATA and 'presidential' in normalized_contest_name and \
-                ('democratic' in normalized_contest_name or 'republican' in normalized_contest_name):
-            contest_parts = contest['name'].split()
-            party = contest_parts[-3]
-            territory = ' '.join(contest_parts[:-3])
-            primary_schedule = list(PRESIDENTIAL_PRIMARY_METADATA[contest['year']]['SCHEDULE'][party].keys())
-        else:
-            return 3 + modifier
-
-        return len(primary_schedule) + max_normal_order - primary_schedule.index(territory)
-    elif 'runoff' in normalized_contest_name:
-        return 2 + modifier
-    elif normalized_contest_name.endswith('round'):
-        # might have to update in the future
-        number_words = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh']
-        return len(number_words) + max_normal_order - number_words.index(normalized_contest_name.split()[-2].lower())
-    else:
-        return 1 + modifier
-
 
 def rating_to_dict(rating: trueskill.Rating):
     return {
@@ -88,151 +50,92 @@ def rating_to_dict(rating: trueskill.Rating):
 def rating_from_dict(dictt):
     return trueskill.Rating(dictt['mu'], dictt['sigma'])
 
-
-# Splits candidates from races where candidates run on a ticket
-def split_candidate_name(candidate_name):
-    return re.split(r'/|&|(?: and )', candidate_name)
-
-
-"""
-TODO:
-experiment with rank decay
-split like-named politicians
-get 2000 presidential primary data
-"""
-
-
 def main():
-    ratings = {}
+    politicians = OrderedDict()
+    flourish_output = {}
 
-    def safe_get_politician(name, context):
-        party = context['candidate']['party']
+    year_being_processed = None
 
-        if ratings.get(name) is None:
-            politician = {
-                'name': name,
-                'rating_history': [{'contest_id': None, 'rating': rating_to_dict(trueskill.Rating())}],
-                'party': party,
-                'last_ran_in': context['contest']['year']
-            }
-            ratings[name] = politician
-        else:
-            politician = ratings[name]
-            if party != 'Unknown':
-                politician['party'] = party
-            politician['last_ran_in'] = context['contest']['year']
-
-        return politician
-
-    start_year = min(*contests.distinct('year'))
-
-    for year in range(start_year, CURRENT_YEAR + 1):
-        contests_in_year = list(contests.find({'year': year, 'hidden': None}))
-        if len(contests_in_year) > 0:
-            print(colorama.Fore.YELLOW + 'Found ' + str(len(contests_in_year)) + ' contests in ' + str(year))
-        for contest in sorted(contests_in_year, key=get_order_of_contest, reverse=True):
-            if len(contest['candidates']) == 0 or\
-                    all(candidate['votes'] is None and not candidate['won'] for candidate in contest['candidates']):
+    def record_for_flourish(year):
+        num_inserted = 0
+        for politician in sorted(politicians.values(), key=lambda politician: politician['rating_history'][-1]['rating']['mu'], reverse=True):
+            if politician['rating_history'][-1]['rating']['sigma'] > MAX_SIGMA or\
+               politician['last_ran_in'] < year - YEARS_UNTIL_EXCLUDED:
                 continue
+            if flourish_output.get(politician['name']) is None:
+                flourish_output[politician['name']] = {'yearly_ratings': {}}
+            flourish_output[politician['name']]['party'] = politician['party']['name']
+            flourish_output[politician['name']]['yearly_ratings'][year] = politician['rating_history'][-1]['rating']['mu']
+            num_inserted += 1
+            if num_inserted == 25:
+                break
 
-            if contest['year'] in PRESIDENTIAL_PRIMARY_METADATA and 'Presidential' in contest['name'] and\
-                    ('Democratic' in contest['name'] or 'Republican' in contest['name']):
-                contest_parts = contest['name'].split()
-                party = contest_parts[-3]
-                territory = ' '.join(contest_parts[:-3])
-                contest_date = PRESIDENTIAL_PRIMARY_METADATA[contest['year']]['SCHEDULE'][party][territory]
-                dropout_dates = PRESIDENTIAL_PRIMARY_METADATA[contest['year']]['DROPOUTS'][party]
+    for contest in contests_col.find({}).sort([('date', 1)]):
+        if contest['date'].year != year_being_processed:
+            print(colorama.Fore.GREEN + 'Processing contests from ' + str(contest['date'].year) + colorama.Fore.RESET)
+            year_being_processed = contest['date'].year
+            record_for_flourish(year_being_processed - 1)
 
-                contest['candidates'] = list(
-                    filter(lambda candidate: dropout_dates.get(candidate['name'], '9') > contest_date, contest['candidates'])
-                )
+        participants = []
+        current_ratings_input = []
+        results_input = []
 
-            tickets = []
+        is_presidential_primary = 'US President' in contest['name'] and ('Primary' in contest['name'] or 'Caucus' in contest['name'])
+        has_winner = len(list(filter(lambda candidate: candidate['won'], contest['candidates']))) > 0
+        is_one_shot = all(candidate['votes'] == 1 or candidate['votes'] == 0 for candidate in contest['candidates'])
 
-            current_ratings_input = []
-            results_input = []
+        total_votes = sum(candidate['votes'] for candidate in contest['candidates'])
+        next_result_score = 1 if has_winner else 0
 
-            votes_recorded = contest['candidates'][0]['votes'] is not None
-            if votes_recorded:
-                contest['candidates'] = list(
-                    filter(lambda candidate: candidate['votes'] is not None, contest['candidates'])
-                )
-
-                total_votes = sum(candidate['votes'] for candidate in contest['candidates'])
-
-                vote_ranks = sorted(list(set(
-                    candidate['votes'] for candidate in filter(
-                        lambda candidate: not candidate['won'] and candidate['votes'] / total_votes > 0.01,
-                        contest['candidates'])
-                )), reverse=True)
-
-            num_winners = list(candidate['won'] for candidate in contest['candidates']).count(True)
-
-            if num_winners > 0:
-                tickets.append(tuple())
-                current_ratings_input.append(tuple())
-                results_input.append(0)
-
-            for (idx, candidate) in enumerate(contest['candidates']):
-                if any(term in candidate['name'].lower() for term in ['scatter', 'uncommitted', 'write-in']) or \
-                        candidate['name'].lower() in ['', 'n/a', 'other', 'libertarian', 'nobody', 'no', 'blank', 'others',
-                                                      'null', 'void', 'miscellaneous', '--', 'other (+)', 'unallocated', 'all others']:
-                    continue
-
-                ticket = tuple(
-                    safe_get_politician(name.strip(), {'contest': contest, 'candidate': candidate})
-                    for name in split_candidate_name(candidate['name'])
-                )
-
-                current_rating_input = tuple(
-                    rating_from_dict(candidate['rating_history'][-1]['rating']) for candidate in ticket
-                )
-
-                if candidate['won']:
-                    tickets[0] = tuple(itertools.chain(tickets[0], ticket))
-                    current_ratings_input[0] = tuple(itertools.chain(current_ratings_input[0], current_rating_input))
-                else:
-                    tickets.append(ticket)
-                    current_ratings_input.append(current_rating_input)
-                    # Rank based on votes if votes data is available
-                    # Otherwise, count all losers as a tie
-                    results_input.append(
-                        (
-                            (vote_ranks.index(candidate['votes']) + (1 if num_winners > 0 else 0)) if (candidate['votes'] / total_votes > 0.01) else
-                            1 + len(vote_ranks)
-                        )
-                        if votes_recorded else 1
-                    )
-
-            if len(current_ratings_input) < 2 or (
-                    not votes_recorded and not any(candidate['won'] for candidate in contest['candidates'])):
-                for ticket in tickets:
-                    for candidate in ticket:
-                        candidate['rating_history'].append({
-                            'contest_id': contest['_id'],
-                            'rating': candidate['rating_history'][-1]['rating']
-                        })
+        for candidate in sorted(contest['candidates'], key=lambda candidate: candidate['votes'], reverse=True):
+            if (
+                is_presidential_primary and
+                PRESIDENTIAL_PRIMARY_METADATA.get(contest['date'].year) is not None and
+                PRESIDENTIAL_PRIMARY_METADATA[contest['date'].year]['DROPOUT_DATES'].get(candidate['party']['name']) is not None and
+                PRESIDENTIAL_PRIMARY_METADATA[contest['date'].year]['DROPOUT_DATES'][candidate['party']['name']].get(candidate['name'], '9') < contest['date'].isoformat()
+            ):
                 continue
+            if (
+                candidate['party'] == 'Write-In' or
+                candidate['name'].startswith('No ') or
+                candidate['name'] in ['Uncommitted']
+            ):
+                continue
+            if politicians.get(candidate['_id']) is None:
+                politicians[candidate['_id']] = {
+                    'name': candidate['name'],
+                    'party': candidate['party'],
+                    'rating_history': [{'contest_id': None, 'rating': rating_to_dict(trueskill.Rating())}]
+                }
+            
+            politician = politicians[candidate['_id']]
+            politician['party'] = candidate['party']
+            politician['last_ran_in'] = contest['date'].year
 
-            try:
-                outputs = trueskill.rate(current_ratings_input, results_input)
-            except ValueError as e:
-                print(contest)
-                print(tickets, current_ratings_input, results_input)
-                raise e
+            participants.append(politician)
+            current_ratings_input.append((rating_from_dict(politician['rating_history'][-1]['rating']),))
+            results_input.append((0 if candidate['won'] else next_result_score,))
 
-            for (ticket, output) in zip(tickets, outputs):
-                for (candidate, rating) in zip(ticket, output):
-                    candidate['rating_history'].append({
-                        'contest_id': contest['_id'],
-                        'rating': rating_to_dict(rating)
-                    })
+            are_candidate_votes_negligible = not is_one_shot and total_votes > 0 and len(contest['candidates']) > 2 and (candidate['votes'] / total_votes) < 0.01
+            if not candidate['won'] and not are_candidate_votes_negligible:
+                next_result_score += 1
+        
+        if len(participants) < 2:
+            for participant in participants:
+                participant['rating_history'].append(
+                    {'contest_id': contest['_id'], 'rating': participant['rating_history'][-1]['rating']}
+                )
+            continue
 
-    print(colorama.Fore.GREEN + 'Calculated ratings for ' + str(len(ratings)) + ' politicians')
+        outputs = trueskill.rate(current_ratings_input, results_input)
+        for (participant, output) in zip(participants, outputs):
+            participant['rating_history'].append(
+                {'contest_id': contest['_id'], 'rating': rating_to_dict(output[0])}
+            )
+
     ranking = 1
-    excluded_ranking = len(ratings)
-    for (idx, politician) in enumerate(
-            sorted(ratings.values(), key=lambda candidate: candidate['rating_history'][-1]['rating']['mu'], reverse=True)):
+    excluded_ranking = len(politicians)
+    for politician in sorted(politicians.values(), key=lambda politician: politician['rating_history'][-1]['rating']['mu'], reverse=True):
         # Pre-calculate derived fields
         politician['rating'] = politician['rating_history'][-1]['rating']
         politician['rating']['low_confidence'] = False
@@ -251,13 +154,23 @@ def main():
             # Hide low confidence politicians from rankings
             politician['ranking'] = ranking
             ranking += 1
+    record_for_flourish(CURRENT_YEAR)
 
-    print(colorama.Fore.RESET)
-
-    return ratings
+    print(colorama.Fore.GREEN + 'Rated ' + str(len(politicians)) + ' Politicians' + colorama.Fore.RESET)
+    return politicians, flourish_output
 
 
 if __name__ == '__main__':
-    ratings = main()
-    politicians.delete_many({})
-    politicians.insert_many(ratings.values())
+    politicians, flourish_output = main()
+    politicians_col.delete_many({})
+    politicians_col.insert_many(map(lambda item: dict({'_id': item[0]}, **item[1]), politicians.items()))
+
+    with open('flourish_output.csv', 'w') as flourish_output_file:
+        flourish_output_file.write('Name,Party,' + ','.join(map(str, range(FOUNDING_YEAR, CURRENT_YEAR + 1))) + '\n')
+        for politician in flourish_output:
+            flourish_output_file.write(
+                '"' + politician + '",' +
+                flourish_output[politician]['party'] + ',' +
+                ','.join(str(flourish_output[politician]['yearly_ratings'].get(year, '')) for year in range(FOUNDING_YEAR, CURRENT_YEAR + 1)) +
+                '\n'
+            )

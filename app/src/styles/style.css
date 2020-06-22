@@ -50,6 +50,14 @@
     @apply leading-none;
 }
 
+.text-link {
+    @apply text-blue-500;
+}
+
+.text-link:hover {
+    @apply text-blue-700;
+}
+
 @tailwind utilities;
 
 .text-rotated-down {

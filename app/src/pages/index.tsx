@@ -8,7 +8,6 @@ import Rating from '@/components/rating';
 import SparkLine from '@/components/sparkline';
 
 import { connectToDatabase } from '@/utils/db';
-import { partyToColor } from '@/utils/helpers';
 
 import { Politician } from '@/types';
 
@@ -22,36 +21,37 @@ const HomePage: React.FunctionComponent<HomePageProps> = ({ topPoliticians }) =>
   const fetchingTimeout = React.useRef(null);
 
   React.useEffect(() => {
+    if (search == '') return;
     if (fetchingTimeout.current != null) {
       clearTimeout(fetchingTimeout.current);
       fetchingTimeout.current = null;
     }
     fetchingTimeout.current = setTimeout(() => {
-      console.log('fetching...');
       fetch('/api/politicians?search=' + search)
-        .then(res => res.json())
-        .then(data => setSearchResults(data.results));
+        .then(async res => {
+          const searchedSearch = new URLSearchParams(new URL(res.url).search).get('search');
+          if (searchedSearch != search) return; // prevent race
+          const data = await res.json();
+          setSearchResults(data.results);
+        });
       fetchingTimeout.current = null;
     }, 100);
   }, [search]);
 
-  const displayedResults = search ? searchResults : topPoliticians;
+  const displayedResults: Politician[] = search ? searchResults : topPoliticians;
 
   return (
     <div className='flex flex-col items-center bg-gray-200 min-h-screen'>
       <Head>
-        <title>Firebrand - ELO Ratings for U.S. Politicians</title>
+        <title>Firebrand - Power Ratings for U.S. Politicians</title>
       </Head>
-      <Header headerChildren='Firebrand' tagLineChildren='ELO* Ratings for US Politicians' tagLineProps={ { className: 'text-flag-red' } }/>
-      <div className='rounded-lg bg-yellow-500 text-center text-xl md:text-2xl font-big-noodle w-5/6 p-3 my-5'>
-        Warning: Most data are automatically collected and may be inaccurate
-      </div>
+      <Header headerChildren='Firebrand' tagLineChildren='Power Ratings for US Politicians' tagLineProps={ { className: 'text-flag-red' } }/>
       <input
-        className='rounded-lg text-2xl font-big-noodle w-5/6 px-5 py-3'
+        className='rounded-lg text-2xl font-big-noodle w-5/6 px-5 py-3 my-5'
         placeholder='Search...' value={ search }
         onChange={ e => setSearch(e.target.value) }
       />
-      <div className='text-xl md:text-2xl font-big-noodle w-5/6 my-5'>
+      <div className='text-xl md:text-2xl font-big-noodle w-5/6 mb-5'>
         <ul>
           {
             displayedResults.map((politician, idx) => {
@@ -62,7 +62,7 @@ const HomePage: React.FunctionComponent<HomePageProps> = ({ topPoliticians }) =>
                   key={ idx }
                   className={ `${ idx == 0 ? 'rounded-t-lg' : '' } ${ idx == displayedResults.length - 1 ? 'rounded-b-lg' : '' } ${ !politician.rating.low_confidence ? 'bg-gray-100' : 'bg-red-300' }` }
                 >
-                  <Link key={ idx } href={ `/politician/${ politician.name }` }>
+                  <Link key={ idx } href={ `/politician/${ politician._id }` }>
                     <a>
                       <div
                         className={ `flex flex-row items-center rounded-lg ${ !politician.rating.low_confidence ? 'hover:bg-gray-300' : 'hover:bg-red-400' } cursor-pointer p-3` }
@@ -73,7 +73,7 @@ const HomePage: React.FunctionComponent<HomePageProps> = ({ topPoliticians }) =>
                         <SparkLine className='mx-2' contests={ politician.rating_history }/>
                         <Rating rating={ politician.rating.mu }/>
                         <div className='w-3 h-3 mx-2' style={
-                          { backgroundColor: partyToColor(politician.party) }
+                          { backgroundColor: politician.party.color }
                         }/>
                         { politician.name }
                       </div>
@@ -84,10 +84,6 @@ const HomePage: React.FunctionComponent<HomePageProps> = ({ topPoliticians }) =>
             })
           }
         </ul>
-      </div>
-      <div className='flex flex-row justify-around text-md md:text-lg text-center font-big-noodle w-full mb-5'>
-        <span>* Ratings are technically calculated using Trueskill, not ELO</span>
-        <span>** Ratings are purely for entertainment purposes</span>
       </div>
     </div>
   );
@@ -101,7 +97,7 @@ export async function getServerSideProps() {
     .aggregate([
       { $sort: { 'ranking': 1 } },
       { $limit: 100 },
-      { $project: { '_id': 0, 'rating_history': { 'contest_id': 0 } } }
+      { $project: { 'rating_history': { 'contest_id': 0 } } }
     ])
     .toArray();
 
