@@ -17,8 +17,8 @@ import { VictoryLabelProps } from 'victory-core';
 
 const RatingChartLabel: React.FunctionComponent<VictoryLabelProps> = ({ x, y, text }) => {
   return (
-    <g transform={`translate(${x - 60}, ${y - 10})`}>
-      <foreignObject width={ 100 } height={ 100 }>
+    <g transform={`translate(${x - 60}, ${y - 15})`}>
+      <foreignObject width={ 100 } height={ 25 }>
         <Rating rating={ parseInt(text as string) } iconSize={ 25 } textClassName='text-md'/>
       </foreignObject>
     </g>
@@ -123,6 +123,8 @@ const PoliticianPage: React.FunctionComponent<PoliticianPageProps> = ({ err, pol
     politician.rating_history.findIndex(contest => contest.contest_id == a._id) -
     politician.rating_history.findIndex(contest => contest.contest_id == b._id)
   ), [politician]);
+  const startDate = useMemo(() => new Date(sortedFullContests[0].date), [sortedFullContests]);
+  const endDate = useMemo(() => new Date(sortedFullContests[sortedFullContests.length - 1].date), [sortedFullContests]);
 
   const excluded = politician.rating.low_confidence || politician.retired;
 
@@ -150,68 +152,67 @@ const PoliticianPage: React.FunctionComponent<PoliticianPageProps> = ({ err, pol
             </div>
         ) : null
       }
-      <div>
-        <VictoryChart theme={ VictoryTheme.grayscale } height={ 300 } width={ 750 } padding={ { left: 100, top: 50, bottom: 50 } }>
-          <VictoryArea
-            style={ {
-              data: {
-                fill: 'lightgray'
+      {
+        sortedFullContests.length > 1 ? (
+          <div>
+            <VictoryChart theme={ VictoryTheme.grayscale } height={ 300 } width={ 750 } padding={ { left: 100, top: 50, bottom: 50 } }>
+              <VictoryArea
+                interpolation='monotoneX'
+                style={ { data: { fill: 'lightgray' } } }
+                data={
+                  sortedFullContests.map(contest => {
+                    const rating = politician.rating_history[politician.full_contests.indexOf(contest) + 1].rating;
+                    return {
+                      x: new Date(contest.date),
+                      y: rating.mu + 2 * rating.sigma,
+                      y0: rating.mu - 2 * rating.sigma
+                    };
+                  })
+                }
+              />
+              <VictoryLine
+                interpolation='monotoneX'
+                data={
+                  [{
+                    x: startDate,
+                    y: politician.rating_history[0].rating.mu
+                  }].concat(sortedFullContests.map(contest => ({
+                    x: new Date(contest.date),
+                    y: politician.rating_history[politician.full_contests.indexOf(contest) + 1].rating.mu
+                  })))
+                }
+              />
+              <VictoryAxis
+                scale='time'
+                domain={ [startDate, endDate] }
+                tickCount={ Math.min(7, endDate.getFullYear() - startDate.getFullYear() + 1) }
+                tickFormat={ (ts: number): number => new Date(ts).getFullYear() }
+              />
+              <VictoryAxis
+                dependentAxis
+                tickValues={ Object.values(TIERS).slice(1) }
+                domain={ [0, 3000] }
+                tickLabelComponent={ <RatingChartLabel/> }
+              />
+              {
+                Object.values(TIERS)
+                  .slice(1)
+                  .map(minTierRating => (
+                    <VictoryLine
+                      style={ { data: { strokeDasharray: '5,5' } } }
+                      data={
+                        [
+                          { x: startDate, y: minTierRating },
+                          { x: endDate, y: minTierRating }
+                        ]
+                      }
+                    />
+                  ))
               }
-            } }
-            data={
-              sortedFullContests.map(contest => {
-                const rating = politician.rating_history[politician.full_contests.indexOf(contest) + 1].rating;
-                return {
-                  x: new Date(contest.date),
-                  y: rating.mu + 2 * rating.sigma,
-                  y0: rating.mu - 2 * rating.sigma
-                };
-              })
-            }
-          />
-          <VictoryLine
-            data={
-              [{
-                x: new Date(sortedFullContests[0].date),
-                y: politician.rating_history[0].rating.mu
-              }].concat(sortedFullContests.map(contest => ({
-                x: new Date(contest.date),
-                y: politician.rating_history[politician.full_contests.indexOf(contest) + 1].rating.mu
-              })))
-            }
-          />
-          <VictoryAxis
-            scale='time'
-            domain={ [new Date(sortedFullContests[0].date), new Date(sortedFullContests[sortedFullContests.length - 1].date)] }
-            tickCount={ 5 }
-            tickFormat={ (ts: number): number => new Date(ts).getFullYear() }
-          />
-          <VictoryAxis
-            dependentAxis
-            tickValues={ Object.values(TIERS).slice(1) }
-            domain={ [0, 3000] }
-            tickLabelComponent={ <RatingChartLabel/> }
-          />
-          {
-            Object.values(TIERS)
-              .slice(1)
-              .map(minTierRating => (
-                <VictoryLine
-                  style={ { data: { strokeDasharray: '5,5' } } }
-                  data={
-                    [{
-                      x: new Date(sortedFullContests[0].date),
-                      y: minTierRating
-                    }, {
-                      x: new Date(sortedFullContests[sortedFullContests.length - 1].date),
-                      y: minTierRating
-                    }]
-                  }
-                />
-              ))
-          }
-        </VictoryChart>
-      </div>
+            </VictoryChart>
+          </div>
+        ) : null
+      }
       <div className='font-big-noodle w-5/6 mb-5'>
         <ul>
           {
