@@ -20,8 +20,9 @@ politicians_col = db['politicians']
 
 # Setup rating settings
 
+FOUNDING_YEAR = 1776
 CURRENT_YEAR = datetime.now().year
-YEARS_UNTIL_EXCLUDED = 12
+YEARS_UNTIL_EXCLUDED = 8
 
 STARTING_RATING = 1500
 MAX_SIGMA = STARTING_RATING / 3 / 2
@@ -51,12 +52,29 @@ def rating_from_dict(dictt):
 
 def main():
     politicians = OrderedDict()
+    flourish_output = {}
 
-    last_contest_year = None
+    year_being_processed = None
+
+    def record_for_flourish(year):
+        num_inserted = 0
+        for politician in sorted(politicians.values(), key=lambda politician: politician['rating_history'][-1]['rating']['mu'], reverse=True):
+            if politician['rating_history'][-1]['rating']['sigma'] > MAX_SIGMA or\
+               politician['last_ran_in'] < year - YEARS_UNTIL_EXCLUDED:
+                continue
+            if flourish_output.get(politician['name']) is None:
+                flourish_output[politician['name']] = {'yearly_ratings': {}}
+            flourish_output[politician['name']]['party'] = politician['party']['name']
+            flourish_output[politician['name']]['yearly_ratings'][year] = politician['rating_history'][-1]['rating']['mu']
+            num_inserted += 1
+            if num_inserted == 25:
+                break
+
     for contest in contests_col.find({}).sort([('date', 1)]):
-        if contest['date'].year != last_contest_year:
+        if contest['date'].year != year_being_processed:
             print(colorama.Fore.GREEN + 'Processing contests from ' + str(contest['date'].year) + colorama.Fore.RESET)
-            last_contest_year = contest['date'].year
+            year_being_processed = contest['date'].year
+            record_for_flourish(year_being_processed - 1)
 
         participants = []
         current_ratings_input = []
@@ -66,17 +84,10 @@ def main():
         has_winner = len(list(filter(lambda candidate: candidate['won'], contest['candidates']))) > 0
         is_one_shot = all(candidate['votes'] == 1 or candidate['votes'] == 0 for candidate in contest['candidates'])
 
-        winners_seen = 0
         total_votes = sum(candidate['votes'] for candidate in contest['candidates'])
+        next_result_score = 1 if has_winner else 0
 
-        for (idx, candidate) in enumerate(sorted(contest['candidates'], key=lambda candidate: candidate['votes'], reverse=True)):
-            if (
-                not is_one_shot and
-                total_votes > 0 and
-                len(contest['candidates']) > 2 and
-                (candidate['votes'] / total_votes) < 0.01
-            ):
-                break
+        for candidate in sorted(contest['candidates'], key=lambda candidate: candidate['votes'], reverse=True):
             if (
                 is_presidential_primary and
                 PRESIDENTIAL_PRIMARY_METADATA.get(contest['date'].year) is not None and
@@ -103,9 +114,11 @@ def main():
 
             participants.append(politician)
             current_ratings_input.append((rating_from_dict(politician['rating_history'][-1]['rating']),))
-            results_input.append((0 if candidate['won'] else idx + (1 - winners_seen if has_winner else 0),))
-            if candidate['won']:
-                winners_seen += 1
+            results_input.append((0 if candidate['won'] else next_result_score,))
+
+            are_candidate_votes_negligible = not is_one_shot and total_votes > 0 and len(contest['candidates']) > 2 and (candidate['votes'] / total_votes) < 0.01
+            if not candidate['won'] and not are_candidate_votes_negligible:
+                next_result_score += 1
         
         if len(participants) < 2:
             for participant in participants:
@@ -122,9 +135,7 @@ def main():
 
     ranking = 1
     excluded_ranking = len(politicians)
-    for (idx, politician) in enumerate(
-            sorted(politicians.values(), key=lambda politician: politician['rating_history'][-1]['rating']['mu'], reverse=True)
-    ):
+    for politician in sorted(politicians.values(), key=lambda politician: politician['rating_history'][-1]['rating']['mu'], reverse=True):
         # Pre-calculate derived fields
         politician['rating'] = politician['rating_history'][-1]['rating']
         politician['rating']['low_confidence'] = False
@@ -143,12 +154,23 @@ def main():
             # Hide low confidence politicians from rankings
             politician['ranking'] = ranking
             ranking += 1
+    record_for_flourish(CURRENT_YEAR)
 
     print(colorama.Fore.GREEN + 'Rated ' + str(len(politicians)) + ' Politicians' + colorama.Fore.RESET)
-    return politicians
+    return politicians, flourish_output
 
 
 if __name__ == '__main__':
-    politicians = main()
+    politicians, flourish_output = main()
     politicians_col.delete_many({})
     politicians_col.insert_many(map(lambda item: dict({'_id': item[0]}, **item[1]), politicians.items()))
+
+    with open('flourish_output.csv', 'w') as flourish_output_file:
+        flourish_output_file.write('Name,Party,' + ','.join(map(str, range(FOUNDING_YEAR, CURRENT_YEAR + 1))) + '\n')
+        for politician in flourish_output:
+            flourish_output_file.write(
+                '"' + politician + '",' +
+                flourish_output[politician]['party'] + ',' +
+                ','.join(str(flourish_output[politician]['yearly_ratings'].get(year, '')) for year in range(FOUNDING_YEAR, CURRENT_YEAR + 1)) +
+                '\n'
+            )
