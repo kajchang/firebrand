@@ -26,19 +26,23 @@ const HomePage: React.FunctionComponent<HomePageProps> = ({ topPoliticians }) =>
       clearTimeout(fetchingTimeout.current);
       fetchingTimeout.current = null;
     }
+
+    let canceled = false;
+
     fetchingTimeout.current = setTimeout(() => {
       fetch('/api/politicians?search=' + search)
         .then(async res => {
-          const searchedSearch = new URLSearchParams(new URL(res.url).search).get('search');
-          if (searchedSearch != search) return; // prevent race
+          if (canceled) return; // prevent race
           const data = await res.json();
           setSearchResults(data.results);
         });
       fetchingTimeout.current = null;
     }, 100);
+  
+    return () => (canceled = true);
   }, [search]);
 
-  const displayedResults: Politician[] = search ? searchResults : topPoliticians;
+  const displayedResults: Politician[] = search != '' ? searchResults : topPoliticians;
 
   return (
     <div className='flex flex-col items-center bg-gray-200 min-h-screen'>
