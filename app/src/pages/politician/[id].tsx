@@ -10,6 +10,7 @@ import Rating, { TIERS } from '@/components/rating';
 
 import { connectToDatabase } from '@/utils/db';
 import { isWebUri } from 'valid-url';
+import moment from 'moment';
 
 import { Contest, Politician } from '@/types';
 import { NextPageContext } from 'next';
@@ -123,10 +124,11 @@ const PoliticianPage: React.FunctionComponent<PoliticianPageProps> = ({ err, pol
     politician.rating_history.findIndex(contest => contest.contest_id == a._id) -
     politician.rating_history.findIndex(contest => contest.contest_id == b._id)
   ), [politician]);
-  const startDate = useMemo(() => new Date(sortedFullContests[0].date), [sortedFullContests]);
-  const endDate = useMemo(() => new Date(sortedFullContests[sortedFullContests.length - 1].date), [sortedFullContests]);
+  const startDate = useMemo(() => moment(sortedFullContests[0].date).subtract(1, 'year'), [sortedFullContests]);
+  const endDate = useMemo(() => moment(sortedFullContests[sortedFullContests.length - 1].date), [sortedFullContests]);
+  const initalRating = useMemo(() => politician.rating_history[0].rating, [politician]);
 
-  const excluded = politician.rating.low_confidence || politician.retired;
+  const excluded = useMemo(() => politician.rating.low_confidence || politician.retired, [politician]);
 
   return (
     <div className='flex flex-col items-center bg-gray-200 min-h-screen'>
@@ -160,30 +162,41 @@ const PoliticianPage: React.FunctionComponent<PoliticianPageProps> = ({ err, pol
                 interpolation='monotoneX'
                 style={ { data: { fill: 'lightgray' } } }
                 data={
-                  sortedFullContests.map(contest => {
-                    const rating = politician.rating_history[politician.full_contests.indexOf(contest) + 1].rating;
-                    return {
-                      x: new Date(contest.date),
-                      y: rating.mu + 2 * rating.sigma,
-                      y0: rating.mu - 2 * rating.sigma
-                    };
-                  })
+                  [{
+                    x: startDate.toDate(),
+                    y: initalRating.mu + 2 * initalRating.sigma,
+                    y0: initalRating.mu - 2 * initalRating.sigma
+                  }].concat(
+                    sortedFullContests.map(contest => {
+                      const rating = politician.rating_history[politician.full_contests.indexOf(contest) + 1].rating;
+                      return {
+                        x: moment(contest.date).toDate(),
+                        y: rating.mu + 2 * rating.sigma,
+                        y0: rating.mu - 2 * rating.sigma
+                      };
+                    })
+                  )
                 }
               />
               <VictoryLine
                 interpolation='monotoneX'
                 data={
-                  sortedFullContests.map(contest => ({
-                    x: new Date(contest.date),
-                    y: politician.rating_history[politician.full_contests.indexOf(contest) + 1].rating.mu
-                  }))
+                  [{
+                    x: startDate.toDate(),
+                    y: initalRating.mu
+                  }].concat(
+                    sortedFullContests.map(contest => ({
+                      x: moment(contest.date).toDate(),
+                      y: politician.rating_history[politician.full_contests.indexOf(contest) + 1].rating.mu
+                    }))
+                  )
                 }
               />
               <VictoryAxis
                 scale='time'
-                domain={ [startDate, endDate] }
-                tickCount={ Math.min(5, endDate.getFullYear() - startDate.getFullYear() + 1) }
-                tickFormat={ (ts: number): number => new Date(ts).getFullYear() }
+                domain={ [startDate.toDate(), endDate.toDate()] }
+                tickCount={ Math.min(7, endDate.year() - startDate.year()) }
+                tickFormat={ (ts: number): number => moment(ts).year() }
               />
               <VictoryAxis
                 dependentAxis

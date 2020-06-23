@@ -18,12 +18,12 @@ const Header: React.FunctionComponent<HeaderProps> = ({ headerChildren, headerPr
       <div className='text-center bg-white w-full py-5'>
         <div className='flex flex-row items-center justify-center'>
           <span className='text-2xl text-flag-blue mx-2'>★</span>
-          <h1 { ...headerProps } className={ 'flex flex-row  items-center justify-center text-5xl md-text-6xl text-bold text-yellow-400 font-big-star uppercase leading-none mx-3 ' + headerProps.className }>
+          <h1 { ...headerProps } className={ 'flex flex-row  items-center justify-center text-5xl md:text-6xl text-bold text-yellow-400 font-big-star uppercase leading-none mx-3 ' + headerProps.className }>
             { headerChildren }
           </h1>
           <span className='text-2xl text-flag-blue mx-2'>★</span>
         </div>
-        <h3 { ...tagLineProps } className={ 'flex flex-row items-center justify-center text-lg md-text-xl font-big-star ' + tagLineProps.className }>{ tagLineChildren }</h3>
+        <h3 { ...tagLineProps } className={ 'flex flex-row items-center justify-center text-lg md:text-xl font-big-star ' + tagLineProps.className }>{ tagLineChildren }</h3>
       </div>
       <div className='h-12 w-full' style={ { background: 'rgb(10,49,97)' } }>
         { bottomRowChildren }
