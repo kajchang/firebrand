@@ -173,13 +173,10 @@ const PoliticianPage: React.FunctionComponent<PoliticianPageProps> = ({ err, pol
               <VictoryLine
                 interpolation='monotoneX'
                 data={
-                  [{
-                    x: startDate,
-                    y: politician.rating_history[0].rating.mu
-                  }].concat(sortedFullContests.map(contest => ({
+                  sortedFullContests.map(contest => ({
                     x: new Date(contest.date),
                     y: politician.rating_history[politician.full_contests.indexOf(contest) + 1].rating.mu
-                  })))
+                  }))
                 }
               />
               <VictoryAxis
@@ -197,8 +194,9 @@ const PoliticianPage: React.FunctionComponent<PoliticianPageProps> = ({ err, pol
               {
                 Object.values(TIERS)
                   .slice(1)
-                  .map(minTierRating => (
+                  .map((minTierRating, idx) => (
                     <VictoryLine
+                      key={ idx }
                       style={ { data: { strokeDasharray: '5,5' } } }
                       data={
                         [

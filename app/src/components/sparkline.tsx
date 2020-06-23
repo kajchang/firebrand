@@ -14,10 +14,6 @@ const SparkLine: React.FunctionComponent<SparkLineProps> = ({ className, contest
   const peakRating = contests.reduce((acc, cur) => cur.rating.mu > acc ? cur.rating.mu : acc, 0);
   const minimumRating = contests.reduce((acc, cur) => cur.rating.mu < acc ? cur.rating.mu : acc, Infinity);
 
-  const maxDelta = Math.max(
-    ...contests.slice(1).map((contest, idx) => contest.rating.mu - contests[idx].rating.mu)
-  );
-
   const floorRating = minimumRating * 0.8;
 
   const barWidth = chartWidth / contests.length;

@@ -28,16 +28,16 @@ while len(container_queue) > 0:
         valid_containers.append(child_container['ContainerID'])
         container_queue.append(child_container['ContainerID'])
 
-valid_offices = [585, 835, 699, 743, 739, 368, 345, 411, 437, 809, 678]
+valid_offices = [585, 835, 699, 743, 739, 368, 345, 411, 437, 809, 678, 757, 121, 643]
 valid_race_types = ['General Election', 'General Election - Requires Run-Off', 'Caucus', 'Primary Election', 'Primary Election Run-Off', 'Run-Off', 'Special Election', 'Special Election Primary', 'Running Mate']
 
 for race in race_col.find({
-        'Title': { '$not': { '$regex': re.compile(r'selection|convention|chair|primaries', re.IGNORECASE) } },
+        'Title': { '$not': { '$regex': re.compile(r'selection|convention|chair|primaries|delegate|endorsement|preference', re.IGNORECASE) } },
         '$or': [
             { 'ParentRace': 0 },
             { '$and': [ { 'OfficeLink': 585 }, { 'Type': { '$in': ['Caucus', 'Primary Election'] } } ] },
         ],
-        'AllVotes': { '$ne': 538 },
+        'AllVotes': { '$gt': 538 },
         'Type': { '$in': valid_race_types },
         'OfficeLink': { '$in': valid_offices },
         'PollEnd': { '$type': 'date', '$lte': datetime.now() },

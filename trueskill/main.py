@@ -54,8 +54,6 @@ def main():
     politicians = OrderedDict()
     flourish_output = {}
 
-    year_being_processed = None
-
     def record_for_flourish(year):
         num_inserted = 0
         for politician in sorted(politicians.values(), key=lambda politician: politician['rating_history'][-1]['rating']['mu'], reverse=True):
@@ -67,9 +65,10 @@ def main():
             flourish_output[politician['name']]['party'] = politician['party']['name']
             flourish_output[politician['name']]['yearly_ratings'][year] = politician['rating_history'][-1]['rating']['mu']
             num_inserted += 1
-            if num_inserted == 25:
+            if num_inserted == 100:
                 break
 
+    year_being_processed = None
     for contest in contests_col.find({}).sort([('date', 1)]):
         if contest['date'].year != year_being_processed:
             print(colorama.Fore.GREEN + 'Processing contests from ' + str(contest['date'].year) + colorama.Fore.RESET)
@@ -98,7 +97,8 @@ def main():
             if (
                 candidate['party'] == 'Write-In' or
                 candidate['name'].startswith('No ') or
-                candidate['name'] in ['Uncommitted']
+                'Scattering' in candidate['name'] or
+                candidate['name'] in ['Uncommitted', 'Others', 'Write-In']
             ):
                 continue
             if politicians.get(candidate['_id']) is None:
