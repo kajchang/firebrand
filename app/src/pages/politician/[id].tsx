@@ -19,7 +19,7 @@ const RatingChartLabel: React.FunctionComponent<VictoryLabelProps> = ({ x, y, te
   return (
     <g transform={`translate(${x - 60}, ${y - 15})`}>
       <foreignObject width={ 100 } height={ 25 }>
-        <Rating rating={ parseInt(text as string) } iconSize={ 25 } textClassName='text-md'/>
+        <Rating rating={ parseInt(text as string) } size='sm'/>
       </foreignObject>
     </g>
   );
@@ -137,7 +137,7 @@ const PoliticianPage: React.FunctionComponent<PoliticianPageProps> = ({ err, pol
         headerChildren={ politician.name }
         tagLineChildren={ <div className='flex flex-col items-center'>
           { politician.party.name }
-          <Rating rating={ politician.rating.mu }/>
+          <Rating rating={ politician.rating.mu } size='lg'/>
         </div> }
         tagLineProps={ { style: { color: politician.party.color } } }
         topRowChildren={ <Link href='/'><a className='text-white font-bold ml-3'>← Back</a></Link> }

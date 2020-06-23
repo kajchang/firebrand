@@ -75,7 +75,7 @@ const HomePage: React.FunctionComponent<HomePageProps> = ({ topPoliticians }) =>
                           politician.rating.low_confidence ? '???' : '——'
                         ) }.
                         <SparkLine className='mx-2' contests={ politician.rating_history }/>
-                        <Rating rating={ politician.rating.mu }/>
+                        <Rating rating={ politician.rating.mu } size='lg'/>
                         <div className='w-3 h-3 mx-2' style={
                           { backgroundColor: politician.party.color }
                         }/>

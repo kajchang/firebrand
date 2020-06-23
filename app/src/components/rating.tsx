@@ -2,8 +2,7 @@ import React from 'react';
 
 type RatingProps = {
   rating: number
-  iconSize?: number
-  textClassName?: string
+  size: 'sm'|'md'|'lg'
 };
 
 export const TIERS = {
@@ -12,11 +11,28 @@ export const TIERS = {
   'Gold': 1500,
   'Platinum': 2000,
   'Master': 2250,
-  'Grandmaster': 2500
+  'Grandmaster': 2500,
 };
 
-const Rating: React.FunctionComponent<RatingProps> = ({ rating, iconSize = 45, textClassName = 'text-3xl' }) => {
+const COMPONENT_SIZES = {
+  'sm': {
+    textClassName: 'text-md',
+    iconSize: 20
+  },
+  'md': {
+    textClassName: 'text-xl',
+    iconSize: 30
+  },
+  'lg': {
+    textClassName: 'text-3xl ml-2',
+    iconSize: 45
+  },
+};
+
+const Rating: React.FunctionComponent<RatingProps> = ({ rating, size }) => {
   const tier = Object.keys(TIERS).reverse().find(tier => TIERS[tier] <= rating);
+
+  const { textClassName, iconSize } = COMPONENT_SIZES[size];
 
   return (
     <div className='flex flex-row items-center'>
