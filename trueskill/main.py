@@ -1,5 +1,8 @@
 from pymongo import MongoClient
 
+import re
+import unicodedata
+
 import itertools
 from datetime import datetime
 from collections import OrderedDict
@@ -49,6 +52,11 @@ def rating_to_dict(rating: trueskill.Rating):
 
 def rating_from_dict(dictt):
     return trueskill.Rating(dictt['mu'], dictt['sigma'])
+
+def make_searchable(name):
+    name = re.sub(r' [A-Z]\.', '', name)
+    name = unicodedata.normalize('NFD', name).encode('ascii', 'ignore').decode('utf-8')
+    return name
 
 def main():
     politicians = OrderedDict()
@@ -104,6 +112,7 @@ def main():
             if politicians.get(candidate['_id']) is None:
                 politicians[candidate['_id']] = {
                     'name': candidate['name'],
+                    'searchable_name': make_searchable(candidate['name']),
                     'party': candidate['party'],
                     'rating_history': [{'contest_id': None, 'rating': rating_to_dict(trueskill.Rating())}]
                 }

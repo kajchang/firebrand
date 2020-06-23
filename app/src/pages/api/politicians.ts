@@ -12,11 +12,16 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   const collection = await db.collection('politicians');
 
+  const search = (req.query.search as string).replace(/[-[\]/{}()*+?.\\^$|]/g, '\\$&');
+
   const results = await collection
     .aggregate([
       { $sort: { 'ranking': 1 } },
       { $match: {
-        'name': { $regex: new RegExp((req.query.search as string).replace(/[-[\]/{}()*+?.\\^$|]/g, '\\$&'), 'gi') }
+        $or: [
+          { 'searchable_name': { $regex: new RegExp(search, 'gi') } },
+          { 'name': { $regex: new RegExp(search, 'gi') } }
+        ]
       } },
       { $limit: 100 },
       { $project: { 'rating_history': { 'contest_id': 0 } } }
