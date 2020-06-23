@@ -155,7 +155,7 @@ const PoliticianPage: React.FunctionComponent<PoliticianPageProps> = ({ err, pol
       {
         sortedFullContests.length > 1 ? (
           <div>
-            <VictoryChart theme={ VictoryTheme.grayscale } height={ 300 } width={ 750 } padding={ { left: 100, top: 50, bottom: 50 } }>
+            <VictoryChart theme={ VictoryTheme.grayscale } height={ 300 } width={ 600 } padding={ { left: 80, right: 10, top: 50, bottom: 50 } }>
               <VictoryArea
                 interpolation='monotoneX'
                 style={ { data: { fill: 'lightgray' } } }
@@ -182,7 +182,7 @@ const PoliticianPage: React.FunctionComponent<PoliticianPageProps> = ({ err, pol
               <VictoryAxis
                 scale='time'
                 domain={ [startDate, endDate] }
-                tickCount={ Math.min(7, endDate.getFullYear() - startDate.getFullYear() + 1) }
+                tickCount={ Math.min(5, endDate.getFullYear() - startDate.getFullYear() + 1) }
                 tickFormat={ (ts: number): number => new Date(ts).getFullYear() }
               />
               <VictoryAxis
