@@ -1,22 +1,28 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { RatedContest } from '@/types';
 
 type SparkLineProps = {
   className: string
-  contests: RatedContest[]
+  ratingHistory: RatedContest[]
 };
 
-const SparkLine: React.FunctionComponent<SparkLineProps> = ({ className, contests }) => {
+const SparkLine: React.FunctionComponent<SparkLineProps> = ({ className, ratingHistory }) => {
   const chartWidth = 25;
   const chartHeight = 20;
 
-  const peakRating = contests.reduce((acc, cur) => cur.rating.mu > acc ? cur.rating.mu : acc, 0);
-  const minimumRating = contests.reduce((acc, cur) => cur.rating.mu < acc ? cur.rating.mu : acc, Infinity);
+  const peakRating = useMemo(
+    () => ratingHistory.reduce((max, historyInstance) => historyInstance.rating.mu > max ? historyInstance.rating.mu : max, 0),
+    [ratingHistory]
+  );
+  const minimumRating = useMemo(
+    () => ratingHistory.reduce((min, historyInstance) => historyInstance.rating.mu < min ? historyInstance.rating.mu : min, Infinity),
+    [ratingHistory]
+  );
 
   const floorRating = minimumRating * 0.8;
 
-  const barWidth = chartWidth / contests.length;
+  const barWidth = chartWidth / ratingHistory.length;
 
   function colorFromDelta(delta: number): string {
     if (delta == 0) {
@@ -34,10 +40,10 @@ const SparkLine: React.FunctionComponent<SparkLineProps> = ({ className, contest
       viewBox={ `0 0 ${ chartWidth } ${ chartHeight }` } className={ className }
     >
       {
-        contests.map((contest, idx) => (
+        ratingHistory.map((contest, idx) => (
           <g
             key={ idx } transform={ `translate(${ idx * barWidth }, 0)` }
-            className={ colorFromDelta(idx != 0 ? contest.rating.mu - contests[idx - 1].rating.mu : 0) }
+            className={ colorFromDelta(idx != 0 ? contest.rating.mu - ratingHistory[idx - 1].rating.mu : 0) }
           >
             <rect
               stroke='none'

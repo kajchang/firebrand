@@ -1,30 +1,18 @@
 import React, { useMemo } from 'react';
 
-import { VictoryArea, VictoryAxis, VictoryChart, VictoryLine, VictoryTheme } from 'victory';
 import Head from 'next/head';
 import Error from 'next/error';
 import Link from 'next/link';
 
 import Header from '@/components/header';
-import Rating, { TIERS } from '@/components/rating';
+import Rating from '@/components/rating';
+import RatingChart from '@/components/ratingchart';
 
 import { connectToDatabase } from '@/utils/db';
 import { isWebUri } from 'valid-url';
-import moment from 'moment';
 
 import { Contest, Politician } from '@/types';
 import { NextPageContext } from 'next';
-import { VictoryLabelProps } from 'victory-core';
-
-const RatingChartLabel: React.FunctionComponent<VictoryLabelProps> = ({ x, y, text }) => {
-  return (
-    <g transform={`translate(${x - 60}, ${y - 15})`}>
-      <foreignObject width={ 100 } height={ 25 }>
-        <Rating rating={ parseInt(text as string) } size='sm'/>
-      </foreignObject>
-    </g>
-  );
-}
 
 type ContestListItemProps = {
   politician: Politician
@@ -124,9 +112,6 @@ const PoliticianPage: React.FunctionComponent<PoliticianPageProps> = ({ err, pol
     politician.rating_history.findIndex(contest => contest.contest_id == a._id) -
     politician.rating_history.findIndex(contest => contest.contest_id == b._id)
   ), [politician]);
-  const startDate = useMemo(() => moment(sortedFullContests[0].date).subtract(1, 'year'), [sortedFullContests]);
-  const endDate = useMemo(() => moment(sortedFullContests[sortedFullContests.length - 1].date), [sortedFullContests]);
-  const initalRating = useMemo(() => politician.rating_history[0].rating, [politician]);
 
   const excluded = useMemo(() => politician.rating.low_confidence || politician.retired, [politician]);
 
@@ -156,72 +141,10 @@ const PoliticianPage: React.FunctionComponent<PoliticianPageProps> = ({ err, pol
       }
       {
         sortedFullContests.length > 1 ? (
-          <div>
-            <VictoryChart theme={ VictoryTheme.grayscale } height={ 300 } width={ 600 } padding={ { left: 80, right: 10, top: 50, bottom: 50 } }>
-              <VictoryArea
-                interpolation='monotoneX'
-                style={ { data: { fill: 'lightgray' } } }
-                data={
-                  [{
-                    x: startDate.toDate(),
-                    y: initalRating.mu + 2 * initalRating.sigma,
-                    y0: initalRating.mu - 2 * initalRating.sigma
-                  }].concat(
-                    sortedFullContests.map(contest => {
-                      const rating = politician.rating_history[politician.full_contests.indexOf(contest) + 1].rating;
-                      return {
-                        x: moment(contest.date).toDate(),
-                        y: rating.mu + 2 * rating.sigma,
-                        y0: rating.mu - 2 * rating.sigma
-                      };
-                    })
-                  )
-                }
-              />
-              <VictoryLine
-                interpolation='monotoneX'
-                data={
-                  [{
-                    x: startDate.toDate(),
-                    y: initalRating.mu
-                  }].concat(
-                    sortedFullContests.map(contest => ({
-                      x: moment(contest.date).toDate(),
-                      y: politician.rating_history[politician.full_contests.indexOf(contest) + 1].rating.mu
-                    }))
-                  )
-                }
-              />
-              <VictoryAxis
-                scale='time'
-                domain={ [startDate.toDate(), endDate.toDate()] }
-                tickCount={ Math.min(7, endDate.year() - startDate.year()) }
-                tickFormat={ (ts: number): number => moment(ts).year() }
-              />
-              <VictoryAxis
-                dependentAxis
-                tickValues={ Object.values(TIERS).slice(1) }
-                domain={ [0, 3000] }
-                tickLabelComponent={ <RatingChartLabel/> }
-              />
-              {
-                Object.values(TIERS)
-                  .slice(1)
-                  .map((minTierRating, idx) => (
-                    <VictoryLine
-                      key={ idx }
-                      style={ { data: { strokeDasharray: '5,5' } } }
-                      data={
-                        [
-                          { x: startDate, y: minTierRating },
-                          { x: endDate, y: minTierRating }
-                        ]
-                      }
-                    />
-                  ))
-              }
-            </VictoryChart>
-          </div>
+          <RatingChart
+            contests={ sortedFullContests }
+            ratingHistory={ politician.rating_history }
+          />
         ) : null
       }
       <div className='font-big-noodle w-5/6 mb-5'>
@@ -229,13 +152,13 @@ const PoliticianPage: React.FunctionComponent<PoliticianPageProps> = ({ err, pol
           {
             Object.entries(sortedFullContests
               // group contests by year
-              .reduce((acc: object, cur): object => {
-                const constest_year = new Date(cur.date).getFullYear();
-                if (!Object.keys(acc).includes(String(constest_year))) {
-                  acc[String(constest_year)] = [];
+              .reduce((groups: object, contest): object => {
+                const group = String(new Date(contest.date).getFullYear());
+                if (!Object.keys(groups).includes(group)) {
+                  groups[group] = [];
                 }
-                acc[String(constest_year)].push(cur);
-                return acc;
+                groups[group].push(contest);
+                return groups;
               }, {})
             )
               // sort groups by year
