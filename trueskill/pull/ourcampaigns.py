@@ -8,8 +8,8 @@ client = MongoClient('mongodb://localhost:27017', unicode_decode_error_handler='
 ourcampaigns_db = client['ourcampaigns']
 firebrand_db = client['firebrand']
 
+metadata_col = firebrand_db['metadata']
 contests_col = firebrand_db['contests']
-contests_col.delete_many({})
 
 race_col = ourcampaigns_db['Race']
 party_col = ourcampaigns_db['Party']
@@ -18,6 +18,15 @@ candidate_col = ourcampaigns_db['Candidate']
 race_members_col = ourcampaigns_db['RaceMember']
 
 contests_to_insert = []
+
+is_first_run = False
+transfer_date_metadata = metadata_col.find_one({ 'name': 'transfer_date' })
+if transfer_date_metadata is not None:
+    latest_transfer_date = transfer_date_metadata['value']
+else:
+    is_first_run = True
+    latest_transfer_date = datetime.min
+latest_pull_date = max(race_col.distinct('LastModified', { 'LastModified': { '$type': 'date' } }))
 
 us_root = 1
 container_queue = [us_root, 188, 67720]
@@ -37,15 +46,28 @@ for race in race_col.find({
             { 'ParentRace': 0 },
             { '$and': [ { 'OfficeLink': 585 }, { 'Type': { '$in': ['Caucus', 'Primary Election'] } } ] },
         ],
-        'AllVotes': { '$gt': 538 },
+        '$and': [
+            { '$or': [
+                { 'AllVotes': { '$gt': 538 } },
+                { 'PollEnd': { '$gt': latest_pull_date } }
+            ] }
+        ],
+        'LastModified': { '$type': 'date', '$gt': latest_transfer_date },
         'Type': { '$in': valid_race_types },
         'OfficeLink': { '$in': valid_offices },
-        'PollEnd': { '$type': 'date', '$lte': datetime.now() },
+        'PollEnd': { '$type': 'date' },
         'Silly': '',
         'Description': { '$not': { '$regex': re.compile(r'non-binding', re.IGNORECASE) } },
         'ParentContainer': { '$in': valid_containers } 
     }, projection={'Title': True, 'RaceID': True, 'PollEnd': True, 'DataSources': True}):
-    contest = {'_id': race['RaceID'], 'name': race['Title'], 'date': race['PollEnd'], 'candidates': [], 'source': race['DataSources']}
+    contest = {
+        '_id': race['RaceID'],
+        'name': race['Title'],
+        'date': race['PollEnd'],
+        'candidates': [],
+        'source': race['DataSources'],
+        'upcoming': race['PollEnd'] > latest_pull_date
+    }
     for race_member in race_members_col.find({
         'RaceLink': race['RaceID'],
         'WriteIn': '',
@@ -78,9 +100,16 @@ for race in race_col.find({
             'won': race_member['Won'] == 'Y',
             'votes': race_member['FinalVoteTotal']
         })
-    contests_to_insert.append(contest)
-    if len(contests_to_insert) == 1000:
-        contests_col.insert_many(contests_to_insert)
-        contests_to_insert = []
+    if is_first_run:
+        contests_to_insert.append(contest)
+        if len(contests_to_insert) == 1000:
+            contests_col.insert_many(contests_to_insert)
+            contests_to_insert = []
+    else:
+        contests_col.replace_one({ '_id': contest['_id'] }, contest, upsert=True)
 
-contests_col.insert_many(contests_to_insert)
+if is_first_run:
+    contests_col.insert_many(contests_to_insert)
+metadata_col.update_one({ 'name': 'transfer_date' }, {
+    '$set': { 'value': latest_pull_date }
+})

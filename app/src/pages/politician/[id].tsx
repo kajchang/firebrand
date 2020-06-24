@@ -23,7 +23,13 @@ type ContestListItemProps = {
 const ContestListItem: React.FunctionComponent<ContestListItemProps> = ({ politician, contest, ratingDelta }) => {
   const [open, setOpen] = React.useState(false);
 
-  const candidates = contest.candidates.sort((a, b) => b.votes - a.votes);
+  const candidates = useMemo(() => contest.candidates.sort((a, b) => {
+    if (contest.upcoming) {
+      return (b.rating ? b.rating.mu : 0) - (a.rating ? a.rating.mu : 0)
+    } else {
+      return b.votes - a.votes;
+    }
+  }), [contest]);
 
   return (
     <li className='flex flex-col rounded-lg text-xl md:text-2xl p-3'>
@@ -43,8 +49,10 @@ const ContestListItem: React.FunctionComponent<ContestListItemProps> = ({ politi
             <table className='table-fixed p-3'>
               <thead className='font-sans'>
                 <tr className='border-b-2 border-black'>
-                  <th colSpan={ 2 } className='font-normal w-2/3 px-8 py-2'>Candidate</th>
-                  <th className='font-normal w-1/3 px-4 py-2'>Votes</th>
+                  <th colSpan={ 2 } className='font-normal px-8 py-2'>Candidate</th>
+                  <th className='font-normal px-4 py-2'>
+                    { contest.upcoming ? 'Power Rating' : 'Votes' }
+                  </th>
                 </tr>
               </thead>
               <tbody className='font-serif'>
@@ -52,13 +60,22 @@ const ContestListItem: React.FunctionComponent<ContestListItemProps> = ({ politi
                 candidates
                   .slice(0, Math.max(5, candidates.findIndex(candidate => candidate.name.includes(politician.name)) + 1))
                   .map((candidate, idx) => (
-                    <tr key={ idx } className='border-t'>
-                      <td className='px-2 py-2' style={ { background: candidate.party.color } }/>
+                    <tr
+                      key={ idx }
+                      className={ `border-t ${ candidate.name == politician.name ? 'bg-gray-300' : (
+                        politician.rating.low_confidence ? 'bg-red-300' : ''
+                      ) }` }
+                    >
+                      <td className='w-4' style={ { background: candidate.party.color } }/>
                       <td className='px-4 py-2'>
                         { candidate.name }
                         { candidate.won ? <span className='text-green-500 ml-1'>✓</span> : null }
                       </td>
-                      <td className='px-4 py-2'>{ candidate.votes > 1 ? candidate.votes.toLocaleString() : '—' }</td>
+                      <td className='px-4 py-2'>
+                        { contest.upcoming ?
+                          candidate.rating ? <Rating rating={ candidate.rating.mu } size='md'/> : '—' :
+                          candidate.votes > 1 ? candidate.votes.toLocaleString() : '—' }
+                      </td>
                     </tr>
                   ))
               }
@@ -153,7 +170,7 @@ const PoliticianPage: React.FunctionComponent<PoliticianPageProps> = ({ err, pol
             Object.entries(sortedFullContests
               // group contests by year
               .reduce((groups: object, contest): object => {
-                const group = String(new Date(contest.date).getFullYear());
+                const group = contest.upcoming ? 'Upcoming' : String(new Date(contest.date).getFullYear());
                 if (!Object.keys(groups).includes(group)) {
                   groups[group] = [];
                 }
@@ -162,7 +179,14 @@ const PoliticianPage: React.FunctionComponent<PoliticianPageProps> = ({ err, pol
               }, {})
             )
               // sort groups by year
-              .sort((a, b) => Number(b[0]) - Number(a[0]))
+              .sort((a, b) => {
+                if (a[0] == 'Upcoming') {
+                  return -1;
+                } else if (b[0] == 'Upcoming') {
+                  return 1;
+                }
+                return Number(b[0]) - Number(a[0]);
+              })
               .map(([year, contests]: [string, Contest[]], idx) => (
                 <div key={ idx }>
                   <h3 className='text-4xl ml-2'>{ year }</h3>

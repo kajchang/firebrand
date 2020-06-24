@@ -49,7 +49,6 @@ def rating_to_dict(rating: trueskill.Rating):
         'sigma': rating.sigma
     }
 
-
 def rating_from_dict(dictt):
     return trueskill.Rating(dictt['mu'], dictt['sigma'])
 
@@ -60,28 +59,12 @@ def make_searchable(name):
 
 def main():
     politicians = OrderedDict()
-    flourish_output = {}
-
-    def record_for_flourish(year):
-        num_inserted = 0
-        for politician in sorted(politicians.values(), key=lambda politician: politician['rating_history'][-1]['rating']['mu'], reverse=True):
-            if politician['rating_history'][-1]['rating']['sigma'] > MAX_SIGMA or\
-               politician['last_ran_in'] < year - YEARS_UNTIL_EXCLUDED:
-                continue
-            if flourish_output.get(politician['name']) is None:
-                flourish_output[politician['name']] = {'yearly_ratings': {}}
-            flourish_output[politician['name']]['party'] = politician['party']['name']
-            flourish_output[politician['name']]['yearly_ratings'][year] = politician['rating_history'][-1]['rating']['mu']
-            num_inserted += 1
-            if num_inserted == 100:
-                break
 
     year_being_processed = None
     for contest in contests_col.find({}).sort([('date', 1)]):
         if contest['date'].year != year_being_processed:
             print(colorama.Fore.GREEN + 'Processing contests from ' + str(contest['date'].year) + colorama.Fore.RESET)
             year_being_processed = contest['date'].year
-            record_for_flourish(year_being_processed - 1)
 
         participants = []
         current_ratings_input = []
@@ -94,6 +77,8 @@ def main():
         total_votes = sum(candidate['votes'] for candidate in contest['candidates'])
         next_result_score = 1 if has_winner else 0
 
+        is_upcoming = contest['upcoming']
+
         for candidate in sorted(contest['candidates'], key=lambda candidate: candidate['votes'], reverse=True):
             if (
                 is_presidential_primary and
@@ -105,6 +90,8 @@ def main():
             if (
                 candidate['party'] == 'Write-In' or
                 candidate['name'].startswith('No ') or
+                candidate['name'].endswith('Primary Winner') or
+                (candidate['name'].startswith('Runoff') and candidate['name'].endswith('Winner')) or
                 'Scattering' in candidate['name'] or
                 candidate['name'] in ['Uncommitted', 'Others', 'Write-In']
             ):
@@ -128,8 +115,19 @@ def main():
             are_candidate_votes_negligible = not is_one_shot and total_votes > 0 and len(contest['candidates']) > 2 and (candidate['votes'] / total_votes) < 0.01
             if not candidate['won'] and not are_candidate_votes_negligible:
                 next_result_score += 1
-        
-        if len(participants) < 2:
+
+            if is_upcoming:
+                candidate['rating'] = politician['rating_history'][-1]['rating']
+                candidate['rating']['low_confidence'] = candidate['rating']['sigma'] > MAX_SIGMA
+
+        if is_upcoming:
+            contests_col.update_one({ '_id': contest['_id'] }, {
+                '$set': {
+                    'candidates': contest['candidates']
+                }
+            })
+
+        if len(participants) < 2 or is_upcoming:
             for participant in participants:
                 participant['rating_history'].append(
                     {'contest_id': contest['_id'], 'rating': participant['rating_history'][-1]['rating']}
@@ -163,23 +161,12 @@ def main():
             # Hide low confidence politicians from rankings
             politician['ranking'] = ranking
             ranking += 1
-    record_for_flourish(CURRENT_YEAR)
 
     print(colorama.Fore.GREEN + 'Rated ' + str(len(politicians)) + ' Politicians' + colorama.Fore.RESET)
-    return politicians, flourish_output
+    return politicians
 
 
 if __name__ == '__main__':
-    politicians, flourish_output = main()
+    politicians = main()
     politicians_col.delete_many({})
     politicians_col.insert_many(map(lambda item: dict({'_id': item[0]}, **item[1]), politicians.items()))
-
-    with open('flourish_output.csv', 'w') as flourish_output_file:
-        flourish_output_file.write('Name,Party,' + ','.join(map(str, range(FOUNDING_YEAR, CURRENT_YEAR + 1))) + '\n')
-        for politician in flourish_output:
-            flourish_output_file.write(
-                '"' + politician + '",' +
-                flourish_output[politician]['party'] + ',' +
-                ','.join(str(flourish_output[politician]['yearly_ratings'].get(year, '')) for year in range(FOUNDING_YEAR, CURRENT_YEAR + 1)) +
-                '\n'
-            )

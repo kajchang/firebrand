@@ -4,6 +4,7 @@ type Candidate = {
   won: boolean
   incumbent: boolean
   party: Party
+  rating?: Rating
 }
 
 type Party = {
@@ -17,6 +18,7 @@ export type Contest = {
   date: string
   candidates: Candidate[]
   source: string
+  upcoming: boolean
 }
 
 type Rating = {
