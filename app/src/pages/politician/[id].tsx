@@ -63,7 +63,7 @@ const ContestListItem: React.FunctionComponent<ContestListItemProps> = ({ politi
                     <tr
                       key={ idx }
                       className={ `border-t ${ candidate.name == politician.name ? 'bg-gray-300' : (
-                        politician.rating.low_confidence ? 'bg-red-300' : ''
+                        candidate.rating.low_confidence ? 'bg-red-300' : ''
                       ) }` }
                     >
                       <td className='w-4' style={ { background: candidate.party.color } }/>

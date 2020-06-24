@@ -4,7 +4,7 @@ type Candidate = {
   won: boolean
   incumbent: boolean
   party: Party
-  rating?: Rating
+  rating?: Rating & { low_confidence: boolean }
 }
 
 type Party = {
