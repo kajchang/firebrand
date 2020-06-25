@@ -25,7 +25,7 @@ politicians_col = db['politicians']
 
 FOUNDING_YEAR = 1776
 CURRENT_YEAR = datetime.now().year
-YEARS_UNTIL_EXCLUDED = 8
+YEARS_UNTIL_EXCLUDED = 6
 
 STARTING_RATING = 1500
 MAX_SIGMA = STARTING_RATING / 3 / 2
@@ -71,11 +71,14 @@ def main():
         results_input = []
 
         is_presidential_primary = 'US President' in contest['name'] and ('Primary' in contest['name'] or 'Caucus' in contest['name'])
-        has_winner = len(list(filter(lambda candidate: candidate['won'], contest['candidates']))) > 0
         is_one_shot = all(candidate['votes'] == 1 or candidate['votes'] == 0 for candidate in contest['candidates'])
+        is_open_primary = 'Open Primary' in contest['name']
+
+        num_winners = len(list(filter(lambda candidate: candidate['won'], contest['candidates'])))
+        has_winner = num_winners > 0
 
         total_votes = sum(candidate['votes'] for candidate in contest['candidates'])
-        next_result_score = 1 if has_winner else 0
+        next_result_score = 1 if has_winner and not is_open_primary else 0
 
         is_upcoming = contest['upcoming']
 
@@ -110,10 +113,10 @@ def main():
 
             participants.append(politician)
             current_ratings_input.append((rating_from_dict(politician['rating_history'][-1]['rating']),))
-            results_input.append((0 if candidate['won'] else next_result_score,))
+            results_input.append((0 if candidate['won'] and not is_open_primary else next_result_score,))
 
             are_candidate_votes_negligible = not is_one_shot and total_votes > 0 and len(contest['candidates']) > 2 and (candidate['votes'] / total_votes) < 0.01
-            if not candidate['won'] and not are_candidate_votes_negligible:
+            if (not candidate['won'] or is_open_primary) and not are_candidate_votes_negligible:
                 next_result_score += 1
 
         if len(participants) < 2 or is_upcoming:
