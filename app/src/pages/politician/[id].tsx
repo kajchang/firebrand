@@ -23,13 +23,7 @@ type ContestListItemProps = {
 const ContestListItem: React.FunctionComponent<ContestListItemProps> = ({ politician, contest, ratingDelta }) => {
   const [open, setOpen] = React.useState(false);
 
-  const candidates = useMemo(() => contest.candidates.sort((a, b) => {
-    if (contest.upcoming) {
-      return (b.rating ? b.rating.mu : 0) - (a.rating ? a.rating.mu : 0)
-    } else {
-      return b.votes - a.votes;
-    }
-  }), [contest]);
+  const candidates = useMemo(() => contest.candidates.sort((a, b) => b.votes - a.votes), [contest]);
 
   return (
     <li className='flex flex-col rounded-lg text-xl md:text-2xl p-3'>
@@ -50,9 +44,7 @@ const ContestListItem: React.FunctionComponent<ContestListItemProps> = ({ politi
               <thead className='font-sans'>
                 <tr className='border-b-2 border-black'>
                   <th colSpan={ 2 } className='font-normal px-8 py-2'>Candidate</th>
-                  <th className='font-normal px-4 py-2'>
-                    { contest.upcoming ? 'Power Rating' : 'Votes' }
-                  </th>
+                  <th className='font-normal px-4 py-2'>Votes</th>
                 </tr>
               </thead>
               <tbody className='font-serif'>
@@ -62,9 +54,7 @@ const ContestListItem: React.FunctionComponent<ContestListItemProps> = ({ politi
                   .map((candidate, idx) => (
                     <tr
                       key={ idx }
-                      className={ `border-t ${ candidate.name == politician.name ? 'bg-gray-300' : (
-                        candidate.rating && candidate.rating.low_confidence ? 'bg-red-300' : ''
-                      ) }` }
+                      className={ `border-t ${ candidate.name == politician.name ? 'bg-gray-300' : '' }` }
                     >
                       <td className='w-4' style={ { background: candidate.party.color } }/>
                       <td className='px-4 py-2'>
@@ -72,9 +62,7 @@ const ContestListItem: React.FunctionComponent<ContestListItemProps> = ({ politi
                         { candidate.won ? <span className='text-green-500 ml-1'>✓</span> : null }
                       </td>
                       <td className='px-4 py-2'>
-                        { contest.upcoming ?
-                          candidate.rating ? <Rating rating={ candidate.rating.mu } size='md'/> : '—' :
-                          candidate.votes > 1 ? candidate.votes.toLocaleString() : '—' }
+                        { candidate.votes > 1 ? candidate.votes.toLocaleString() : '—' }
                       </td>
                     </tr>
                   ))

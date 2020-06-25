@@ -116,17 +116,6 @@ def main():
             if not candidate['won'] and not are_candidate_votes_negligible:
                 next_result_score += 1
 
-            if is_upcoming:
-                candidate['rating'] = politician['rating_history'][-1]['rating']
-                candidate['rating']['low_confidence'] = candidate['rating']['sigma'] > MAX_SIGMA
-
-        if is_upcoming:
-            contests_col.update_one({ '_id': contest['_id'] }, {
-                '$set': {
-                    'candidates': contest['candidates']
-                }
-            })
-
         if len(participants) < 2 or is_upcoming:
             for participant in participants:
                 participant['rating_history'].append(

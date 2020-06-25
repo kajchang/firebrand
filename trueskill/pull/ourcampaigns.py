@@ -3,6 +3,12 @@ from pymongo import MongoClient
 from datetime import datetime
 import re
 
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--reset', action='store_true')
+args = parser.parse_args()
+
 client = MongoClient('mongodb://localhost:27017', unicode_decode_error_handler='ignore')
 
 ourcampaigns_db = client['ourcampaigns']
@@ -18,6 +24,10 @@ candidate_col = ourcampaigns_db['Candidate']
 race_members_col = ourcampaigns_db['RaceMember']
 
 contests_to_insert = []
+
+if args.reset:
+    contests_col.delete_many({})
+    metadata_col.delete_one({ 'name': 'transfer_date' })
 
 is_first_run = False
 transfer_date_metadata = metadata_col.find_one({ 'name': 'transfer_date' })
@@ -37,11 +47,11 @@ while len(container_queue) > 0:
         valid_containers.append(child_container['ContainerID'])
         container_queue.append(child_container['ContainerID'])
 
-valid_offices = [585, 835, 699, 743, 739, 368, 345, 411, 437, 809, 678, 757, 121, 643]
+valid_offices = [585, 835, 699, 743, 739, 368, 345, 411, 437, 809, 678, 757, 121, 643, 818, 50]
 valid_race_types = ['General Election', 'General Election - Requires Run-Off', 'Caucus', 'Primary Election', 'Primary Election Run-Off', 'Run-Off', 'Special Election', 'Special Election Primary', 'Running Mate']
 
 for race in race_col.find({
-        'Title': { '$not': { '$regex': re.compile(r'selection|convention|chair|primaries|delegate|endorsement|preference', re.IGNORECASE) } },
+        'Title': { '$not': { '$regex': re.compile(r'selection|convention|chair|primaries|delegate|endorsement|preference|electoral|nomination', re.IGNORECASE) } },
         '$or': [
             { 'ParentRace': 0 },
             { '$and': [ { 'OfficeLink': 585 }, { 'Type': { '$in': ['Caucus', 'Primary Election'] } } ] },
@@ -112,4 +122,4 @@ if is_first_run:
     contests_col.insert_many(contests_to_insert)
 metadata_col.update_one({ 'name': 'transfer_date' }, {
     '$set': { 'value': latest_pull_date }
-})
+}, upsert=True)
