@@ -4,7 +4,7 @@ import re
 import unicodedata
 
 import itertools
-from datetime import datetime
+from datetime import datetime, date
 from collections import OrderedDict
 
 import os
@@ -87,7 +87,7 @@ def main():
                 is_presidential_primary and
                 PRESIDENTIAL_PRIMARY_METADATA.get(contest['date'].year) is not None and
                 PRESIDENTIAL_PRIMARY_METADATA[contest['date'].year]['DROPOUT_DATES'].get(candidate['party']['name']) is not None and
-                PRESIDENTIAL_PRIMARY_METADATA[contest['date'].year]['DROPOUT_DATES'][candidate['party']['name']].get(candidate['name'], '9') < contest['date'].isoformat()
+                date.fromisoformat(PRESIDENTIAL_PRIMARY_METADATA[contest['date'].year]['DROPOUT_DATES'][candidate['party']['name']].get(candidate['name'], date.max.isoformat())) < contest['date'].date()
             ):
                 continue
             if (
