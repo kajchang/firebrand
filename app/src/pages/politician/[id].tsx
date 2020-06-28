@@ -75,6 +75,7 @@ const ContestListItem: React.FunctionComponent<ContestListItemProps> = ({ politi
                       <td className='w-4' style={ { background: candidate.party.color } }/>
                       <td className='px-4 py-2'>
                         { candidate.name }
+                        { candidate.incumbent ? <i> (Incumbent)</i> : '' }
                         { candidate.won ? <span className='text-green-500 ml-1'>✓</span> : null }
                       </td>
                       <td className='px-4 py-2'>
