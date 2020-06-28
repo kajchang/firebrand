@@ -47,7 +47,7 @@ while len(container_queue) > 0:
         valid_containers.append(child_container['ContainerID'])
         container_queue.append(child_container['ContainerID'])
 
-valid_offices = [585, 835, 699, 743, 739, 368, 345, 411, 437, 809, 678, 757, 121, 643, 818, 50, 223]
+valid_offices = [585, 835, 699, 743, 739, 368, 345, 411, 437, 809, 678, 757, 121, 643, 818, 50, 223, 334]
 valid_race_types = ['General Election', 'General Election - Requires Run-Off', 'Caucus', 'Primary Election', 'Primary Election Run-Off', 'Run-Off', 'Special Election', 'Special Election Primary', 'Running Mate']
 
 for race in race_col.find({
