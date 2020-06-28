@@ -24,7 +24,19 @@ type ContestListItemProps = {
 const ContestListItem: React.FunctionComponent<ContestListItemProps> = ({ politician, contest, ratingDelta }) => {
   const [open, setOpen] = React.useState(false);
 
-  const candidates = useMemo(() => contest.candidates.sort((a, b) => b.votes - a.votes), [contest]);
+  const candidates = useMemo(() => contest.candidates.sort((a, b) => {
+    if (contest.upcoming) {
+      if (a._id == politician._id) {
+        return -1;
+      } else if (b._id == politician._id) {
+        return 1;
+      } else {
+        return contest.candidates.indexOf(a) - contest.candidates.indexOf(b);
+      }
+    } else {
+      return b.votes - a.votes;
+    }
+  }), [contest]);
 
   return (
     <li
@@ -220,8 +232,7 @@ export async function getServerSideProps(context: NextPageContext) {
           foreignField: '_id',
           'as': 'full_contests'
         }
-      },
-      { $project: { '_id': 0 } }
+      }
     ])
     .toArray()
   )[0];

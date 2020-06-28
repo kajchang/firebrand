@@ -1,4 +1,5 @@
 type Candidate = {
+  _id: number
   name: string
   votes: number
   won: boolean
