@@ -70,6 +70,7 @@ const HomePage: React.FunctionComponent<HomePageProps> = ({ topPoliticians }) =>
                     <a>
                       <div
                         className={ `flex flex-row items-center rounded-lg ${ !politician.rating.low_confidence ? 'hover:bg-gray-300' : 'hover:bg-red-400' } cursor-pointer p-3` }
+                        title={ `${ politician.name } - ${ politician.party.name }` }
                       >
                         { !excluded ? politician.ranking : (
                           politician.rating.low_confidence ? '???' : '——'

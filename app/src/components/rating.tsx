@@ -36,7 +36,7 @@ const Rating: React.FunctionComponent<RatingProps> = ({ rating, size }) => {
 
   return (
     <div className='flex flex-row items-center'>
-      <img src={ `/badges/rank-${ tier }Tier.png` } alt='tier' height={ iconSize } width={ iconSize }/>
+      <img src={ `/badges/rank-${ tier }Tier.png` } alt={ `${ tier } Tier` } height={ iconSize } width={ iconSize }/>
       <i className={ `${ textClassName } text-${ tier }` }>{ Math.round(rating) }</i>
     </div>
   );

@@ -10,6 +10,7 @@ import RatingChart from '@/components/ratingchart';
 
 import { connectToDatabase } from '@/utils/db';
 import { isWebUri } from 'valid-url';
+import moment from 'moment';
 
 import { Contest, Politician } from '@/types';
 import { NextPageContext } from 'next';
@@ -26,7 +27,10 @@ const ContestListItem: React.FunctionComponent<ContestListItemProps> = ({ politi
   const candidates = useMemo(() => contest.candidates.sort((a, b) => b.votes - a.votes), [contest]);
 
   return (
-    <li className='flex flex-col rounded-lg text-xl md:text-2xl p-3'>
+    <li
+      className='flex flex-col rounded-lg text-xl md:text-2xl p-3'
+      title={ `${ contest.name } - ${ moment(contest.date).format('MMMM Do YYYY') }` }
+    >
       <div className='flex flex-row items-center'>
         <span className={ (ratingDelta > 0 ? 'text-green-500' : (ratingDelta == 0 ? 'text-gray-500' : 'text-red-500')) + ' mr-2' }>
           { ratingDelta > 0 ? '+' : '' }{ Math.round(ratingDelta) }
