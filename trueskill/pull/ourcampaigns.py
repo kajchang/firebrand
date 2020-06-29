@@ -51,16 +51,10 @@ valid_offices = [585, 835, 699, 743, 739, 368, 345, 411, 437, 809, 678, 757, 121
 valid_race_types = ['General Election', 'General Election - Requires Run-Off', 'Caucus', 'Primary Election', 'Primary Election Run-Off', 'Run-Off', 'Special Election', 'Special Election Primary', 'Running Mate']
 
 for race in race_col.find({
-        'Title': { '$not': { '$regex': re.compile(r'selection|convention|chair|primaries|delegate|endorsement|preference|electoral|nomination', re.IGNORECASE) } },
+        'Title': { '$not': { '$regex': re.compile(r'selection|convention|chair|primaries|delegate|endorsement|preference|national|popular|nomination', re.IGNORECASE) } },
         '$or': [
             { 'ParentRace': 0 },
             { '$and': [ { 'OfficeLink': 585 }, { 'Type': { '$in': ['Caucus', 'Primary Election'] } } ] },
-        ],
-        '$and': [
-            { '$or': [
-                { 'AllVotes': { '$gt': 538 } },
-                { 'PollEnd': { '$gt': latest_pull_date } }
-            ] }
         ],
         'LastModified': { '$type': 'date', '$gt': latest_transfer_date },
         'Type': { '$in': valid_race_types },
