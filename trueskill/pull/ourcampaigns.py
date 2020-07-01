@@ -38,17 +38,22 @@ else:
     latest_transfer_date = datetime.min
 latest_pull_date = max(race_col.distinct('LastModified', { 'LastModified': { '$type': 'date' } }))
 
+excluded_races = [19115]
 us_root = 1
 container_queue = [us_root, 188, 67720]
 valid_containers = list(container_queue)
 while len(container_queue) > 0:
     container = container_queue.pop()
     for child_container in container_col.find({'ParentLink': container}, projection={'ContainerID': True}):
+        if child_container['ContainerID'] in excluded_races:
+            continue
         valid_containers.append(child_container['ContainerID'])
         container_queue.append(child_container['ContainerID'])
 
 valid_offices = [585, 835, 699, 743, 739, 368, 345, 411, 437, 809, 678, 757, 121, 643, 818, 50, 223, 334]
 valid_race_types = ['General Election', 'General Election - Requires Run-Off', 'Caucus', 'Primary Election', 'Primary Election Run-Off', 'Run-Off', 'Special Election', 'Special Election Primary', 'Running Mate']
+
+excluded_race_ids = [32102, 379074, 513619, 905093]
 
 for race in race_col.find({
         'Title': { '$not': { '$regex': re.compile(r'selection|convention|chair|primaries|delegate|endorsement|preference|national|popular|nomination', re.IGNORECASE) } },
@@ -62,7 +67,8 @@ for race in race_col.find({
         'PollEnd': { '$type': 'date' },
         'Silly': '',
         'Description': { '$not': { '$regex': re.compile(r'non-binding', re.IGNORECASE) } },
-        'ParentContainer': { '$in': valid_containers } 
+        'ParentContainer': { '$in': valid_containers },
+        'RaceID': { '$nin': excluded_race_ids }
     }, projection={'Title': True, 'RaceID': True, 'PollEnd': True, 'DataSources': True}):
     contest = {
         '_id': race['RaceID'],

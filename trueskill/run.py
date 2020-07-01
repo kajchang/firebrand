@@ -96,7 +96,7 @@ def main():
                 candidate['name'].endswith('Primary Winner') or
                 (candidate['name'].startswith('Runoff') and candidate['name'].endswith('Winner')) or
                 'Scattering' in candidate['name'] or
-                candidate['name'] in ['Uncommitted', 'Others', 'Write-In']
+                candidate['name'] in ['Uncommitted', 'Others', 'Write-In', 'Abstaining', 'Reject']
             ):
                 continue
             if politicians.get(candidate['_id']) is None:
