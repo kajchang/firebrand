@@ -87,7 +87,7 @@ const HomePage: React.FunctionComponent<HomePageProps> = ({ topPoliticians }) =>
                             >
                               ▼
                             </span>
-                          ) : <span className='text-blue-500 align-middle font-sans text-lg mr-1'>●</span>
+                          ) : <span className='text-blue-500 align-middle font-sans text-sm mr-1'>●</span>
                         ) : <div className='mx-2'/> }
                         { !excluded ? politician.ranking : (
                           politician.rating.low_confidence ? '???' : '——'
