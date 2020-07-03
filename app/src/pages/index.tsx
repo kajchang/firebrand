@@ -83,7 +83,7 @@ const HomePage: React.FunctionComponent<HomePageProps> = ({ topPoliticians }) =>
                               </span>
                             ) : <span
                               className='text-red-500 align-middle font-sans text-lg mr-1'
-                              title={ politician.previous_ranking - politician.ranking }
+                              title={ String(politician.previous_ranking - politician.ranking) }
                             >
                               ▼
                             </span>
