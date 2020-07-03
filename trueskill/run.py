@@ -4,7 +4,7 @@ import re
 import unicodedata
 
 import itertools
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 from collections import OrderedDict
 
 import os
@@ -20,12 +20,16 @@ db = client.get_database()
 
 contests_col = db['contests']
 politicians_col = db['politicians']
+metadata_col = db['metadata']
+
+last_transfer_date = metadata_col.find_one({ 'name': 'transfer_date' })['value']
 
 # Setup rating settings
 
 FOUNDING_YEAR = 1776
 CURRENT_YEAR = datetime.now().year
 YEARS_UNTIL_EXCLUDED = 6
+RANKING_DELTA_TIME = timedelta(days=7)
 
 STARTING_RATING = 1500
 MAX_SIGMA = STARTING_RATING / 3 / 2
@@ -49,16 +53,19 @@ def rating_to_dict(rating: trueskill.Rating):
         'sigma': rating.sigma
     }
 
-def rating_from_dict(dictt):
+def rating_from_dict(dictt: dict):
     return trueskill.Rating(dictt['mu'], dictt['sigma'])
 
-def make_searchable(name):
+def make_searchable(name: str):
     name = re.sub(r' [A-Z]\.', '', name)
     name = unicodedata.normalize('NFD', name).encode('ascii', 'ignore').decode('utf-8')
     return name
 
 def main():
     politicians = OrderedDict()
+    
+    previous_rankings = {}
+    previous_rankings_calculated = False
 
     year_being_processed = None
     for contest in contests_col.find({}).sort([('date', 1)]):
@@ -101,6 +108,7 @@ def main():
                 continue
             if politicians.get(candidate['_id']) is None:
                 politicians[candidate['_id']] = {
+                    '_id': candidate['_id'],
                     'name': candidate['name'],
                     'searchable_name': make_searchable(candidate['name']),
                     'party': candidate['party'],
@@ -132,12 +140,21 @@ def main():
                 {'contest_id': contest['_id'], 'rating': rating_to_dict(output[0])}
             )
 
+        if not previous_rankings_calculated and last_transfer_date - contest['date'] < RANKING_DELTA_TIME:
+            previous_rankings_calculated = True
+            for (idx, politician) in enumerate(sorted(filter(
+                lambda politician: not (politician['rating_history'][-1]['rating']['sigma'] > MAX_SIGMA or politician['last_ran_in'] < CURRENT_YEAR - YEARS_UNTIL_EXCLUDED),
+                politicians.values()
+            ), key=lambda politician: politician['rating_history'][-1]['rating']['mu'], reverse=True)):
+                previous_rankings[politician['_id']] = idx + 1
+
     ranking = 1
     excluded_ranking = len(politicians)
     for politician in sorted(politicians.values(), key=lambda politician: politician['rating_history'][-1]['rating']['mu'], reverse=True):
         # Pre-calculate derived fields
         politician['rating'] = politician['rating_history'][-1]['rating']
         politician['rating']['low_confidence'] = False
+        politician['previous_ranking'] = previous_rankings.get(politician['_id'])
         politician['retired'] = False
         if politician['rating']['sigma'] > MAX_SIGMA:
             # Hide low confidence politicians from rankings
@@ -161,4 +178,4 @@ def main():
 if __name__ == '__main__':
     politicians = main()
     politicians_col.delete_many({})
-    politicians_col.insert_many(map(lambda item: dict({'_id': item[0]}, **item[1]), politicians.items()))
+    politicians_col.insert_many(politicians.values())

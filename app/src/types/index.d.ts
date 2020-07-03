@@ -39,5 +39,6 @@ export type Politician = {
   last_ran_in: number
   retired: boolean
   party: Party
+  previous_ranking: number|null 
   rating_history: RatedContest[]
 }
