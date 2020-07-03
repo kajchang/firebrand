@@ -75,9 +75,19 @@ const HomePage: React.FunctionComponent<HomePageProps> = ({ topPoliticians }) =>
                         { !excluded && politician.previous_ranking != politician.ranking ? (
                           politician.previous_ranking ? (
                             politician.ranking < politician.previous_ranking ? (
-                              <span className='text-green-500 font-sans leading-none text-lg mr-1'>▲</span>
-                            ) : <span className='text-red-500 align-middle font-sans leading-none text-lg mr-1'>▼</span>
-                          ) : <span className='text-blue-500 align-middle font-sans leading-none text-lg mr-1'>●</span>
+                              <span
+                                className='text-green-500 font-sans text-lg mr-1'
+                                title={ `+${ politician.previous_ranking - politician.ranking }` }
+                              >
+                                  ▲
+                              </span>
+                            ) : <span
+                              className='text-red-500 align-middle font-sans text-lg mr-1'
+                              title={ politician.previous_ranking - politician.ranking }
+                            >
+                              ▼
+                            </span>
+                          ) : <span className='text-blue-500 align-middle font-sans text-lg mr-1'>●</span>
                         ) : <div className='mx-2'/> }
                         { !excluded ? politician.ranking : (
                           politician.rating.low_confidence ? '???' : '——'

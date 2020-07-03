@@ -29,7 +29,7 @@ last_transfer_date = metadata_col.find_one({ 'name': 'transfer_date' })['value']
 FOUNDING_YEAR = 1776
 CURRENT_YEAR = datetime.now().year
 YEARS_UNTIL_EXCLUDED = 6
-RANKING_DELTA_TIME = timedelta(days=7)
+RANKING_DELTA_TIME = timedelta(days=30)
 
 STARTING_RATING = 1500
 MAX_SIGMA = STARTING_RATING / 3 / 2
