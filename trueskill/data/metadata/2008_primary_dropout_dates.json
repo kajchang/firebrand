@@ -1,21 +1,21 @@
 {
   "Democratic": {
-    "Chris Dodd": "2008-01-03",
-    "Joe Biden": "2008-01-03",
-    "Bill Richardson": "2008-01-10",
-    "Dennis Kucinich": "2008-01-24",
-    "John Edwards": "2008-01-30",
-    "Mike Gravel": "2008-03-26",
-    "Hillary Clinton": "2008-06-07"
+    "Chris Dodd": [null, "2008-01-03"],
+    "Joe Biden": [null, "2008-01-03"],
+    "Bill Richardson": [null, "2008-01-10"],
+    "Dennis Kucinich": [null, "2008-01-24"],
+    "John Edwards": [null, "2008-01-30"],
+    "Mike Gravel": [null, "2008-03-26"],
+    "Hillary Clinton": [null, "2008-06-07"]
   },
   "Republican": {
-    "Tom Tancredo": "2007-12-20",
-    "Duncan L. Hunter": "2008-01-19",
-    "Fred Thompson": "2008-01-22",
-    "Rudy Giuliani": "2008-01-30",
-    "Mitt Romney": "2008-02-07",
-    "Mike Huckabee": "2008-03-04",
-    "Alan L. Keyes": "2008-04-15",
-    "Ron Paul": "2008-06-12"
+    "Tom Tancredo": [null, "2007-12-20"],
+    "Duncan L. Hunter": [null, "2008-01-19"],
+    "Fred Thompson": [null, "2008-01-22"],
+    "Rudy Giuliani": [null, "2008-01-30"],
+    "Mitt Romney": [null, "2008-02-07"],
+    "Mike Huckabee": [null, "2008-03-04"],
+    "Alan L. Keyes": [null, "2008-04-15"],
+    "Ron Paul": [null, "2008-06-12"]
   }
 }

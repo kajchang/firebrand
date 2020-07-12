@@ -1,12 +1,12 @@
 {
   "Democratic": {
-    "Carol Moseley-Braun": "2004-01-15",
-    "Dick Gephardt": "2004-01-20",
-    "Joe Lieberman": "2004-02-03",
-    "Wesley Clark": "2004-02-10",
-    "Howard Dean": "2004-02-18",
-    "John Edwards": "2004-03-02",
-    "Al Sharpton": "2004-05-06",
-    "Dennis J. Kucinich": "2004-06-22"
+    "Carol Moseley-Braun": [null, "2004-01-15"],
+    "Dick Gephardt": [null, "2004-01-20"],
+    "Joe Lieberman": [null, "2004-02-03"],
+    "Wesley Clark": [null, "2004-02-10"],
+    "Howard Dean": [null, "2004-02-18"],
+    "John Edwards": [null, "2004-03-02"],
+    "Al Sharpton": [null, "2004-05-06"],
+    "Dennis J. Kucinich": [null, "2004-06-22"]
   }
 }

@@ -1,13 +1,13 @@
 {
   "Republican": {
-    "Herman Cain": "2011-12-03",
-    "Gary Johnson": "2011-12-28",
-    "Michele Bachmann": "2012-01-04",
-    "Rick Perry": "2012-01-19",
-    "Rick Santorum": "2012-04-10",
-    "Newt Gingrich": "2012-05-02",
-    "Ron Paul": "2012-05-14",
-    "Buddy Roemer III": "2012-05-14",
-    "Fred Karger": "2012-06-29"
+    "Herman Cain": [null, "2011-12-03"],
+    "Gary Johnson": [null, "2011-12-28"],
+    "Michele Bachmann": [null, "2012-01-04"],
+    "Rick Perry": [null, "2012-01-19"],
+    "Rick Santorum": [null, "2012-04-10"],
+    "Newt Gingrich": [null, "2012-05-02"],
+    "Ron Paul": [null, "2012-05-14"],
+    "Buddy Roemer III": [null, "2012-05-14"],
+    "Fred Karger": [null, "2012-06-29"]
   }
 }

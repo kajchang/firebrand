@@ -1,24 +1,24 @@
 {
   "Democratic": {
-    "Steve Bullock": "2019-12-02",
-    "Kamala Harris": "2019-12-03",
-    "Julián Castro": "2020-01-02",
-    "Marianne Williamson": "2020-01-10",
-    "Cory Booker": "2020-01-13",
-    "John K. Delaney": "2020-01-31",
-    "Michael Bennet": "2020-02-11",
-    "Andrew Yang": "2020-02-11",
-    "Deval L. Patrick": "2020-02-12",
-    "Tom Steyer": "2020-02-29",
-    "Pete Buttigieg": "2020-03-01",
-    "Amy Klobuchar": "2020-03-02",
-    "Mike Bloomberg": "2020-03-04",
-    "Elizabeth Warren": "2020-03-05",
-    "Tulsi Gabbard": "2020-03-19",
-    "Bernie Sanders": "2020-04-08"
+    "Steve Bullock": [null, "2019-12-02"],
+    "Kamala Harris": [null, "2019-12-03"],
+    "Julián Castro": [null, "2020-01-02"],
+    "Marianne Williamson": [null, "2020-01-10"],
+    "Cory Booker": [null, "2020-01-13"],
+    "John K. Delaney": [null, "2020-01-31"],
+    "Michael Bennet": [null, "2020-02-11"],
+    "Andrew Yang": [null, "2020-02-11"],
+    "Deval L. Patrick": [null, "2020-02-12"],
+    "Tom Steyer": [null, "2020-02-29"],
+    "Pete Buttigieg": [null, "2020-03-01"],
+    "Amy Klobuchar": [null, "2020-03-02"],
+    "Mike Bloomberg": ["2020-03-03", "2020-03-04"],
+    "Elizabeth Warren": [null, "2020-03-05"],
+    "Tulsi Gabbard": [null, "2020-03-19"],
+    "Bernie Sanders": [null, "2020-04-08"]
   },
   "Republican": {
-    "Joe Walsh": "2020-02-07",
-    "Bill Weld": "2020-03-18"
+    "Joe Walsh": [null, "2020-02-07"],
+    "Bill Weld": [null, "2020-03-18"]
   }
 }

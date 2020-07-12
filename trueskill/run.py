@@ -93,10 +93,13 @@ def main():
             if (
                 is_presidential_primary and
                 PRESIDENTIAL_PRIMARY_METADATA.get(contest['date'].year) is not None and
-                PRESIDENTIAL_PRIMARY_METADATA[contest['date'].year]['DROPOUT_DATES'].get(candidate['party']['name']) is not None and
-                date.fromisoformat(PRESIDENTIAL_PRIMARY_METADATA[contest['date'].year]['DROPOUT_DATES'][candidate['party']['name']].get(candidate['name'], date.max.isoformat())) < contest['date'].date()
+                PRESIDENTIAL_PRIMARY_METADATA[contest['date'].year]['DROPOUT_DATES'].get(candidate['party']['name']) is not None
             ):
-                continue
+                [entry_date, dropout_date] = PRESIDENTIAL_PRIMARY_METADATA[contest['date'].year]['DROPOUT_DATES'][candidate['party']['name']].get(candidate['name'], [None, None])
+                if (date.fromisoformat(entry_date) if entry_date is not None else date.min) > contest['date'].date():
+                    continue
+                if (date.fromisoformat(dropout_date) if dropout_date is not None else date.max) <= contest['date'].date():
+                    continue
             if (
                 candidate['party'] == 'Write-In' or
                 candidate['name'].startswith('No ') or

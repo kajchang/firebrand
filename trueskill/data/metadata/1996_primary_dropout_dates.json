@@ -1,7 +1,7 @@
 {
 	"Republican": {
-		"Phil Gramm": "1996-02-14",
-		"Richard Lugar": "1996-03-06",
-		"Lamar Alexander": "1996-03-06"
+		"Phil Gramm": [null, "1996-02-14"],
+		"Richard Lugar": [null, "1996-03-06"],
+		"Lamar Alexander": [null, "1996-03-06"]
 	}
 }

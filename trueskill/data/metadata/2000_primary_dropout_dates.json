@@ -1,12 +1,12 @@
 {
   "Democratic": {
-    "Bill Bradley": "2000-03-09"
+    "Bill Bradley": [null, "2000-03-09"]
 
   },
   "Republican": {
-    "Orrin G. Hatch": "2000-01-27",
-    "Steve Forbes": "2000-02-10",
-    "Gary Bauer": "2000-02-16",
-    "John McCain": "2000-03-09"
+    "Orrin G. Hatch": [null, "2000-01-27"],
+    "Steve Forbes": [null, "2000-02-10"],
+    "Gary Bauer": [null, "2000-02-16"],
+    "John McCain": [null, "2000-03-09"]
   }
 }

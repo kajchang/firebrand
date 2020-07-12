@@ -1,22 +1,22 @@
 {
   "Democratic": {
-    "Martin J. O'Malley": "2016-02-01",
-    "Bernie Sanders": "2016-06-12"
+    "Martin J. O'Malley": [null, "2016-02-01"],
+    "Bernie Sanders": [null, "2016-06-12"]
   },
   "Republican": {
-    "Bobby Jindal": "2015-11-17",
-    "Lindsey Graham": "2015-12-21",
-    "George Pataki": "2015-12-29",
-    "Mike Huckabee": "2016-02-01",
-    "Rand Paul": "2016-02-03",
-    "Rick Santorum": "2016-02-03",
-    "Chris Christie": "2016-02-10",
-    "Carly Fiorina": "2016-02-10",
-    "Jim Gilmore": "2016-02-12",
-    "Jeb Bush": "2016-02-20",
-    "Ben Carson": "2016-03-04",
-    "Marco Rubio": "2016-03-15",
-    "Ted Cruz": "2016-05-03",
-    "John Kasich": "2016-05-04"
+    "Bobby Jindal": [null, "2015-11-17"],
+    "Lindsey Graham": [null, "2015-12-21"],
+    "George Pataki": [null, "2015-12-29"],
+    "Mike Huckabee": [null, "2016-02-01"],
+    "Rand Paul": [null, "2016-02-03"],
+    "Rick Santorum": [null, "2016-02-03"],
+    "Chris Christie": [null, "2016-02-10"],
+    "Carly Fiorina": [null, "2016-02-10"],
+    "Jim Gilmore": [null, "2016-02-12"],
+    "Jeb Bush": [null, "2016-02-20"],
+    "Ben Carson": [null, "2016-03-04"],
+    "Marco Rubio": [null, "2016-03-15"],
+    "Ted Cruz": [null, "2016-05-03"],
+    "John Kasich": [null, "2016-05-04"]
   }
 }
