@@ -77,15 +77,15 @@ def main():
         current_ratings_input = []
         results_input = []
 
-        is_presidential_primary = 'US President' in contest['name'] and ('Primary' in contest['name'] or 'Caucus' in contest['name'])
+        is_presidential_primary = 'US President' in contest['name'] and contest['type'] in ['Caucus', 'Primary Election']
         is_one_shot = all(candidate['votes'] == 1 or candidate['votes'] == 0 for candidate in contest['candidates'])
-        is_primary = 'Primary' in contest['name']
+        is_ultimate_election = contest['type'] in ['General Election', 'Run-Off', 'Special Election', 'Running Mate']
 
         num_winners = len(list(filter(lambda candidate: candidate['won'], contest['candidates'])))
         has_winner = num_winners > 0
 
         total_votes = sum(candidate['votes'] for candidate in contest['candidates'])
-        next_result_score = 1 if has_winner and not is_primary else 0
+        next_result_score = 1 if has_winner and is_ultimate_election else 0
 
         is_upcoming = contest['upcoming']
 
@@ -124,10 +124,10 @@ def main():
 
             participants.append(politician)
             current_ratings_input.append((rating_from_dict(politician['rating_history'][-1]['rating']),))
-            results_input.append((0 if candidate['won'] and not is_primary else next_result_score,))
+            results_input.append((0 if candidate['won'] and is_ultimate_election else next_result_score,))
 
             are_candidate_votes_negligible = not is_one_shot and total_votes > 0 and len(contest['candidates']) > 2 and (candidate['votes'] / total_votes) < 0.01
-            if (not candidate['won'] or is_primary) and not are_candidate_votes_negligible:
+            if (not candidate['won'] or not is_ultimate_election) and not are_candidate_votes_negligible:
                 next_result_score += 1
 
         if len(participants) < 2 or is_upcoming:

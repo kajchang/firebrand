@@ -69,10 +69,11 @@ for race in race_col.find({
         'Description': { '$not': { '$regex': re.compile(r'non-binding', re.IGNORECASE) } },
         'ParentContainer': { '$in': valid_containers },
         'RaceID': { '$nin': excluded_race_ids }
-    }, projection={'Title': True, 'RaceID': True, 'PollEnd': True, 'DataSources': True}):
+    }, projection={'Title': True, 'RaceID': True, 'PollEnd': True, 'DataSources': True, 'Type': True}):
     contest = {
         '_id': race['RaceID'],
         'name': race['Title'],
+        'type': race['Type'],
         'date': race['PollEnd'],
         'candidates': [],
         'source': race['DataSources'],
