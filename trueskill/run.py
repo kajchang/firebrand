@@ -119,8 +119,9 @@ def main():
                 }
             
             politician = politicians[candidate['_id']]
-            politician['party'] = candidate['party']
-            politician['last_ran_in'] = contest['date'].year
+            if not is_upcoming:
+                politician['party'] = candidate['party']
+                politician['last_ran_in'] = contest['date'].year
 
             participants.append(politician)
             current_ratings_input.append((rating_from_dict(politician['rating_history'][-1]['rating']),))
