@@ -96,7 +96,7 @@ const HomePage: React.FunctionComponent<HomePageProps> = ({ topPoliticians, last
 											className={`flex flex-row items-center rounded-lg ${
 												!politician.rating.low_confidence ? 'hover:bg-gray-300' : 'hover:bg-red-400'
 											} cursor-pointer p-3`}
-											title={`${politician.name} - ${politician.party.name}`}
+											title={politician.name}
 										>
 											{!excluded && politician.previous_ranking != politician.ranking ? (
 												politician.previous_ranking ? (
@@ -110,7 +110,7 @@ const HomePage: React.FunctionComponent<HomePageProps> = ({ topPoliticians, last
 													) : (
 														<span
 															className="text-red-500 align-middle font-sans text-lg mr-1"
-															title={String(politician.previous_ranking - politician.ranking)}
+															title={(politician.previous_ranking - politician.ranking).toString()}
 														>
 															▼
 														</span>
@@ -132,6 +132,7 @@ const HomePage: React.FunctionComponent<HomePageProps> = ({ topPoliticians, last
 											<SparkLine className="mx-2" ratingHistory={politician.rating_history} />
 											<Rating rating={politician.rating.mu} size="lg" />
 											<div
+												title={politician.party.name}
 												className="w-3 h-3 mx-2"
 												style={{ backgroundColor: politician.party.color }}
 											/>

@@ -39,7 +39,7 @@ const Rating: React.FunctionComponent<RatingProps> = ({ rating, size }) => {
 	const { textClassName, iconSize } = COMPONENT_SIZES[size]
 
 	return (
-		<div className="flex flex-row items-center">
+		<div title={rating.toString()} className="flex flex-row items-center">
 			<Image
 				layout="fixed"
 				src={`/badges/rank-${tier}Tier.png`}
