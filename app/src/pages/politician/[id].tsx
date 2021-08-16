@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 
+import { GetStaticPaths, GetStaticProps } from 'next';
 import Head from 'next/head';
 import Error from 'next/error';
 import Link from 'next/link';
@@ -121,13 +122,12 @@ const ContestListItem: React.FunctionComponent<ContestListItemProps> = ({ politi
 type PoliticianWithDetailedContests = Politician & { full_contests: Contest[] };
 
 type PoliticianPageProps = {
-  err: { statusCode: number }
-  politician: PoliticianWithDetailedContests
+  politician?: PoliticianWithDetailedContests
 };
 
-const PoliticianPage: React.FunctionComponent<PoliticianPageProps> = ({ err, politician }) => {
-  if (err) {
-    return <Error statusCode={ err.statusCode }/>
+const PoliticianPage: React.FunctionComponent<PoliticianPageProps> = ({ politician }) => {
+  if (!politician) {
+    return <Error statusCode={ 404 }/>
   }
 
   const sortedFullContests = useMemo(() => politician.full_contests.sort((a, b) =>
@@ -217,15 +217,22 @@ const PoliticianPage: React.FunctionComponent<PoliticianPageProps> = ({ err, pol
   );
 }
 
-export async function getServerSideProps(context: NextPageContext) {
-  const { query } = context;
+export const getStaticPaths: GetStaticPaths<{ id: string }> = async () => {
+  return {
+    paths: [],
+    fallback: true
+  }
+}
+
+export const getStaticProps: GetStaticProps<PoliticianPageProps, { id: string }> = async (context) => {
+  const { params } = context;
 
   const db = await connectToDatabase(process.env.MONGODB_URI);
 
   const collection = await db.collection('politicians');
   const politician = (await collection
     .aggregate([
-      { $match: { '_id': parseInt(query.id as string) } },
+      { $match: { '_id': parseInt(params.id as string) } },
       {
         $lookup: {
           'from': 'contests',
@@ -239,13 +246,9 @@ export async function getServerSideProps(context: NextPageContext) {
   )[0];
 
   if (typeof politician == 'undefined') {
-    context.res.statusCode = 404;
     return {
-      props: {
-        err: {
-          statusCode: 404
-        }
-      }
+      props: {},
+      notFound: true,
     }
   }
 

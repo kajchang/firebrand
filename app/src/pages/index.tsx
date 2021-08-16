@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { GetStaticProps } from 'next'; 
 import Head from 'next/head';
 import Link from 'next/link';
 
@@ -128,7 +129,7 @@ const HomePage: React.FunctionComponent<HomePageProps> = ({ topPoliticians, last
   );
 }
 
-export async function getServerSideProps() {
+export const getStaticProps: GetStaticProps = async () => {
   const db = await connectToDatabase(process.env.MONGODB_URI);
 
   const politiciansCol = await db.collection('politicians');
@@ -147,7 +148,7 @@ export async function getServerSideProps() {
     props: {
       topPoliticians,
       lastUpdatedDate
-    }
+    },
   };
 }
 
