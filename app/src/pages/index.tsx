@@ -3,6 +3,8 @@ import React from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 
+import dayjs from 'dayjs';
+
 import Header from '@/components/header';
 import Rating from '@/components/rating';
 import SparkLine from '@/components/sparkline';
@@ -13,9 +15,10 @@ import { Politician } from '@/types';
 
 type HomePageProps = {
   topPoliticians: Politician[]
+  lastUpdatedDate: string
 };
 
-const HomePage: React.FunctionComponent<HomePageProps> = ({ topPoliticians }) => {
+const HomePage: React.FunctionComponent<HomePageProps> = ({ topPoliticians, lastUpdatedDate }) => {
   const [search, setSearch] = React.useState('');
   const [searchResults, setSearchResults] = React.useState([]);
   const fetchingTimeout = React.useRef(null);
@@ -49,7 +52,21 @@ const HomePage: React.FunctionComponent<HomePageProps> = ({ topPoliticians }) =>
       <Head>
         <title>Firebrand - Power Ratings for U.S. Politicians</title>
       </Head>
-      <Header headerChildren='Firebrand' tagLineChildren='Power Ratings for US Politicians' tagLineProps={ { className: 'text-flag-red' } }/>
+      <Header
+        headerChildren='Firebrand'
+        tagLineChildren={
+          <span>
+            Power Ratings for US Politicians
+            <br/>
+            Last Updated: {dayjs(lastUpdatedDate).format('M/D/YY')}
+            {' '}<span className='font-serif'>·</span>{' '}
+            <a className='text-flag-blue' href='https://github.com/kajchang/firebrand' target='_blank' rel='noopener referer'>
+              Source
+            </a>
+          </span>
+        }
+        tagLineProps={ { className: 'text-flag-red' } }
+      />
       <input
         className='rounded-lg text-2xl font-big-noodle w-5/6 px-5 py-3 my-5'
         placeholder='Search...' value={ search }
@@ -114,18 +131,22 @@ const HomePage: React.FunctionComponent<HomePageProps> = ({ topPoliticians }) =>
 export async function getServerSideProps() {
   const db = await connectToDatabase(process.env.MONGODB_URI);
 
-  const collection = await db.collection('politicians');
-  const topPoliticians = await collection
+  const politiciansCol = await db.collection('politicians');
+  const metadataCol = await db.collection('metadata');
+
+  const topPoliticians = await politiciansCol
     .aggregate([
       { $sort: { 'ranking': 1 } },
       { $limit: 100 },
       { $project: { 'rating_history': { 'contest_id': 0 } } }
     ])
     .toArray();
+  const lastUpdatedDate = ((await metadataCol.findOne({ name: 'transfer_date' })).value as Date).toISOString();
 
   return {
     props: {
-      topPoliticians
+      topPoliticians,
+      lastUpdatedDate
     }
   };
 }
