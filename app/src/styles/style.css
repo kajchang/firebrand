@@ -1,83 +1,82 @@
 @tailwind base;
 
 @font-face {
-    src: url("/fonts/big_noodle_titling_oblique.ttf") format("truetype");
-    font-family: Big Noodle Too;
-    font-style: italic;
+	src: url('/fonts/big_noodle_titling_oblique.ttf') format('truetype');
+	font-family: Big Noodle Too;
+	font-style: italic;
 }
 
 @font-face {
-    src: url("/fonts/big_noodle_titling.ttf") format("truetype");
-    font-family: Big Noodle Too;
+	src: url('/fonts/big_noodle_titling.ttf') format('truetype');
+	font-family: Big Noodle Too;
 }
 
 @font-face {
-    src: url("/fonts/BigstarRegular-jE91M.otf") format("opentype");
-    font-family: Big Star;
+	src: url('/fonts/BigstarRegular-jE91M.otf') format('opentype');
+	font-family: Big Star;
 }
-
 
 @tailwind components;
 
 .text-Grandmaster {
-    animation: text-shadow-pulse-darkgoldenrod 1s infinite alternate;
-    @apply text-white;
+	animation: text-shadow-pulse-darkgoldenrod 1s infinite alternate;
+	@apply text-white;
 }
 
 .text-Master {
-    animation: text-shadow-pulse-goldenrod 1s infinite alternate;
-    @apply text-white;
+	animation: text-shadow-pulse-goldenrod 1s infinite alternate;
+	@apply text-white;
 }
 
 .text-Platinum {
-    @apply text-gray-600;
+	@apply text-gray-600;
 }
 
 .text-Gold {
-    @apply text-yellow-600;
+	@apply text-yellow-600;
 }
 
 .text-Silver {
-    @apply text-gray-500;
+	@apply text-gray-500;
 }
 
 .text-Bronze {
-    @apply text-orange-900;
+	@apply text-orange-900;
 }
 
 .text-rotatable {
-    transition: transform 0.3s;
-    @apply leading-none;
+	transition: transform 0.3s;
+	@apply leading-none;
 }
 
 .text-link {
-    @apply text-blue-500;
+	@apply text-blue-500;
 }
 
 .text-link:hover {
-    @apply text-blue-700;
+	@apply text-blue-700;
 }
 
 @tailwind utilities;
 
 .text-rotated-down {
-    transform: rotate(90deg);
+	transform: rotate(90deg);
 }
 
 @keyframes text-shadow-pulse-darkgoldenrod {
-    from {
-        text-shadow: darkgoldenrod 0 0 4px;
-    }
-    to {
-        text-shadow: darkgoldenrod 0 0 5px;
-    }
+	from {
+		text-shadow: darkgoldenrod 0 0 4px;
+	}
+	to {
+		text-shadow: darkgoldenrod 0 0 5px;
+	}
 }
 
 @keyframes text-shadow-pulse-goldenrod {
-    from {
-        text-shadow: goldenrod 0 0 4px;
-    }
-    to {
-        text-shadow: goldenrod 0 0 5px;
-    }
+	from {
+		text-shadow: goldenrod 0 0 4px;
+	}
+	to {
+		text-shadow: goldenrod 0 0 5px;
+	}
 }
