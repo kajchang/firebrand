@@ -11,10 +11,9 @@ import RatingChart from '@/components/ratingchart';
 
 import { connectToDatabase } from '@/utils/db';
 import { isWebUri } from 'valid-url';
-import moment from 'moment';
+import dayjs from 'dayjs'
 
 import { Contest, Politician } from '@/types';
-import { NextPageContext } from 'next';
 
 type ContestListItemProps = {
   politician: Politician
@@ -42,7 +41,7 @@ const ContestListItem: React.FunctionComponent<ContestListItemProps> = ({ politi
   return (
     <li
       className='flex flex-col rounded-lg text-xl md:text-2xl p-3'
-      title={ `${ contest.name } - ${ moment(contest.date).format('MMMM Do YYYY') }` }
+      title={ `${ contest.name } - ${ dayjs(contest.date).format('MMMM Do YYYY') }` }
     >
       <div className='flex flex-row items-center'>
         <span className={ (ratingDelta > 0 ? 'text-green-500' : (ratingDelta == 0 ? 'text-gray-500' : 'text-red-500')) + ' mr-2' }>

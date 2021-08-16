@@ -3,7 +3,7 @@ import React, { useMemo } from 'react';
 import { VictoryArea, VictoryAxis, VictoryChart, VictoryLine, VictoryTheme } from 'victory';
 import Rating, { TIERS } from '@/components/rating';
 
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 import { Contest, RatedContest } from '@/types';
 import { VictoryLabelProps } from 'victory-core';
@@ -24,8 +24,8 @@ type RatingChartProps = {
 };
 
 const RatingChart: React.FunctionComponent<RatingChartProps> = ({ contests, ratingHistory }) => {
-  const startDate = useMemo(() => moment(contests[0].date).subtract(1, 'year'), [contests]);
-  const endDate = useMemo(() => moment(contests[contests.length - 1].date), [contests]);
+  const startDate = useMemo(() => dayjs(contests[0].date).subtract(1, 'year'), [contests]);
+  const endDate = useMemo(() => dayjs(contests[contests.length - 1].date), [contests]);
   const initalRating = ratingHistory[0].rating;
 
   return (
@@ -43,7 +43,7 @@ const RatingChart: React.FunctionComponent<RatingChartProps> = ({ contests, rati
               contests.map(contest => {
                 const rating = ratingHistory[contests.indexOf(contest) + 1].rating;
                 return {
-                  x: moment(contest.date).toDate(),
+                  x: dayjs(contest.date).toDate(),
                   y: rating.mu + 2 * rating.sigma,
                   y0: rating.mu - 2 * rating.sigma
                 };
@@ -59,7 +59,7 @@ const RatingChart: React.FunctionComponent<RatingChartProps> = ({ contests, rati
               y: initalRating.mu
             }].concat(
               contests.map(contest => ({
-                x: moment(contest.date).toDate(),
+                x: dayjs(contest.date).toDate(),
                 y: ratingHistory[contests.indexOf(contest) + 1].rating.mu
               }))
             )
@@ -69,7 +69,7 @@ const RatingChart: React.FunctionComponent<RatingChartProps> = ({ contests, rati
           scale='time'
           domain={ [startDate.toDate(), endDate.toDate()] }
           tickCount={ Math.min(7, endDate.year() - startDate.year()) }
-          tickFormat={ (ts: number): number => moment(ts).year() }
+          tickFormat={ (ts: number): number => dayjs(ts).year() }
         />
         <VictoryAxis
           dependentAxis
