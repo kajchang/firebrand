@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { connectToDatabase } from '@/utils/db';
 
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (typeof req.query.search == 'undefined') {
     res.status(400).json({ error: 'Must provide a "search" parameter' });
   }
@@ -30,3 +30,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   res.status(200).json({ results });
 }
+
+export default handler

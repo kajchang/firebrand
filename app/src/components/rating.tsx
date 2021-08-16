@@ -1,5 +1,7 @@
 import React from 'react';
 
+import Image from 'next/image';
+
 type RatingProps = {
   rating: number
   size: 'sm'|'md'|'lg'
@@ -36,7 +38,7 @@ const Rating: React.FunctionComponent<RatingProps> = ({ rating, size }) => {
 
   return (
     <div className='flex flex-row items-center'>
-      <img src={ `/badges/rank-${ tier }Tier.png` } alt={ `${ tier } Tier` } height={ iconSize } width={ iconSize }/>
+      <Image layout='fixed' src={ `/badges/rank-${ tier }Tier.png` } alt={ `${ tier } Tier` } height={ iconSize } width={ iconSize }/>
       <i className={ `${ textClassName } text-${ tier }` }>{ Math.round(rating) }</i>
     </div>
   );

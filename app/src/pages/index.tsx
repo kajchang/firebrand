@@ -61,7 +61,7 @@ const HomePage: React.FunctionComponent<HomePageProps> = ({ topPoliticians, last
             <br/>
             Last Updated: {dayjs(lastUpdatedDate).format('M/D/YY')}
             {' '}<span className='font-serif'>·</span>{' '}
-            <a className='text-flag-blue' href='https://github.com/kajchang/firebrand' target='_blank' rel='noopener referer'>
+            <a className='text-flag-blue' href='https://github.com/kajchang/firebrand' target='_blank' rel="noopener referer noreferrer">
               Source
             </a>
           </span>

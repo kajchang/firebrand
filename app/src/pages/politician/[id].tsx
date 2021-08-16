@@ -36,7 +36,7 @@ const ContestListItem: React.FunctionComponent<ContestListItemProps> = ({ politi
     } else {
       return b.votes - a.votes;
     }
-  }), [contest]);
+  }), [contest, politician._id]);
 
   return (
     <li
@@ -121,14 +121,10 @@ const ContestListItem: React.FunctionComponent<ContestListItemProps> = ({ politi
 type PoliticianWithDetailedContests = Politician & { full_contests: Contest[] };
 
 type PoliticianPageProps = {
-  politician?: PoliticianWithDetailedContests
+  politician: PoliticianWithDetailedContests
 };
 
 const PoliticianPage: React.FunctionComponent<PoliticianPageProps> = ({ politician }) => {
-  if (!politician) {
-    return <Error statusCode={ 404 }/>
-  }
-
   const sortedFullContests = useMemo(() => politician.full_contests.sort((a, b) =>
     politician.rating_history.findIndex(contest => contest.contest_id == a._id) -
     politician.rating_history.findIndex(contest => contest.contest_id == b._id)
