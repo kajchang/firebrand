@@ -12,7 +12,7 @@ export async function connectToDatabase(uri) {
 
 	const client = await MongoClient.connect(uri, { useNewUrlParser: true })
 
-	const db = await client.db(url.parse(uri).pathname.substr(1))
+	const db = await client.db('firebrand')
 
 	cachedDb = db
 	return db

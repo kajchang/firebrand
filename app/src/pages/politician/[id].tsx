@@ -150,10 +150,23 @@ const ContestListItem: React.FunctionComponent<ContestListItemProps> = ({
 type PoliticianWithDetailedContests = Politician & { full_contests: Contest[] }
 
 type PoliticianPageProps = {
-	politician: PoliticianWithDetailedContests
+	politician?: PoliticianWithDetailedContests
 }
 
-const PoliticianPage: React.FunctionComponent<PoliticianPageProps> = ({ politician }) => {
+const PoliticianPage: React.FunctionComponent<PoliticianPageProps> = ({
+	politician = {
+		_id: 0,
+		name: '',
+		rating: { mu: 0, sigma: 0, low_confidence: false },
+		ranking: 0,
+		last_ran_in: dayjs().year(),
+		retired: false,
+		party: { name: '', color: '' },
+		previous_ranking: null,
+		rating_history: [],
+		full_contests: [],
+	},
+}) => {
 	const sortedFullContests = useMemo(
 		() =>
 			politician.full_contests.sort(
