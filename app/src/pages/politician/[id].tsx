@@ -177,15 +177,18 @@ const PoliticianPage: React.FunctionComponent<PoliticianPageProps> = ({
 		[politician]
 	)
 
-	const excluded = useMemo(
-		() => politician.rating.low_confidence || politician.retired,
-		[politician]
-	)
+	const excluded = politician.rating.low_confidence || politician.retired
 
 	return (
 		<div className="flex flex-col items-center bg-gray-200 min-h-screen">
 			<Head>
 				<title>{politician.name}</title>
+				<meta
+					property="og:description"
+					content={`${politician.name} has a power rating of ${politician.rating.mu.toFixed()}${
+						!excluded ? ` and is ranked #${politician.ranking}` : ''
+					}`}
+				/>
 			</Head>
 			<Header
 				headerChildren={politician.name}

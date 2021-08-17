@@ -51,6 +51,10 @@ const HomePage: React.FunctionComponent<HomePageProps> = ({ topPoliticians, last
 		<div className="flex flex-col items-center bg-gray-200 min-h-screen">
 			<Head>
 				<title>Firebrand - Power Ratings for U.S. Politicians</title>
+				<meta
+					property="og:description"
+					content="Non-serious automated power ratings for U.S. politicians."
+				/>
 			</Head>
 			<Header
 				headerChildren="Firebrand"
