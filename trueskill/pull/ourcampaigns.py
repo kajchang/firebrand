@@ -82,14 +82,13 @@ for race in race_col.find({
     }
     for race_member in race_members_col.find({
         'RaceLink': race['RaceID'],
-        'WriteIn': '',
         '$and': [
             { '$or': [
                 { 'DropoutDate': '0000-00-00' },
                 { 'DropoutDate': { '$gt': race['PollEnd'] } }
             ] }
         ]
-    }, projection={'CandidateLink': True, 'PartyLink': True, 'Won': True, 'Incumbent': True, 'FinalVoteTotal': True}):
+    }, projection={'CandidateLink': True, 'PartyLink': True, 'WriteIn': True, 'Won': True, 'Incumbent': True, 'FinalVoteTotal': True}):
         party = cache.get('party.' + str(race_member['PartyLink']))
         if party is None:
             party = party_col.find_one({'PartyID': race_member['PartyLink']}, projection={'Name': True, 'Color': True})
@@ -103,6 +102,8 @@ for race in race_col.find({
                 continue
             cache['candidate.' + str(race_member['CandidateLink'])] = candidate
         if type(candidate['FirstName']) is not str or type(candidate['LastName']) is not str:
+            continue
+        if race_member['WriteIn'] == 'Y' and race_member['Won'] != 'Y':
             continue
         if candidate['FirstName'].startswith('"'):
             match = re.search(r'""(.+)"""', candidate['FirstName'])
