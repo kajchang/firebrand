@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 
 import { GetStaticProps } from 'next'
 import Head from 'next/head'
@@ -20,11 +20,11 @@ type HomePageProps = {
 }
 
 const HomePage: React.FunctionComponent<HomePageProps> = ({ topPoliticians, lastUpdatedDate }) => {
-	const [search, setSearch] = React.useState('')
-	const [searchResults, setSearchResults] = React.useState([])
-	const fetchingTimeout = React.useRef(null)
+	const [search, setSearch] = useState('')
+	const [searchResults, setSearchResults] = useState([])
+	const fetchingTimeout = useRef(null)
 
-	React.useEffect(() => {
+	useEffect(() => {
 		if (search == '') return
 		if (fetchingTimeout.current != null) {
 			clearTimeout(fetchingTimeout.current)
