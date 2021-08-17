@@ -23,6 +23,7 @@ container_col = ourcampaigns_db['Container']
 candidate_col = ourcampaigns_db['Candidate']
 race_members_col = ourcampaigns_db['RaceMember']
 
+cache = {}
 contests_to_insert = []
 
 if args.reset:
@@ -89,12 +90,18 @@ for race in race_col.find({
             ] }
         ]
     }, projection={'CandidateLink': True, 'PartyLink': True, 'Won': True, 'Incumbent': True, 'FinalVoteTotal': True}):
-        party = party_col.find_one({'PartyID': race_member['PartyLink']}, projection={'Name': True, 'Color': True})
+        party = cache.get('party.' + str(race_member['PartyLink']))
         if party is None:
-            continue
-        candidate = candidate_col.find_one({'CandidateID': race_member['CandidateLink']}, projection={'FirstName': True, 'LastName': True})
+            party = party_col.find_one({'PartyID': race_member['PartyLink']}, projection={'Name': True, 'Color': True})
+            if party is None:
+                continue
+            cache['party.' + str(race_member['PartyLink'])] = party
+        candidate = cache.get('candidate.' + str(race_member['CandidateLink']))
         if candidate is None:
-            continue
+            candidate = candidate_col.find_one({'CandidateID': race_member['CandidateLink']}, projection={'FirstName': True, 'LastName': True})
+            if candidate is None:
+                continue
+            cache['candidate.' + str(race_member['CandidateLink'])] = candidate
         if type(candidate['FirstName']) is not str or type(candidate['LastName']) is not str:
             continue
         if candidate['FirstName'].startswith('"'):
