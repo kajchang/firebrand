@@ -39,31 +39,40 @@ else:
     latest_transfer_date = datetime.min
 latest_pull_date = max(race_col.distinct('LastModified', { 'LastModified': { '$type': 'date' } }))
 
-excluded_races = [19115]
+excluded_container_ids = [19115]
 us_root = 1
 container_queue = [us_root, 188, 67720]
 valid_containers = list(container_queue)
 while len(container_queue) > 0:
     container = container_queue.pop()
     for child_container in container_col.find({'ParentLink': container}, projection={'ContainerID': True}):
-        if child_container['ContainerID'] in excluded_races:
+        if child_container['ContainerID'] in excluded_container_ids:
             continue
         valid_containers.append(child_container['ContainerID'])
         container_queue.append(child_container['ContainerID'])
 
 valid_offices = [585, 835, 699, 743, 739, 368, 345, 411, 437, 809, 678, 757, 121, 643, 818, 50, 223, 334, 282]
-valid_race_types = ['General Election', 'General Election - Requires Run-Off', 'Caucus', 'Primary Election', 'Primary Election Run-Off', 'Run-Off', 'Special Election', 'Special Election Primary', 'Running Mate']
+valid_race_types = ['General Election', 'General Election - Requires Run-Off', 'Primary Election', 'Primary Election Run-Off', 'Run-Off', 'Special Election', 'Special Election Primary', 'Running Mate']
 
 excluded_race_ids = [32102, 379074, 513619, 905093]
 
 for race in race_col.find({
         'Title': { '$not': { '$regex': re.compile(r'selection|convention|chair|primaries|delegate|endorsement|preference|national|popular|nomination|committee', re.IGNORECASE) } },
-        '$or': [
-            { 'ParentRace': 0 },
-            { '$and': [ { 'OfficeLink': 585 }, { 'Type': { '$in': ['Caucus', 'Primary Election'] } } ] },
+        '$and': [
+            {
+                '$or': [
+                    { 'ParentRace': 0 },
+                    { '$and': [ { 'OfficeLink': 585 }, { 'Type': { '$in': ['Caucus', 'Primary Election'] } } ] },
+                ],
+            },
+            {
+                '$or': [
+                    { 'Type': { '$in': valid_race_types } },
+                    { '$and': [ { 'OfficeLink': 585 }, { 'Type': 'Caucus' } ] },
+                ],
+            }
         ],
         'LastModified': { '$type': 'date', '$gt': latest_transfer_date },
-        'Type': { '$in': valid_race_types },
         'OfficeLink': { '$in': valid_offices },
         'PollEnd': { '$type': 'date' },
         'Silly': '',
