@@ -147,7 +147,7 @@ def main():
         if not previous_rankings_calculated and last_transfer_date - contest['date'] < RANKING_DELTA_TIME:
             previous_rankings_calculated = True
             for (idx, politician) in enumerate(sorted(filter(
-                lambda politician: not (politician['rating_history'][-1]['rating']['sigma'] > MAX_SIGMA or politician['last_ran_in'] < (datetime.today() - RANKING_DELTA_TIME).year - YEARS_UNTIL_EXCLUDED - 1),
+                lambda politician: not (politician['rating_history'][-1]['rating']['sigma'] > MAX_SIGMA or politician['last_ran_in'] < (datetime.today() - RANKING_DELTA_TIME).year - YEARS_UNTIL_EXCLUDED),
                 politicians.values()
             ), key=lambda politician: politician['rating_history'][-1]['rating']['mu'], reverse=True)):
                 previous_rankings[politician['_id']] = idx + 1
