@@ -28,10 +28,9 @@ contests_to_insert = []
 
 if args.reset:
     contests_col.delete_many({})
-    metadata_col.delete_one({ 'name': 'transfer_date' })
 
 is_first_run = False
-transfer_date_metadata = metadata_col.find_one({ 'name': 'transfer_date' })
+transfer_date_metadata = None if args.reset else metadata_col.find_one({ 'name': 'transfer_date' })
 if transfer_date_metadata is not None:
     latest_transfer_date = transfer_date_metadata['value']
 else:
@@ -39,7 +38,7 @@ else:
     latest_transfer_date = datetime.min
 latest_pull_date = max(race_col.distinct('LastModified', { 'LastModified': { '$type': 'date' } }))
 
-excluded_container_ids = [19115]
+excluded_container_ids = [19115, 81152]
 us_root = 1
 container_queue = [us_root, 188, 67720]
 valid_containers = list(container_queue)
@@ -138,6 +137,7 @@ for race in race_col.find({
 
 if is_first_run:
     contests_col.insert_many(contests_to_insert)
+
 metadata_col.update_one({ 'name': 'transfer_date' }, {
     '$set': { 'value': latest_pull_date }
 }, upsert=True)
