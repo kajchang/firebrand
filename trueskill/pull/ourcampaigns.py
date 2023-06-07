@@ -53,7 +53,7 @@ while len(container_queue) > 0:
 valid_offices = [585, 835, 699, 743, 739, 368, 345, 411, 437, 809, 678, 757, 121, 643, 818, 50, 223, 334, 282]
 valid_race_types = ['General Election', 'General Election - Requires Run-Off', 'Primary Election', 'Primary Election Run-Off', 'Run-Off', 'Special Election', 'Special Election Primary', 'Running Mate']
 
-excluded_race_ids = [32102, 379074, 513619, 905093]
+excluded_race_ids = [32102, 379074, 513619, 905093, 874055]
 
 for race in race_col.find({
         'Title': { '$not': { '$regex': re.compile(r'selection|convention|chair|primaries|delegate|endorsement|preference|national|popular|nomination|committee', re.IGNORECASE) } },
