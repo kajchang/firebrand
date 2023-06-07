@@ -68,7 +68,7 @@ def main():
     previous_rankings_calculated = False
 
     year_being_processed = None
-    for contest in contests_col.find({}).sort([('date', 1)]):
+    for contest in contests_col.find({}).allow_disk_use(True).sort([('date', 1)]):
         if contest['date'].year != year_being_processed:
             print(colorama.Fore.GREEN + 'Processing contests from ' + str(contest['date'].year) + colorama.Fore.RESET)
             year_being_processed = contest['date'].year
