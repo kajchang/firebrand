@@ -98,7 +98,7 @@ def main():
                 [entry_date, dropout_date] = PRESIDENTIAL_PRIMARY_METADATA[contest['date'].year]['DROPOUT_DATES'][candidate['party']['name']].get(candidate['name'], [None, None])
                 if (date.fromisoformat(entry_date) if entry_date is not None else date.min) > contest['date'].date():
                     continue
-                if (date.fromisoformat(dropout_date) if dropout_date is not None else date.max) <= contest['date'].date():
+                if (date.fromisoformat(dropout_date) if dropout_date is not None else date.max) < contest['date'].date():
                     continue
             if (
                 candidate['party'] == 'Write-In' or
