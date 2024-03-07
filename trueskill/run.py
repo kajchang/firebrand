@@ -3,7 +3,6 @@ from pymongo import MongoClient
 import re
 import unicodedata
 
-import itertools
 from datetime import datetime, date, timedelta
 from collections import OrderedDict
 
@@ -33,7 +32,7 @@ RANKING_DELTA_TIME = timedelta(weeks=52 * 2)
 
 STARTING_RATING = 1500
 MAX_SIGMA = STARTING_RATING / 3 / 2
-trueskill.setup(STARTING_RATING, STARTING_RATING / 3, STARTING_RATING / 3 / 2, STARTING_RATING / 3 / 100, backend='mpmath')
+trueskill.setup(STARTING_RATING, STARTING_RATING / 3, STARTING_RATING / 3 / 2, STARTING_RATING / 3 / 100, 1e-5, backend='mpmath')
 
 # Load Presidential Primary Metadata
 
