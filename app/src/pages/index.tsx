@@ -42,7 +42,9 @@ const HomePage: React.FunctionComponent<HomePageProps> = ({ topPoliticians, last
 			fetchingTimeout.current = null
 		}, 100)
 
-		return () => (canceled = true)
+		return () => {
+			canceled = true
+		}
 	}, [search])
 
 	const displayedResults: Politician[] = search != '' ? searchResults : topPoliticians
